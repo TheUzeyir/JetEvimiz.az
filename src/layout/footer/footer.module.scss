@@ -1,0 +1,88 @@
+.footer {
+    background: #2A2036;
+    min-height: 19rem;
+    color: rgb(215, 209, 209);
+    padding-bottom: 20px;
+    padding-top: 20px;
+    margin-top: 20px;
+    padding-left: 6%;
+    width: 100%;
+  }
+  
+  .footerMain {
+    display: grid;
+    gap: 1rem;
+    margin-top: 1rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+  }
+  .footerMain_title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    margin-left: 30px;
+  }
+  .footerMain_Link_ul {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 1rem;
+  }
+  .footerMain_Link_ul_links {
+    color: rgb(175, 173, 173);
+  }
+  .footerMain_Link_ul_links:hover {
+    color: white;
+  }
+  .footerMain_infoBox {
+    max-width: 17.5rem;
+  }
+  .footerMain_infoBox_title {
+    font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .footerMain_infoBox_mainText {
+    max-width: 30rem;
+    margin-bottom: 1rem;
+  }
+  .footerMain_login_inputBox {
+    position: relative;
+    max-width: 80%;
+    display: flex;
+    align-items: center;
+  }
+  .footerMain_login_inputBox_input {
+    width: 100%;
+    height: 2rem;
+    border: 1px solid white;
+    background: transparent;
+    border-radius: 4px;
+    padding: 0 1rem;
+    color: white;
+  }
+  .footerMain_login_inputBox_icon {
+    position: absolute;
+    right: 0.5rem;
+  }
+  .footerMain_login_text {
+    max-width: 12rem;
+    font-size: 0.8rem;
+    margin: 1rem 0;
+  }
+  .footerMain_login_contackLogo {
+    display: flex;
+    gap: 1rem;
+    font-size: 1.5rem;
+  }
+  .footerMain_login_contackLogo_icon {
+    cursor: pointer;
+  }
+  .footerMain_login_contackLogo_icon:hover {
+    color: white;
+  }
+  
+  @media screen and (max-width: 968px) {
+    .footer {
+      display: none;
+    }
+  }

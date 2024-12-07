@@ -1,0 +1,216 @@
+.CategoryProduct_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    color: white;
+}
+
+.CategoryProduct_vip{
+    background: #F3F3F3;
+    padding: 10px;
+    border-radius: 4px;
+    margin: 10px 0;
+}
+
+.CategoryProduct_header,
+.CategoryProduct_vip,
+.CategoryProduct_simple{
+    background: rgba(255, 255, 255, 0.4); /* Beyaz ve şeffaf */
+    backdrop-filter: blur(10px); /* Blur efekti */
+    -webkit-backdrop-filter: blur(10px); /* Safari için */
+    border: 1px solid rgba(255, 255, 255, 0.2); /* Hafif kenar çizgisi */
+    border-radius: 8px; /* Köşe yuvarlama */
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Hafif gölge */
+    margin-top: 10px;
+}
+
+.CategoryProduct_simple{
+    margin-bottom: 20px;
+}
+
+.m{
+    position: absolute;
+    width: 100%;
+    height: 100%;z-index: -1;
+}
+
+.priceRangeContainer {
+    width: 200px;
+    margin: 10px;
+  }
+  
+  .selectBox {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f0f0f0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+  
+    span {
+      font-size: 14px;
+    }
+  
+    .arrow {
+      font-size: 12px;
+      color: #888;
+    }
+  }
+
+  .CategoryProduct_filterBox{
+    display: flex;
+    align-items: center;
+  }
+  
+  .inputsContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 10px;
+  
+    input {
+      padding: 10px;
+      border: 1px solid #ccc;
+      text-align: center;
+      width: 70px;
+  
+      &:first-of-type {
+        border-right: none;
+        border-top-right-radius: 0;
+        border-bottom-right-radius: 0;
+      }
+  
+      &:last-of-type {
+        border-left: none;
+        border-top-left-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+    }
+  
+    span {
+      padding: 0 5px;
+    }
+  }
+  
+
+.productsGrid{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 40px;
+    margin-top: 20px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.productCard{
+    border-radius: 8px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+}
+
+.productCard_imgBox{
+    position: relative;
+} 
+
+.productCard_imgBox_img{
+    width: 100%;
+    min-height:200px;
+    max-height:201px;
+    border-radius: 8px;
+}
+
+.productCard_imgBox_heartIcon{
+position: absolute;
+right: 10px;
+top: 10px;
+color: black;
+cursor: pointer;
+}
+
+.productCard_imgBox_heartIcon_check{
+color: red;
+position: absolute;
+right: 10px;
+top: 10px;
+cursor: pointer;
+}
+
+.productCard_imgBox_title{
+    position: absolute;
+    top: 65%;
+    left: 5%;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: purple;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+
+.productCard_title{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    color: white;
+}
+
+.productCard_title_dayBox,
+.productCard_subTitle,
+.productCard_text{
+    color: white;
+}
+
+.productCard_title_pirce{
+    font-weight: bold;
+}
+
+.productCard_title_dayBox{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.productCard_subTitle,
+.productCard_text{
+    padding:0 10px ;
+}
+.productCard_subTitle{
+    font-weight: bold;
+    height:20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+@media screen and (max-width:1080px) {
+    .productCard_imgBox_title{
+        font-size: 10px;
+    }
+}
+@media screen and (max-width:968px) {
+    .productCard_container{
+        grid-template-columns: repeat(3,1fr);
+        gap: 10px;
+    }
+
+    .productCard_imgBox_title{
+        font-size: 14px;
+    }
+}
+@media screen and (max-width:596px) {
+    .productCard_container{
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .productCard_imgBox_img{
+        height: 150px;
+    }
+}

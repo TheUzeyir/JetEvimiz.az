@@ -1,0 +1,97 @@
+
+* {
+	box-sizing: border-box;
+}
+
+a{
+    text-decoration: none;
+}
+
+body{
+  margin: 0px;
+}
+
+.container{
+    width: 86%;
+}
+
+.main{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+button{
+  cursor: pointer;
+}
+
+.header{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+ul li{
+    list-style: none;
+}
+
+li{
+    cursor: pointer;
+}
+
+
+.slick-arrow .slick-next {
+    color: #f39c12;
+}
+
+.slick-slide:not(:first-child) {
+    margin: 0 0 10px 0;
+}
+.slick-list {
+    margin: 0 10px;
+}
+ 
+.swiper {
+    width: 100%;
+    height: 100%;
+    padding: 10px 54px 10px 60px;
+    margin: 10px;
+  }
+  
+  .swiper-slide {
+    text-align: center;
+    font-size: 18px;
+    background: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  }
+  
+  .swiper-slide img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .swiper {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .swiper-button-next {
+    color: #2A2036;
+  }
+    .swiper-button-prev {
+    color: #2A2036;
+  }
+
+  @media screen and (max-width:968px) {
+    .container{
+      width: 94%;
+  }
+  }

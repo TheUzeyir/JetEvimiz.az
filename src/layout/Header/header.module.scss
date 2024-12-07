@@ -1,0 +1,78 @@
+.headerTop{
+    background:#2A2036;
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 1px solid gray;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.headerTop_container_right_item{
+    cursor: pointer;
+}
+
+.headerTop_container_right_langBox{
+    padding: 5px;
+    border-radius: 4px;
+    border:1px solid white;
+    background: transparent;
+    background: #2A2036;
+    color: white;
+}
+
+.contactNum{
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.contactNum_box{
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+}
+
+.headerTop_container_right_langBox_item{
+    color: black;
+}
+
+.headerSlider{
+    align-items: center;
+}
+
+.headerTop_container{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+
+.headerTop_container_left{
+    color: white;
+}
+
+.headerTop_container_right{
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.headerTop_container_right_icon{
+    margin-right: 5px;
+}
+
+.headerTop_container_right{
+    color: white;
+}
+
+@media screen and (max-width:968px) {
+    .headerTop{
+        display: none;
+    }
+}
+
+@media screen and (max-width:768px) {
+    .headerTop_container{
+        font-size: 10px;
+    }
+}

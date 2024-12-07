@@ -1,0 +1,31 @@
+.headerBottom{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.headerBottomContainer{
+    width: 100%;
+    padding:80px 0 20px 0;
+    background: #F6F7FA;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.headerBottom_left{ 
+    font-weight: bold;
+    color: #8D94AD;
+    font-size: 20px;
+}
+ .headerBottom_right{
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+@media screen and (max-width:968px) {
+    .headerBottomContainer{
+        margin-top: 60px;
+    }
+}

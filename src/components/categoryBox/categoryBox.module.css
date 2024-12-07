@@ -1,0 +1,48 @@
+.categoryBox_container {
+  padding: 10px;
+  position: absolute;
+  top: 0;
+  background: white;
+  width: 100%;
+  height: 100%;
+  z-index: 5;
+}
+
+.categoryBox_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 20px;
+}
+
+.categoryBox_card_boxs {
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid gray;
+}
+
+.categoryBox_card_box {
+  display: flex;
+  justify-content: space-between;
+  font-size: 20px;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  padding-bottom: 10px;
+}
+
+.categoryBox_card_box_card {
+  padding: 0 20px;
+}
+
+.categoryBox_card_box_title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+@media screen and (min-width: 968px) {
+  .categoryBox_container {
+    display: none;
+  }
+}/*# sourceMappingURL=categoryBox.module.css.map */

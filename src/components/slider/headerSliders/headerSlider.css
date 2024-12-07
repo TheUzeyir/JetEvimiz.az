@@ -1,0 +1,18 @@
+.headerSliderBox{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    width: 100%;
+}
+
+.headerSliderBoxText{
+    font-size: 15px;
+    font-weight: bold;
+}
+
+
+@media screen and (max-width:1200px) {
+    .headerSliderBoxText{
+        font-size: 15px;
+    }
+}

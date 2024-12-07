@@ -1,0 +1,58 @@
+.nawBar_responsive{
+    padding: 20px;
+}
+
+.nawBar_responsive_container.nawBar_responsive_displayBlock {
+    display: block;
+    transform: translateX(0);
+}
+
+.nawBar_responsive_header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 20px;
+}
+
+.nawBar_responsive_header_icon:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.emptyBox{
+    margin: -10px 0;
+    background: gray;
+    height: 2px;
+
+}
+
+.nawBar_responsive_main {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.nawBar_responsive_main_box {
+    display: flex;
+    gap: 20px;
+    color: gray;
+}
+
+.nawBar_responsive_main_box:hover {
+    color: blue;
+}
+
+.nawBar_langBox{
+    display: flex;
+    gap: 10px;
+}
+
+.languageSelect {
+    width: 100%;
+    padding: 8px;
+    margin-top: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  

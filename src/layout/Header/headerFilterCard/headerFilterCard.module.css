@@ -1,0 +1,90 @@
+.headerFilterCard {
+  width: 60%;
+  box-shadow: rgba(0, 0, 0, 0.4) 0px 30px 90px;
+  position: absolute;
+  z-index: 5;
+  margin-top: 110px;
+  padding: 20px;
+  border-radius: 4px;
+  background: white;
+  display: none;
+}
+
+.headerFilterCard_displayBlock {
+  display: block;
+}
+
+.HeaderFilterCard_top_categoryBox {
+  border: 1px solid black;
+  width: -moz-max-content;
+  width: max-content;
+  padding: 5px 20px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.HeaderFilterCard_top_categoryBox_icon {
+  font-weight: bold;
+}
+
+.HeaderFilterCard_top_categoryCard {
+  padding-left: 40px;
+  padding-top: 10px;
+  position: absolute;
+  background: white;
+  box-shadow: rgba(0, 0, 0, 0.56) 0px 22px 70px 4px;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  height: 400px;
+  width: 300px;
+  border-radius: 4px;
+  margin-top: 10px;
+  display: none;
+}
+
+.HeaderFilterCard_top_categoryCard_displayBlock {
+  display: block;
+}
+
+.HeaderFilterCard_top_categoryCard_title:not(:nth-child(1)) {
+  margin-top: -10px;
+}
+
+.HeaderFilterCard_top_categoryCard_title {
+  font-weight: bold;
+}
+
+.HeaderFilterCard_top_categoryCard_subtitle {
+  margin-left: -10px;
+}
+
+.HeaderFilterCard_top_categoryCard_category {
+  cursor: pointer;
+}
+
+.HeaderFilterCard_top_categoryCard_category:hover {
+  color: blue;
+}
+
+.HeaderFilterCard_bottom {
+  margin-top: 50px;
+  display: flex;
+  gap: 20px;
+  justify-content: end;
+}
+
+.HeaderFilterCard_bottom_btn1,
+.HeaderFilterCard_bottom_btn2 {
+  padding: 10px 20px;
+  background: transparent;
+  border: 1px solid gray;
+  font-size: 15px;
+  border-radius: 4px;
+}
+
+.HeaderFilterCard_bottom_btn2 {
+  background: blue;
+  color: white;
+  border: none;
+  font-weight: bold;
+}/*# sourceMappingURL=headerFilterCard.module.css.map */

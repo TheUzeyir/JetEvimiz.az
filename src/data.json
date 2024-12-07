@@ -1,0 +1,187 @@
+
+[
+    {
+    "id":1,
+    "product":"Laptop",
+    "title":"Inch Laptop",
+    "count":1,
+    "model":"Razer",
+    "description": "15.6 Inch Intel Gaming Laptop",
+    "price": 1469.67,
+    "category": "Laptop",
+    "thumbnail": "https://t4.ftcdn.net/jpg/02/07/45/97/360_F_207459754_XZ4VRclGSmux91GZ0ukm4oOPcF8wkN08.jpg",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/H6d1cfa5cdbfd432881b41f0c9dd00af9G.webp?v=1693224532",
+        "https://multi-themes.myshopify.com/cdn/shop/products/H0fe4502f25454271b1e524d3e3c63fc7y_70x.webp?v=1693224532",
+        "https://multi-themes.myshopify.com/cdn/shop/products/H102d86b638394b70b3744e544c649a01I_70x.webp?v=1693224532",
+        "https://multi-themes.myshopify.com/cdn/shop/products/H9981e12035aa4aae85a792df1eb4805bF_70x.webp?v=1693224532"
+        ]
+    },
+    {
+    "id":2,
+    "count":1,
+    "product":"Monitor",
+    "title":"LG 34WR50QC 34",
+    
+    "model":"LG",
+    "description": "LG 34WR50QC 34 QHD UltraWide Curved Monitor",
+    "price": 269.7,
+    "category": "Monitor",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S9e74069fc8c84bbd83b0cc0b89d6dfbdV.webp?v=1693224495",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S9e74069fc8c84bbd83b0cc0b89d6dfbdV.webp?v=1693224495",
+        "https://multi-themes.myshopify.com/cdn/shop/products/S2b45889b52f54ac8804710e5a4cbbf66B_70x.webp?v=1693224495",
+        "https://multi-themes.myshopify.com/cdn/shop/products/S7e2444148305477faf67be6481318ae8y_70x.webp?v=1693224495",
+        "https://multi-themes.myshopify.com/cdn/shop/products/S6e0f4729ca8141288857644191555ba4O_940x.webp?v=1693224495"
+        ]
+    },
+    {
+    "id":3,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer Engineer X31",
+    "model":"Medion",
+    "description": "Medion Erazer Engineer X31 Core i5-12400 16GB 512GB SSD RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 879.00,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+        "https://multi-themes.myshopify.com/cdn/shop/files/Sapphire-Nitro-M01-Micro-Tower-MATX-4.jpg?v=1693898587"
+        ]
+    },
+    {
+    "id":4,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer Engineer X31",
+    "model":"Medion",
+    "description": "Medion Erazer Engineer X31 Core i5-12400 16GB 512GB SSD RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 879.00,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+        "https://multi-themes.myshopify.com/cdn/shop/files/Sapphire-Nitro-M01-Micro-Tower-MATX-4.jpg?v=1693898587",
+        "",
+        ""
+        ]
+    },
+    {
+    "id":5,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer Engineer X31",
+    "model":"Medion",
+    "description": "Medion Erazer Engineer X31 Core i5-12400 16GB 512GB SSD RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 879.00,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+        "https://multi-themes.myshopify.com/cdn/shop/files/Sapphire-Nitro-M01-Micro-Tower-MATX-4.jpg?v=1693898587",
+        "",
+        ""
+        ]
+    },
+    {
+    "id":6,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer Engineer X31",
+    "model":"Medion",
+    "description": "Medion Erazer Engineer X31 Core i5-12400 16GB 512GB SSD RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 879.00,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+        "https://multi-themes.myshopify.com/cdn/shop/files/Sapphire-Nitro-M01-Micro-Tower-MATX-4.jpg?v=1693898587",
+        "",
+        ""
+        ]
+    },
+    {
+    "id":7,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer Engineer X31",
+    "model":"Medion",
+    "description": "Medion Erazer Engineer X31 Core i5-12400 16GB 512GB SSD RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 879.00,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+        "https://multi-themes.myshopify.com/cdn/shop/files/Sapphire-Nitro-M01-Micro-Tower-MATX-4.jpg?v=1693898587",
+        "",
+        ""
+        ]
+    },
+    {
+    "id":8,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer Engineer X31",
+    "model":"Medion",
+    "description": "Medion Erazer Engineer X31 Core i5-12400 16GB 512GB SSD RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 879.00,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+        "https://multi-themes.myshopify.com/cdn/shop/files/Sapphire-Nitro-M01-Micro-Tower-MATX-4.jpg?v=1693898587",
+        "",
+        ""
+        ]
+    },
+    {
+    "id":9,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer Engineer X31",
+    "model":"Medion",
+    "description": "Medion Erazer Engineer X31 Core i5-12400 16GB 512GB SSD RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 879.00,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+        "https://multi-themes.myshopify.com/cdn/shop/files/Sapphire-Nitro-M01-Micro-Tower-MATX-4.jpg?v=1693898587"
+        ]
+    },
+    {
+    "id":10,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer Engineer X31",
+    "model":"Medion",
+    "description": "Medion Erazer Engineer X31 Core i5-12400 16GB 512GB SSD RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 879.00,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S46d903af6b2d45fdb912427caa51c849d.webp?v=1693224308",
+        "https://multi-themes.myshopify.com/cdn/shop/files/Sapphire-Nitro-M01-Micro-Tower-MATX-4.jpg?v=1693898587",
+        "",
+        ""
+        ]
+    },
+    {
+    "id":11,
+    "count":1,
+    "product":"PC",
+    "title":"Medion Erazer X31 ",
+    "model":"Medion",
+    "description": "Medion Erazer X31 Core i7-12700 16GB 512GB RTX 3060Ti Windows 11 Gaming Desktop",
+    "price": 1099.09,
+    "category": "PC",
+    "thumbnail": "https://multi-themes.myshopify.com/cdn/shop/products/S710d521d17754084b3b56f5fd6cadf42A_940x.webp?v=1693329139",
+    "images": [
+        "https://multi-themes.myshopify.com/cdn/shop/products/S710d521d17754084b3b56f5fd6cadf42A_940x.webp?v=1693329139",
+        "https://multi-themes.myshopify.com/cdn/shop/products/S4fadb9e1bba140bc98edb9730cd83595W_70x.webp?v=1693329139",
+        "https://multi-themes.myshopify.com/cdn/shop/products/S3b3c04112f034768ae74a3b6fc4b1066z_70x.webp?v=1693329139",
+        "https://multi-themes.myshopify.com/cdn/shop/products/S91fd8cdd9e774698b41873c85dc9aa12N_940x.webp?v=1693329139"
+        ]
+    }
+]

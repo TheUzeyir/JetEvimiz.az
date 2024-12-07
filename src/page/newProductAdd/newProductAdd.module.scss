@@ -1,0 +1,234 @@
+.addBox_main_container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.addBox{
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  width: 100%;
+  background: #F3F3F3;
+padding: 20px;
+align-items: center;
+text-align: start;
+}
+
+.addBox_left_box_top,
+.addBox_left_box_main{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.addBox_left_box_top_card {
+  margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+    transition-duration: 1s;
+    width: 100%;
+}
+
+.addBox_left_box_top_card_item{
+    width: 80%;
+    height: 40px;
+}
+
+.addBox_left_box_top_card_item_input{
+    width: 80%;
+    height: 40px;
+}
+
+.addBox_left_box_top_card_textArea{
+    width: 80%;
+    height: 120px;
+}
+
+.addBox_left_box_main{
+    background: #FAFAFA;
+}
+
+.addBox_left_box_main_title{
+    font-weight: bold;
+}
+
+.addBox_title{
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.addBox_left_box_main_card{
+    display: flex;
+    gap: 20px;
+    justify-content: space-between;
+}
+
+.addBox_right_title{
+    color: blue;
+    font-weight: bold;
+}
+
+.addBox_right_subTitle{
+    color: red;
+    font-weight: bold;
+}
+
+.addBox_left_box_bottom_btn{
+    border: none;
+    background: red;
+    color: white;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.addBox_image_upload_container {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  
+  .addBox_image_preview {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .addBox_image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+  }
+  
+  .addBox_image_remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+  
+  .addBox_image_add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100px;
+    border: 2px dashed #ddd;
+    border-radius: 5px;
+    cursor: pointer;
+    color: #aaa;
+  }
+  
+  .addBox_image_input {
+    display: none;
+  }
+
+  .addBox_left_box_top_card_headCat{
+    font-weight: bold;
+    font-size: 18px;
+  }
+  
+  .categoryBox{
+    display: flex;
+    flex-direction: column;
+  }
+
+  .parentCategoryTitle{
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .imagePreviews {
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 10px;
+    margin-top: 10px;
+    width: 80%;
+  }
+  
+  .imagePreview {
+    position: relative;
+    // width: 100px;
+    height: 100px;
+  }
+  
+  .imagePreviewImg {
+    width: 100%; /* Kapsayıcıya tam oturt */
+    height: 100%;
+    object-fit: cover; /* Görüntüyü düzgün şekilde sığdır */
+    border-radius: 5px; /* Köşeleri yuvarla (opsiyonel) */
+  }
+  
+  .removeImageButton {
+    position: absolute; /* Üstüne konumlandır */
+    top: 5px; /* Üstten mesafe */
+    right: 5px; /* Sağdan mesafe */
+    background-color: rgba(0, 0, 0, 0.7); /* Siyah yarı saydam arka plan */
+    color: white; /* Beyaz yazı rengi */
+    border: none; /* Kenarlık yok */
+    border-radius: 50%; /* Yuvarlak buton */
+    padding: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .removeImageButton:hover {
+    background-color: rgba(255, 0, 0, 0.7); /* Üzerine gelindiğinde kırmızı */
+  }
+  
+  .addBox_button{
+    width: 20%;
+    font-size: 16px;
+    padding:10px 20px;
+    border: none;
+    background: #2A2036;
+    color: white;
+    border-radius: 4px;
+  }
+
+  .errorText{
+    position: absolute;
+    left: 8.2%;
+    top: 55%;
+  }
+
+
+
+@media screen and (max-width:968px) {
+    .addBox{
+        flex-direction: column;
+    }
+
+    .addBox_right{
+        margin-bottom: 80px;
+    }
+}
+@media screen and (max-width:768px) {
+  .imagePreviews {
+    grid-template-columns: repeat(3,1fr);
+    width: 90%;
+  }
+
+  .addBox_button{
+    width: 80%;
+  }
+}
+@media screen and (max-width:400px) {
+  .imagePreviews {
+    grid-template-columns: repeat(2,1fr);
+    width: 90%;
+  }
+}

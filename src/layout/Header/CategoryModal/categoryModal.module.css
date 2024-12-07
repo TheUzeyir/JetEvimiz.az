@@ -1,0 +1,147 @@
+.modalCategoryModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.modalBody {
+  display: flex;
+}
+
+.modalContent {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.8823529412), #f0f0f0);
+  width: 60%;
+  max-width: 900px;
+  height: 80%;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  transform: scale(0.8);
+  animation: scaleIn 0.3s ease-in-out forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.modalBody {
+  display: flex;
+  padding-top: 15px;
+  height: -moz-max-content;
+  height: max-content;
+}
+
+.categories {
+  border-right: 1px solid #ddd;
+  max-height: 100%;
+  overflow-y: auto;
+  color: white;
+}
+
+.categoryItem {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background: #2A3036;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.categoryItem:hover {
+  color: #2A2036;
+  border: 1px solid #2A2036;
+  background: transparent;
+}
+
+.products {
+  width: 70%;
+  padding-left: 20px;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.products_ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.products_li {
+  padding: 5px 0;
+  font-size: 1.2rem;
+  border-bottom: 1px solid #2A2036;
+  width: -moz-max-content;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #2A2036;
+}
+
+.products_li:hover {
+  color: red;
+}
+
+.modalContent_btn {
+  background-color: #2A2036;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  border: 1px solid gray;
+}
+
+.modalContent_btn:hover {
+  background-color: transparent;
+  color: #2A2036;
+  border: 1px solid #2A2036;
+}
+
+.categoryItem {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.categoryIcon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+@media screen and (max-width: 968px) {
+  .modalContent {
+    width: 90%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .categoryItem {
+    font-size: 14px;
+    min-width: 150px;
+  }
+  .products {
+    width: 50%;
+  }
+}/*# sourceMappingURL=categoryModal.module.css.map */

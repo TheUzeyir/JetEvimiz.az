@@ -1,0 +1,292 @@
+.bar_icon {
+  display: none;
+}
+
+.navbar {
+  background: #2A2036;
+  color: white;
+  padding: 20px 0;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.navbarBrand {
+  cursor: pointer;
+}
+
+.navbar_container {
+  display: flex;
+  align-items: center;
+  gap: 100px;
+  justify-content: space-between;
+}
+
+.offcanvasBody {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  width: 100%;
+}
+
+.inputGroup {
+  display: flex;
+  width: 100%;
+}
+
+.searchInput {
+  width: 100%;
+  border: none;
+  outline: none;
+  padding: 0 20px;
+}
+
+.no-border:focus {
+  border: none;
+  outline: none;
+}
+
+.searchBtn {
+  background: rgb(38, 180, 38);
+  color: white;
+  padding: 12px;
+  border: none;
+  border-top-right-radius: 50%;
+  border-bottom-right-radius: 50%;
+  font-size: 18px;
+}
+
+.categoryBox {
+  display: flex;
+  cursor: pointer;
+}
+
+.advertsBox {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.advertsBox_btn_new {
+  background: rgb(38, 180, 38);
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  border-radius: 4px;
+  font-size: 16px;
+  width: -moz-max-content;
+  width: max-content;
+}
+
+.advertsBox_btn_filter {
+  background: orange;
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.modalCategoryModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.modalBody {
+  display: flex;
+}
+
+.modalContent {
+  background-image: radial-gradient(circle, #2A2036 5%, #4dabf7 95%);
+  width: 60%;
+  max-width: 900px;
+  height: 80%;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+  padding: 20px;
+  transform: scale(0.8);
+  animation: scaleIn 0.3s ease-in-out forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.8);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+.modalBody {
+  display: flex;
+  padding-top: 15px;
+  height: 100%;
+}
+
+.categories {
+  border-right: 1px solid #ddd;
+  max-height: 100%;
+  overflow-y: auto;
+  color: white;
+}
+
+.categoryItem {
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background: #2A3036;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.categoryItem:hover {
+  background-color: #fff;
+  color: #2A2036;
+}
+
+.products {
+  width: 70%;
+  padding-left: 20px;
+  max-height: 100%;
+  overflow-y: auto;
+}
+
+.products_ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.products_li {
+  padding: 5px 0;
+  font-size: 1.2rem;
+  border-bottom: 1px solid gray;
+  width: -moz-max-content;
+  width: max-content;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: white;
+}
+
+.products_li:hover {
+  color: lightgreen;
+}
+
+.modalContent_btn {
+  background-color: #2A2036;
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.modalContent_btn:hover {
+  background-color: white;
+  color: #2A2036;
+}
+
+.categoryItem {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.categoryIcon {
+  margin-right: 10px;
+  font-size: 1.5rem;
+}
+
+.emptyBox {
+  width: 100%;
+  border: 1px solid gray;
+}
+
+@media screen and (max-width: 1080px) {
+  .navbar_container {
+    gap: 30px;
+  }
+}
+@media screen and (max-width: 968px) {
+  .advertsBox {
+    display: none;
+  }
+  .navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+  }
+  .navbarBrand {
+    font-size: 14px;
+    margin-top: 20px;
+  }
+  .categoryBox,
+  .navBar_selectBox {
+    display: none;
+  }
+  .inputGroup {
+    margin-top: 10px;
+    position: relative;
+    width: 100%;
+    margin-left: -20px;
+  }
+  .searchInput {
+    border: 1px solid gray;
+    height: 40px;
+    width: 100%;
+    background: transparent;
+  }
+  .searchInput::-moz-placeholder {
+    color: white;
+    font-size: 10px;
+  }
+  .searchInput::placeholder {
+    color: white;
+    font-size: 10px;
+  }
+  .searchBtn {
+    position: absolute;
+    right: 2%;
+    background: white;
+    padding: 0px;
+    margin-top: 10px;
+    background: transparent;
+  }
+  .bar_icon {
+    display: block;
+    font-size: 20px;
+    cursor: pointer;
+  }
+  .navbar_container {
+    justify-content: space-between;
+  }
+  .nawBar_responsive_container {
+    display: block;
+  }
+}/*# sourceMappingURL=navbar.module.css.map */

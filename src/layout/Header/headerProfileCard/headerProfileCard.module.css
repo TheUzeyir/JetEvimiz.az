@@ -1,0 +1,51 @@
+.HeaderProfileCard_container {
+  display: none;
+}
+
+.HeaderProfileCard {
+  width: 15%;
+  border-radius: 6px;
+  background: white;
+  padding: 20px;
+  position: absolute;
+  top: 7%;
+  right: 1%;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  display: block;
+  z-index: 4;
+}
+
+.headerProfileCardHead {
+  display: flex;
+  gap: 10px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.headerProfileCardHead_icon {
+  background: #000;
+  color: white;
+  border-radius: 50%;
+  font-size: 20px;
+}
+
+.headerProfileCardtitle {
+  margin-bottom: 20px;
+  cursor: pointer;
+}
+
+.headerProfileCardtitle:hover {
+  color: red;
+}
+
+.headerProfileCardtitle:nth-child(4) {
+  border-bottom: 1px solid gray;
+  padding-bottom: 10px;
+  margin-bottom: 10px;
+}
+
+@media screen and (max-width: 1081px) {
+  .HeaderProfileCard {
+    width: 25%;
+  }
+}/*# sourceMappingURL=headerProfileCard.module.css.map */
