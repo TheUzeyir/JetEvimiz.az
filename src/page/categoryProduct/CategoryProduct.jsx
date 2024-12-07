@@ -69,34 +69,31 @@ const CategoryProduct = () => {
       <Navbar />
       <img src="https://img.freepik.com/free-vector/gradient-sale-background_52683-62895.jpg" alt="" className={style.m} />
       <div className="container">
-        {/* Kategori Bilgileri */}
         <div className={style.CategoryProduct_header}>
-          <div>
-            {category ? (
-              <>
-                <h3>Ana Kategori:</h3>
-                {Object.entries(category)
-                  .filter(([key, value]) => key !== 'categoryId' && (typeof value === 'string' || typeof value === 'number'))
-                  .map(([key, value]) => (
-                    <div key={key} style={{ marginBottom: '10px' }}>
-                      <label htmlFor={key} style={{ marginRight: '10px', fontWeight: 'bold' }}>
-                        {key}:
-                      </label>
-                      <input
-                        id={key}
-                        type={typeof value === 'number' ? 'number' : 'text'}
-                        defaultValue={value}
-                        style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
-                      />
-                    </div>
-                  ))}
+        <div>
+  {category ? (
+    <>      <h3>Ana Kategori:</h3>
+      {Object.entries(category)
+        .filter(([key, value]) => (key !== 'categoryId') && (typeof value === 'string' || typeof value === 'number'))
+        .map(([key, value]) => (
+          <div key={key} style={{ marginBottom: '10px' }}>
+            <label htmlFor={key} style={{ marginRight: '10px', fontWeight: 'bold' }}>
+              {key}:
+            </label>
+            <input
+              id={key}
+              type={typeof value === 'number' ? 'number' : 'text'}
+              defaultValue={value}
+              style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
+            />
+          </div>
+        ))}
 
-                {/* Alt Kategori */}
-                {selectedSubCategory && (
-                  <>
+      {category.childCategories && category.childCategories.length > 0 && (
+        <>
                     <h3>Seçili Alt Kategori:</h3>
-                    {Object.entries(selectedSubCategory)
-                      .filter(([key, value]) => key !== 'categoryId' && (typeof value === 'string' || typeof value === 'number'))
+                    {Object.entries(category.childCategories[0]) // İlk alt kategori
+                      .filter(([key, value]) => (key !== 'categoryId') && (typeof value === 'string' || typeof value === 'number'))
                       .map(([key, value]) => (
                         <div key={key} style={{ marginBottom: '10px' }}>
                           <label
@@ -124,7 +121,6 @@ const CategoryProduct = () => {
               <p>Kategori Seçilmedi</p>
             )}
           </div>
-
           <p>Elan-({items.length})</p>
           <div className={style.CategoryProduct_filterBox}>
             <div className={style.priceRangeContainer}>
@@ -153,8 +149,6 @@ const CategoryProduct = () => {
             <span>Marka ▼</span>
           </div>
         </div>
-
-        {/* Ürünler */}
         <div className={style.CategoryProduct_simple}>
           <h2>Elanlar</h2>
           {items.length > 0 ? (
@@ -214,6 +208,4 @@ const CategoryProduct = () => {
     </div>
   );
 };
-
-
 export default CategoryProduct;
