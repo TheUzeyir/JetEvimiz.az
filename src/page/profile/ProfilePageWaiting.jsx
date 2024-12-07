@@ -14,18 +14,30 @@ const ProfilePageWaiting = () => {
     // Fetch data based on statusType
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`);
+        const token = localStorage.getItem("authToken"); // Token'i localStorage'dan alın
+        const response = await fetch(
+          `https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Token'i Authorization başlığına əlavə edin
+            },
+          }
+        );
+  
         const data = await response.json();
         if (statusType === 1) {
-          setProducts(data);  // Store the data only if statusType is 1
+          setProducts(data); // Store the data only if statusType is 1
         }
       } catch (error) {
-        console.error('Error fetching products:', error);
+        console.error("Error fetching products:", error);
       }
     };
-
+  
     fetchData();
   }, [statusType]);
+  
 
   return (
     <div className={style.profileCardBox}>
