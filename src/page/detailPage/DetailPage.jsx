@@ -5,38 +5,44 @@ import { FaPhoneAlt, FaHeart, FaFlag } from "react-icons/fa";
 import { MdDiamond, MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate, useParams } from 'react-router-dom';
 import style from "./detailPage.module.css";
-import data from "../../data.json"; 
 import FooterResponsive from '../../layout/footer_responsive/FooterResponsive';
 
 const DetailPage = () => {
     const [openComplaintBox, setOpenComplaintBox] = useState(false);
     const [product, setProduct] = useState({});
     const [mainImage, setMainImage] = useState(null);
-    const { id } = useParams();
-    const productId = parseInt(id);
+    const { slug } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
         const getProduct = async () => {
-            const productData = data.find(item => item.id === productId);
-            if (productData) {
-                setProduct(productData);
-                setMainImage(productData.thumbnail); 
+            try {
+                const response = await fetch(
+                    `http://restartbaku-001-site3.htempurl.com/api/Product/get-product-by-slug/${slug}`
+                );
+                if (!response.ok) {
+                    throw new Error("Ürün bilgisi alınamadı.");
+                }
+                const result = await response.json();
+                setProduct(result.data || {});
+                setMainImage(result.data.coverImage || null);
+            } catch (error) {
+                console.error(error.message);
             }
         };
         getProduct();
-    }, [productId]);
+    }, [slug]);
 
     const handleImageClick = (newImage) => {
         setMainImage(newImage);
     };
 
     const toggleComplaintBox = () => {
-        setOpenComplaintBox(prev => !prev);
+        setOpenComplaintBox((prev) => !prev);
     };
 
     return (
-        <div className={style.detailPage}> 
+        <div className={style.detailPage}>
             <Header />
             <div className="container">
                 <p className={style.detailPage_goBack} onClick={() => navigate(-1)}>
@@ -47,7 +53,7 @@ const DetailPage = () => {
                         <div className={style.detailPage_main_head_left}>
                             <div className={style.detailPage_main_head_left_mainImgBox}>
                                 <img
-                                    src={mainImage || product.thumbnail}
+                                    src={mainImage || product.coverImage}
                                     alt="Product"
                                     className={style.detailPage_main_head_left_mainImgBox_img}
                                 />
@@ -66,69 +72,46 @@ const DetailPage = () => {
                         </div>
                         <div className={style.detailPage_main_head_right}>
                             <h4 className={style.detailPage_main_head_right_humanName}>
-                                {product.title || "Unknown Seller"}
+                                {product.productTitle || "Unknown Seller"}
                             </h4>
                             <p className={style.detailPage_main_head_right_phone}>
-                                <FaPhoneAlt className={style.detailPage_main_head_right_phone_icon} /> 
-                                {product.phone || "0504002200"} 
+                                <FaPhoneAlt className={style.detailPage_main_head_right_phone_icon} />
+                                {product.phone || "0504002200"}
                             </p>
                             <button className={style.detailPage_main_head_right_btn}>
                                 <MdDiamond /> Elanı VIP et
                             </button>
                             <p className={style.detailPage_main_head_right_otherSale}>Satıcının bütün elanlarını gör</p>
                         </div>
-                    </div> 
+                    </div>
                     <div className={style.detailPage_main_bottom}>
                         <div className={style.detailPage_main_bottom_left}>
                             <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Qiymət:</span> <span>{product.price || "300"}</span>
+                                <span>Qiymət:</span> <span>{product.price || "300"} AZN</span>
                             </div>
                             <div className={style.detailPage_main_bottom_left_box}>
                                 <span>Şəhər:</span> <span>{product.city || "Bakı"}</span>
                             </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Marka:</span> <span>{product.brand || "LAND ROVER"}</span>
-                            </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Model:</span> <span>{product.model || "RANGE ROVER"}</span>
-                            </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Sürətlər qutusu:</span> <span>{product.transmission || "Avtomat"}</span>
-                            </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Ötürücü:</span> <span>{product.drivetrain || "Arxa"}</span>
-                            </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Yanacaq növü:</span> <span>{product.fuel || "Dizel"}</span>
-                            </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Mühərik:</span> <span>{product.engine || "3"}</span>
-                            </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>İl:</span> <span>{product.year || "2017"}</span>
-                            </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Ban növü:</span> <span>{product.bodyType || "Offroader"}</span>
-                            </div>
-                            <div className={style.detailPage_main_bottom_left_box}>
-                                <span>Rəng:</span> <span>{product.color || "Gümüşü"}</span>
-                            </div>
                         </div>
                         <div className={style.detailPage_main_bottom_right}>
-                            <p>Elanın nömrəsi: {product.id || "2221"}</p>
+                            <p>Elanın nömrəsi: {product.productId || "2221"}</p>
                             <p>Günlük icarəyə verilir.</p>
                             <div className={style.detailPage_main_bottom_right_card}>
                                 <p className={style.detailPage_main_bottom_right_card_title}>
-                                    <FaHeart className={style.detailPage_main_bottom_right_card_title_icon} /> Bəyənilənlərə əlavə et
+                                    <FaHeart className={style.detailPage_main_bottom_right_card_title_icon} /> 
+                                    Bəyənilənlərə əlavə et
                                 </p>
                                 <p className={style.detailPage_main_bottom_right_card_subtitle} onClick={toggleComplaintBox}>
-                                    <FaFlag className={style.detailPage_main_bottom_right_card_subtitle_icon} /> Şikayət et
+                                    <FaFlag className={style.detailPage_main_bottom_right_card_subtitle_icon} /> 
+                                    Şikayət et
                                 </p>
                                 {openComplaintBox && (
                                     <div className={style.detailPage_main_bottom_right_card_complaintBox_container}>
                                         <div className={style.detailPage_main_bottom_right_card_complaintBox}>
                                             <textarea placeholder="Şikayət mətni" />
-                                            <button className={style.detailPage_main_bottom_right_card_complaintBox_btn}>Göndər</button>
+                                            <button className={style.detailPage_main_bottom_right_card_complaintBox_btn}>
+                                                Göndər
+                                            </button>
                                         </div>
                                     </div>
                                 )}
@@ -138,7 +121,7 @@ const DetailPage = () => {
                 </div>
             </div>
             <Footer />
-            <FooterResponsive/>
+            <FooterResponsive />
         </div>
     );
 };
