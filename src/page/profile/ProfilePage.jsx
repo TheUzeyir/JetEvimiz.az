@@ -13,7 +13,7 @@ import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
 const ProfilePage = () => {
   const [activeSection, setActiveSection] = useState("currently"); 
   const {t}= useTranslation() 
-
+ 
   const renderSection = () => {
     switch (activeSection) {
       case "ProfilePageCurrently":
