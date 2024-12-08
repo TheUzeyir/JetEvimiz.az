@@ -18,7 +18,8 @@ const CategoryProduct = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [isVisible, setIsVisible] = useState(false);
-
+  const [filterTitle, setFilterTitle] = useState("");
+  
   const { products, category, selectedSubCategory } = location.state || { products: { items: [] }, category: null, selectedSubCategory: null };
   const items = products.items || [];
 
@@ -56,13 +57,81 @@ const CategoryProduct = () => {
 
   const handleMinPriceChange = (e) => setMinPrice(e.target.value);
   const handleMaxPriceChange = (e) => setMaxPrice(e.target.value);
+  const handleTitleChange = (e) => setFilterTitle(e.target.value);
   const toggleVisibility = () => setIsVisible((prev) => !prev);
 
-  useEffect(() => {
-    if (category) console.log('Açılan Kategori Bilgisi:', category);
-    if (selectedSubCategory) console.log('Seçilen Alt Kategori Bilgisi:', selectedSubCategory);
-    if (products) console.log('Kategoriye Ait Ürünler:', products);
-  }, [category, selectedSubCategory, products]);
+  // Dynamically filter products based on criteria
+  const filterProducts = () => {
+    let filteredItems = items;
+
+    // Filter by price
+    if (minPrice) {
+      filteredItems = filteredItems.filter(item => item.price >= minPrice);
+    }
+    if (maxPrice) {
+      filteredItems = filteredItems.filter(item => item.price <= maxPrice);
+    }
+
+    // Filter by title (product name)
+    if (filterTitle) {
+      filteredItems = filteredItems.filter(item => item.productTitle.toLowerCase().includes(filterTitle.toLowerCase()));
+    }
+
+    return filteredItems;
+  };
+
+  // Dynamically render filters based on the category
+  const renderCategoryFilters = () => {
+    if (!category) return null;
+
+    if (category.categoryId === 1) { // Car category
+      return (
+        <>
+          <div>
+            <label htmlFor="brand" style={{ fontWeight: 'bold' }}>Marka:</label>
+            <input
+              id="brand"
+              type="text"
+              placeholder="Maşın markasını daxil edin"
+              onChange={(e) => console.log("Brand filter:", e.target.value)} // Handle brand filter logic
+            />
+          </div>
+          <div>
+            <label htmlFor="model" style={{ fontWeight: 'bold' }}>Model:</label>
+            <input
+              id="model"
+              type="text"
+              placeholder="Maşın modelini daxil edin"
+              onChange={(e) => console.log("Model filter:", e.target.value)} // Handle model filter logic
+            />
+          </div>
+        </>
+      );
+    }
+    
+    if (category.categoryId === 2) { // Mouse category
+      return (
+        <>
+          <div>
+            <label htmlFor="color" style={{ fontWeight: 'bold' }}>Rəng:</label>
+            <input
+              id="color"
+              type="text"
+              placeholder="Siçanın rəngini daxil edin"
+              onChange={(e) => console.log("Color filter:", e.target.value)} // Handle color filter logic
+            />
+          </div>
+        </>
+      );
+    }
+
+    // Additional categories can be added here...
+  };
+
+  const filteredItems = filterProducts();
+
+  // Fixing the error related to filteredCategory
+  const filteredCategory = category?.childCategories || [];
 
   return (
     <div className={style.CategoryProduct_container}>
@@ -70,58 +139,56 @@ const CategoryProduct = () => {
       <img src="https://img.freepik.com/free-vector/gradient-sale-background_52683-62895.jpg" alt="" className={style.m} />
       <div className="container">
         <div className={style.CategoryProduct_header}>
-        <div>
-  {category ? (
-    <>      <h3>Ana Kategori:</h3>
-      {Object.entries(category)
-        .filter(([key, value]) => (key !== 'categoryId') && (typeof value === 'string' || typeof value === 'number'))
-        .map(([key, value]) => (
-          <div key={key} style={{ marginBottom: '10px' }}>
-            <label htmlFor={key} style={{ marginRight: '10px', fontWeight: 'bold' }}>
-              {key}:
-            </label>
-            <input
-              id={key}
-              type={typeof value === 'number' ? 'number' : 'text'}
-              defaultValue={value}
-              style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
-            />
-          </div>
-        ))}
-
-      {category.childCategories && category.childCategories.length > 0 && (
-        <>
+          <div>
+            {category ? (
+              <>
+                {/* 
+                  Buradakı "categoryTitle", "categoryImage", "Seçili Alt Kategori" göstərilməsini istəmirsiniz, 
+                  ona görə aşağıdakı hissələri şərh etmişik:
+                */}
+                {/* <h3>Ana Kategori:</h3> */}
+                {/* {Object.entries(category)
+                  .filter(([key, value]) => key !== 'categoryId' && (typeof value === 'string' || typeof value === 'number'))
+                  .map(([key, value]) => (
+                    <div key={key} style={{ marginBottom: '10px' }}>
+                      <label htmlFor={key} style={{ marginRight: '10px', fontWeight: 'bold' }}>
+                        {key}:
+                      </label>
+                      <input
+                        id={key}
+                        type={typeof value === 'number' ? 'number' : 'text'}
+                        defaultValue={value}
+                        style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
+                      />
+                    </div>
+                  ))} */}
+                {/* {category.childCategories && category.childCategories.length > 0 && (
+                  <>
                     <h3>Seçili Alt Kategori:</h3>
-                    {Object.entries(category.childCategories[0]) // İlk alt kategori
-                      .filter(([key, value]) => (key !== 'categoryId') && (typeof value === 'string' || typeof value === 'number'))
-                      .map(([key, value]) => (
-                        <div key={key} style={{ marginBottom: '10px' }}>
-                          <label
-                            htmlFor={`child-${key}`}
-                            style={{ marginRight: '10px', fontWeight: 'bold' }}
-                          >
-                            {key}:
-                          </label>
-                          <input
-                            id={`child-${key}`}
-                            type={typeof value === 'number' ? 'number' : 'text'}
-                            defaultValue={value}
-                            style={{
-                              padding: '5px',
-                              borderRadius: '5px',
-                              border: '1px solid #ccc',
-                            }}
-                          />
-                        </div>
-                      ))}
+                    {filteredCategory.map((childCategory, index) => (
+                      <div key={index} style={{ marginBottom: '10px' }}>
+                        <label
+                          htmlFor={`child-${index}`}
+                          style={{ marginRight: '10px', fontWeight: 'bold' }}
+                        >
+                          {childCategory.name}:
+                        </label>
+                        <input
+                          id={`child-${index}`}
+                          type="text"
+                          defaultValue={childCategory.value}
+                          style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
+                        />
+                      </div>
+                    ))}
                   </>
-                )}
+                )} */}
               </>
             ) : (
               <p>Kategori Seçilmedi</p>
             )}
           </div>
-          <p>Elan-({items.length})</p>
+          <p>Elan-({filteredItems.length})</p>
           <div className={style.CategoryProduct_filterBox}>
             <div className={style.priceRangeContainer}>
               <div onClick={toggleVisibility}>
@@ -132,30 +199,42 @@ const CategoryProduct = () => {
                 <div className={style.inputsContainer}>
                   <input
                     type="text"
-                    placeholder="Min Fiyat"
+                    placeholder="Minimum Qiymət"
                     value={minPrice}
                     onChange={handleMinPriceChange}
                   />
                   <span>-</span>
                   <input
                     type="text"
-                    placeholder="Max Fiyat"
+                    placeholder="Maksimum Qiymət"
                     value={maxPrice}
                     onChange={handleMaxPriceChange}
                   />
                 </div>
               )}
             </div>
-            <span>Marka ▼</span>
+            {renderCategoryFilters()}
+            <div>
+              <label htmlFor="titleFilter" style={{ fontWeight: 'bold' }}>Başlıq:</label>
+              <input
+                id="titleFilter"
+                type="text"
+                placeholder="Məhsul Başlığını Filtrə et"
+                value={filterTitle}
+                onChange={handleTitleChange}
+                style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
+              />
+            </div>
           </div>
         </div>
+
         <div className={style.CategoryProduct_simple}>
           <h2>Elanlar</h2>
-          {items.length > 0 ? (
+          {filteredItems.length > 0 ? (
             <div className={style.productsGrid}>
-              {items.map((item) => (
+              {filteredItems.map((item) => (
                 <div className={style.productCard} key={item.productId}>
-                  <Link to={`/product-details/${item.productId}`}>
+                  <Link to={`/product-details/${item.slug}`}>
                     <div className={style.productCard_imgBox}>
                       <img
                         src={item.coverImage}
@@ -181,26 +260,22 @@ const CategoryProduct = () => {
                           }}
                         />
                       )}
-                      <div className={style.productCard_imgBox_title}>
-                        <BsShop /> Mağaza
-                      </div>
                     </div>
-                    <div className={style.productCard_title}>
-                      <span className={style.productCard_title_price}>
-                        {item.price} AZN
-                      </span>
-                      <div className={style.productCard_title_dayBox}>
-                        <IoCalendarNumber /> {item.daysOnSale} Gün
-                      </div>
-                    </div>
-                    <p className={style.productCard_subTitle}>{item.productTitle}</p>
-                    <p className={style.productCard_text}>Şehir: {item.city}</p>
                   </Link>
+                  <div className={style.productCard_info}>
+                    <h3>{item.productTitle}</h3>
+                    <p className={style.productCard_info_price}>
+                      {item.price} AZN
+                    </p>
+                    <p className={style.productCard_info_category}>
+                      {item.categoryName}
+                    </p>
+                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <p>Elan Yoxdur</p>
+            <p>No products found</p>
           )}
         </div>
       </div>
@@ -208,4 +283,6 @@ const CategoryProduct = () => {
     </div>
   );
 };
+
+
 export default CategoryProduct;

@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import style from "./navbar.module.css";
 import { useTranslation } from "react-i18next"
-import CategoryModal from "../CategoryModal/CategoryModal";
+import CategoryModal from "../Category-Modal/CategoryModal";
 import HeaderFilterCard from "../headerFilterCard/HeaderFilterCard";
 
 const Navbar = () => {
