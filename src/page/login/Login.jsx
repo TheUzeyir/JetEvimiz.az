@@ -36,7 +36,7 @@ const Login = () => {
     if (data.userName && data.password) {
       try {
         const response = await axios.post(
-          "http://restartbaku-001-site3.htempurl.com/api/auth", 
+          "https://restartbaku-001-site3.htempurl.com/api/auth", 
           data,
           {
             headers: {

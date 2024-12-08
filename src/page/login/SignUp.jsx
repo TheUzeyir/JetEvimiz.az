@@ -48,7 +48,7 @@ const SignUp = () => {
     event.preventDefault();
 
     if (!Object.keys(errors).length) {
-      const apiUrl = "http://restartbaku-001-site3.htempurl.com/api/auth/user-register";
+      const apiUrl = "https://restartbaku-001-site3.htempurl.com/api/auth/user-register";
       const payload = {
         userName: data.name,
         userFirstName: data.firstName,
