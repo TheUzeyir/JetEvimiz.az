@@ -62,7 +62,8 @@ const ProfilePageWaiting = () => {
     };
   
     fetchData();
-  }, [statusType]);  
+  }, [statusType]);
+  
 
   return (
     <div className={style.profileCardBox}>
