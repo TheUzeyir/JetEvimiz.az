@@ -254,12 +254,6 @@
     height: -moz-max-content;
     height: max-content;
   }
-  .detailPage_main_head_right_humanName,
-  .detailPage_main_head_right_phone,
-  .detailPage_main_head_right_btn,
-  .detailPage_main_head_right_otherSale {
-    font-size: 10px;
-  }
   .detailPage_main_head_right_emptyBox {
     display: none;
   }

@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../../layout/footer/Footer";
 import Header from "../../layout/Header/Header";
-import { FaPhoneAlt, FaHeart, FaFlag } from "react-icons/fa";
+import { FaPhoneAlt, FaFlag,FaHeart } from "react-icons/fa";
+import { BsFillHeartFill } from "react-icons/bs";
 import { MdDiamond, MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import style from "./detailPage.module.css";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import ImageGallery from "react-image-gallery";
 import "react-image-gallery/styles/css/image-gallery.css";
+import { useDispatch, useSelector } from "react-redux";
+import { addLikedProduct } from "../../redux/likedSlice";
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
+  const likedProducts = useSelector(state => state.likedProducts.items); 
   const [product, setProduct] = useState({});
   const { slug } = useParams();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getProduct = async () => {
@@ -32,6 +37,30 @@ const DetailPage = () => {
     };
     getProduct();
   }, [slug]);
+
+  const toggleLiked = (productItem) => {
+    const savedUserName = localStorage.getItem("userName");
+    if (!savedUserName) {
+      navigate("/login");
+      return;
+    }
+
+    const isLiked = likedProducts.some(
+      (likedProduct) => likedProduct.productId === productItem.productId
+    );
+
+    dispatch(addLikedProduct(productItem));
+
+    let updatedLikedProducts;
+    if (isLiked) {
+      updatedLikedProducts = likedProducts.filter(
+        (likedProduct) => likedProduct.productId !== productItem.productId
+      );
+    } else {
+      updatedLikedProducts = [...likedProducts, productItem];
+    }
+    localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
+  };
 
   const toggleComplaintBox = () => {
     setOpenComplaintBox((prev) => !prev);
@@ -143,10 +172,35 @@ const DetailPage = () => {
               <p>Elanın nömrəsi: {product.productId || "2221"}</p>
               <p>Günlük icarəyə verilir.</p>
               <div className={style.detailPage_main_bottom_right_card}>
-                <p className={style.detailPage_main_bottom_right_card_title}>
-                  <FaHeart className={style.detailPage_main_bottom_right_card_title_icon} />{" "}
+              {likedProducts.some(
+                (likedProduct) => likedProduct.productId === product.productId
+              ) ? (
+                <p
+                  className={style.detailPage_main_bottom_right_card_title}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleLiked(product);
+                  }}
+                >
+                  <BsFillHeartFill
+                    className={style.detailPage_main_bottom_right_card_title_icon}
+                  />{" "}
+                  Bəyənilənlərdən sil
+                </p>
+              ) : (
+                <p
+                  className={style.detailPage_main_bottom_right_card_title}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleLiked(product);
+                  }}
+                >
+                  <FaHeart
+                    className={style.detailPage_main_bottom_right_card_title_icon}
+                  />{" "}
                   Bəyənilənlərə əlavə et
                 </p>
+              )}
                 <p
                   className={style.detailPage_main_bottom_right_card_subtitle}
                   onClick={toggleComplaintBox}
