@@ -15,7 +15,7 @@ const CategoryModal = ({ closeModal }) => {
     const fetchCategories = async () => {
       try {
         const response = await fetch(
-          'http://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=1'
+          'https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=1'
         );
         const result = await response.json();
         if (result.isSuccessful) {
@@ -36,7 +36,7 @@ const CategoryModal = ({ closeModal }) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `http://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`
+        `https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`
       );
       const result = await response.json();
   

@@ -24,7 +24,7 @@ const DetailPage = () => {
     const getProduct = async () => {
       try {
         const response = await fetch(
-          `http://restartbaku-001-site3.htempurl.com/api/Product/get-product?LanguageCode=az&Slug=${slug}`
+          `https://restartbaku-001-site3.htempurl.com/api/Product/get-product?LanguageCode=az&Slug=${slug}`
         );
         if (!response.ok) {
           throw new Error("Ürün bilgisi alınamadı.");

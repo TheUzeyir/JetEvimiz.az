@@ -20,7 +20,7 @@ const ProductCard = () => {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "http://restartbaku-001-site3.htempurl.com/api/Product/get-all-products"
+          "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products"
         );
         if (!response.ok) {
           throw new Error("Ürünler alınırken hata oluştu.");
