@@ -10,7 +10,6 @@ const ProfilePageWaiting = () => {
   const [products, setProducts] = useState([]);
   const [statusType, setStatusType] = useState(2);  // Set the initial statusType here (could be dynamically fetched)
 
-<<<<<<< HEAD
   const fetchData = async () => {
     try {
       // Retrieve the token (ensure it's stored somewhere like localStorage or sessionStorage)
@@ -37,7 +36,6 @@ const ProfilePageWaiting = () => {
       console.error('Error fetching products:', error);
     }
   };
-=======
   useEffect(() => {
     // Fetch data based on statusType
     const fetchData = async () => {
@@ -64,9 +62,7 @@ const ProfilePageWaiting = () => {
     };
   
     fetchData();
-  }, [statusType]);
->>>>>>> 45be8b4e14f6d9ccae013bb79d85db49faf50fbe
-  
+  }, [statusType]);  
 
   return (
     <div className={style.profileCardBox}>
