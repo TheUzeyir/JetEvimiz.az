@@ -104,7 +104,7 @@ const DetailPage = () => {
                   alt="Product"
                   className={style.detailPage_main_head_left_mainImgBox_img}
                 />
-              )}
+              )} 
             </div>
             <div className={style.detailPage_main_head_right}>
               <h4 className={style.detailPage_main_head_right_humanName}>

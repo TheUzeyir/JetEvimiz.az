@@ -4,7 +4,7 @@ import { FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import style from "./navbar.module.css";
-import { useTranslation } from "react-i18next"
+import { useTranslation } from "react-i18next";
 import CategoryModal from "../Category-Modal/CategoryModal";
 import HeaderFilterCard from "../headerFilterCard/HeaderFilterCard";
 
@@ -12,12 +12,12 @@ const Navbar = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [isFilterCardOpen, setFilterCardOpen] = useState(false);
-  const [input, setInput] = useState(""); 
-  const [filterData, setFilterData] = useState([]); 
+  const [input, setInput] = useState("");
+  const [filterData, setFilterData] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const {t}= useTranslation()
+  const { t } = useTranslation();
 
   const navigate = useNavigate();
   const cities = ["Bakı", "Gəncə", "Sumqayıt", "Şəki", "Lənkəran"];
@@ -53,7 +53,7 @@ const Navbar = () => {
     }
 
     axios
-      .get("http://restartbaku-001-site3.htempurl.com/api/Product/get-all-products")
+      .get("https://restartbaku-001-site3.htempurl.com/api/Product/search?additionalProp1=string&additionalProp2=string&additionalProp3=string")
       .then((response) => {
         console.log("API Response:", response.data);
 
@@ -77,8 +77,12 @@ const Navbar = () => {
         console.error("Error fetching products:", err);
         setError("Ürünler alınırken bir hata oluştu.");
       });
-  }, [input]); 
+  }, [input]);
 
+  const handleProductClick = (product) => {
+    navigate(`/product-details/${product.slug}`); 
+  };
+  
   return (
     <>
       <nav className={style.navbar}>
@@ -97,7 +101,7 @@ const Navbar = () => {
                   onChange={handleCityChange}
                   className={style.navBar_selectBox}
                 >
-                  <option value="">--{t('chooseCity')}--</option>
+                  <option value="">--{t("chooseCity")}--</option>
                   {cities.map((city, index) => (
                     <option key={index} value={city}>
                       {city}
@@ -105,11 +109,11 @@ const Navbar = () => {
                   ))}
                 </select>
                 <input
-                  placeholder={t('searchInput')}
+                  placeholder={t("searchInput")}
                   type="text"
                   className={style.searchInput}
                   value={input}
-                  onChange={(e) => setInput(e.target.value)} // input her değiştiğinde
+                  onChange={(e) => setInput(e.target.value)}
                 />
                 <button className={style.searchBtn}>
                   <IoSearchSharp className={style.icon} />
@@ -121,13 +125,13 @@ const Navbar = () => {
                 className={style.advertsBox_btn_new}
                 onClick={handleNewProductPageClick}
               >
-                <IoAddSharp /> {t('newAnnouncement')}
+                <IoAddSharp /> {t("newAnnouncement")}
               </button>
               <button
                 className={style.advertsBox_btn_filter}
                 onClick={toggleFilterCard}
               >
-                <IoFilter /> {t('filter')}
+                <IoFilter /> {t("filter")}
               </button>
             </div>
             <FaBars
@@ -146,11 +150,17 @@ const Navbar = () => {
         {filterData.length > 0 ? (
           <div>
             {filterData.map((item, index) => (
-              <p key={index}>{item.productTitle}</p> 
+              <p
+                key={index}
+                onClick={() => handleProductClick(item)}
+                style={{ cursor: "pointer" }} 
+              >
+                {item.productTitle}
+              </p>
             ))}
           </div>
         ) : (
-          <p>{t('searchInputResult')}.</p>
+          <p>{t("searchInputResult")}.</p>
         )}
       </div>
     </>
