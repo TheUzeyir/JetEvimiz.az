@@ -49,6 +49,11 @@ const DetailPage = () => {
     return !staticValues.includes(String(value)) && value !== null;
   };
 
+  const filterProductDetails = (key, value) => {
+    const hiddenKeys = ["id", "slug", "userCode", "productId"]; // Gizlədiləcək açarların siyahısı
+    return !hiddenKeys.includes(key) && isDynamicValue(key, value);
+  };
+
   return (
     <div className={style.detailPage}>
       <Header />
@@ -102,7 +107,7 @@ const DetailPage = () => {
                   return null;
                 }
                 return (
-                  isDynamicValue(key, value) && (
+                  filterProductDetails(key, value) && (
                     <div
                       className={style.detailPage_main_bottom_left_box}
                       key={key}

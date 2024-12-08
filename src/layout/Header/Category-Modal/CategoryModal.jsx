@@ -48,15 +48,15 @@ const CategoryModal = ({ closeModal }) => {
       const selectedCategory = category?.childCategories?.find((child) => child.categoryId === categoryId) || category;
   
       setSelectedCategory({
-        parentCategory: category, // Ana kategori
-        selectedSubCategory: selectedCategory // Alt kategori
+        parentCategory: category,
+        selectedSubCategory: selectedCategory 
       });
   
       navigate('/CategoryProduct', {
         state: {
           products: result.data,
           category: category,
-          selectedSubCategory: selectedCategory, // Alt kategori verisi
+          selectedSubCategory: selectedCategory, 
         },
       });
     } catch (error) {
