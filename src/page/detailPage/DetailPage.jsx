@@ -1,20 +1,19 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../../layout/footer/Footer";
 import Header from "../../layout/Header/Header";
-import { FaPhoneAlt, FaFlag,FaHeart } from "react-icons/fa";
+import { FaPhoneAlt, FaFlag, FaHeart } from "react-icons/fa";
 import { BsFillHeartFill } from "react-icons/bs";
 import { MdDiamond, MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import style from "./detailPage.module.css";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import ImageGallery from "react-image-gallery";
-// import "react-image-gallery/styles/css/image-gallery.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
-  const likedProducts = useSelector(state => state.likedProducts.items); 
+  const likedProducts = useSelector((state) => state.likedProducts.items);
   const [product, setProduct] = useState({});
   const { slug } = useParams();
   const navigate = useNavigate();
@@ -67,11 +66,10 @@ const DetailPage = () => {
   };
 
   const galleryItems =
-  product.productGalleries?.map((gallery) => ({
-    original: gallery.productGalleryFile,
-    thumbnail: gallery.productGalleryFile,
-  })) || [];
-
+    product.productGalleries?.map((gallery) => ({
+      original: gallery.productGalleryFile,
+      thumbnail: gallery.productGalleryFile,
+    })) || [];
 
   const isDynamicValue = (key, value) => {
     const staticValues = ["300", "1344", "mercedes"];
@@ -79,7 +77,7 @@ const DetailPage = () => {
   };
 
   const filterProductDetails = (key, value) => {
-    const hiddenKeys = ["id", "slug", "userCode", "productId"];
+    const hiddenKeys = ["id", "slug", "userCode", "productId", "coverImage"];
     return !hiddenKeys.includes(key) && isDynamicValue(key, value);
   };
 
@@ -93,20 +91,20 @@ const DetailPage = () => {
         <div className={style.detailPage_main}>
           <div className={style.detailPage_main_head}>
             <div className={style.detailPage_main_head_left}>
-            {product.productGalleries?.length > 0 ? (
-              <ImageGallery
-                items={galleryItems}
-                showThumbnails={true}
-                showFullscreenButton={true}
-                showPlayButton={false}
-              />
-            ) : (
-              <img
-                src={product.coverImage}
-                alt="Product"
-                className={style.detailPage_main_head_left_mainImgBox_img}
-              />
-            )}
+              {product.productGalleries?.length > 0 ? (
+                <ImageGallery
+                  items={galleryItems}
+                  showThumbnails={true}
+                  showFullscreenButton={true}
+                  showPlayButton={false}
+                />
+              ) : (
+                <img
+                  src={product.coverImage}
+                  alt="Product"
+                  className={style.detailPage_main_head_left_mainImgBox_img}
+                />
+              )}
             </div>
             <div className={style.detailPage_main_head_right}>
               <h4 className={style.detailPage_main_head_right_humanName}>
@@ -161,46 +159,49 @@ const DetailPage = () => {
 
               <h5>User Information</h5>
               {product.user &&
-                Object.entries(product.user).map(([key, value]) => (
-                  <div
-                    key={key}
-                    className={style.detailPage_main_bottom_left_box}
-                  >
-                    <span>{key}:</span> <span>{value || "N/A"}</span>
-                  </div>
-                ))}
+                Object.entries(product.user).map(([key, value]) => {
+                  if (key === "userCode") return null;
+                  return (
+                    <div
+                      key={key}
+                      className={style.detailPage_main_bottom_left_box}
+                    >
+                      <span>{key}:</span> <span>{value || "N/A"}</span>
+                    </div>
+                  );
+                })}
               <p>Elanın nömrəsi: {product.productId || "2221"}</p>
               <p>Günlük icarəyə verilir.</p>
               <div className={style.detailPage_main_bottom_right_card}>
-              {likedProducts.some(
-                (likedProduct) => likedProduct.productId === product.productId
-              ) ? (
-                <p
-                  className={style.detailPage_main_bottom_right_card_title}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleLiked(product);
-                  }}
-                >
-                  <BsFillHeartFill
-                    className={style.detailPage_main_bottom_right_card_title_icon}
-                  />{" "}
-                  Bəyənilənlərdən sil
-                </p>
-              ) : (
-                <p
-                  className={style.detailPage_main_bottom_right_card_title}
-                  onClick={(e) => {
-                    e.preventDefault();
-                    toggleLiked(product);
-                  }}
-                >
-                  <FaHeart
-                    className={style.detailPage_main_bottom_right_card_title_icon}
-                  />{" "}
-                  Bəyənilənlərə əlavə et
-                </p>
-              )}
+                {likedProducts.some(
+                  (likedProduct) => likedProduct.productId === product.productId
+                ) ? (
+                  <p
+                    className={style.detailPage_main_bottom_right_card_title}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleLiked(product);
+                    }}
+                  >
+                    <BsFillHeartFill
+                      className={style.detailPage_main_bottom_right_card_title_icon}
+                    />{" "}
+                    Bəyənilənlərdən sil
+                  </p>
+                ) : (
+                  <p
+                    className={style.detailPage_main_bottom_right_card_title}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleLiked(product);
+                    }}
+                  >
+                    <FaHeart
+                      className={style.detailPage_main_bottom_right_card_title_icon}
+                    />{" "}
+                    Bəyənilənlərə əlavə et
+                  </p>
+                )}
                 <p
                   className={style.detailPage_main_bottom_right_card_subtitle}
                   onClick={toggleComplaintBox}
