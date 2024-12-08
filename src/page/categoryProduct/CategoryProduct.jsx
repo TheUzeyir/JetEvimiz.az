@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from "react";
 import style from "./categoryProduct.module.scss";
-import { useLocation, useNavigate, Link } from 'react-router-dom';
+import { useLocation, useNavigate, Link } from "react-router-dom";
 import { BsFillHeartFill, BsShop } from "react-icons/bs";
 import { IoCalendarNumber } from "react-icons/io5";
 import { FaHeart } from "react-icons/fa6";
 import { addLikedProduct } from "../../redux/likedSlice";
 import { useDispatch } from "react-redux";
-import Navbar from '../../layout/Header/DesktopNavbar/Navbar';
+import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
 
 const CategoryProduct = () => {
@@ -19,8 +19,16 @@ const CategoryProduct = () => {
   const [maxPrice, setMaxPrice] = useState("");
   const [isVisible, setIsVisible] = useState(false);
   const [filterTitle, setFilterTitle] = useState("");
-  
-  const { products, category, selectedSubCategory } = location.state || { products: { items: [] }, category: null, selectedSubCategory: null };
+  const [parameters, setParameters] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [filterParams, setFilterParams] = useState({});
+
+  const { products, category, selectedSubCategory } = location.state || {
+    products: { items: [] },
+    category: null,
+    selectedSubCategory: null,
+  };
   const items = products.items || [];
 
   useEffect(() => {
@@ -29,6 +37,30 @@ const CategoryProduct = () => {
       setLikedProducts(JSON.parse(likedProductsFromStorage));
     }
   }, []);
+
+  useEffect(() => {
+    if (category && category.categoryId) {
+      const fetchParameters = async () => {
+        setLoading(true);
+        try {
+          const response = await fetch(
+            `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${category.categoryId}&RequestFrontType=add`
+          );
+          if (!response.ok) {
+            throw new Error("Failed to fetch parameters");
+          }
+          const data = await response.json();
+          setParameters(data.data);
+        } catch (err) {
+          setError(err.message);
+        } finally {
+          setLoading(false);
+        }
+      };
+
+      fetchParameters();
+    }
+  }, [category]);
 
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");
@@ -58,86 +90,120 @@ const CategoryProduct = () => {
   const handleMinPriceChange = (e) => setMinPrice(e.target.value);
   const handleMaxPriceChange = (e) => setMaxPrice(e.target.value);
   const handleTitleChange = (e) => setFilterTitle(e.target.value);
+  const handleFilterChange = (paramName, value) => {
+    setFilterParams((prevParams) => ({
+      ...prevParams,
+      [paramName]: value,
+    }));
+  };
+
   const toggleVisibility = () => setIsVisible((prev) => !prev);
 
   const filterProducts = () => {
     let filteredItems = items;
 
     if (minPrice) {
-      filteredItems = filteredItems.filter(item => item.price >= minPrice);
+      filteredItems = filteredItems.filter((item) => item.price >= minPrice);
     }
     if (maxPrice) {
-      filteredItems = filteredItems.filter(item => item.price <= maxPrice);
+      filteredItems = filteredItems.filter((item) => item.price <= maxPrice);
     }
 
     if (filterTitle) {
-      filteredItems = filteredItems.filter(item => item.productTitle.toLowerCase().includes(filterTitle.toLowerCase()));
+      filteredItems = filteredItems.filter((item) =>
+        item.productTitle.toLowerCase().includes(filterTitle.toLowerCase())
+      );
     }
+
+    // Apply custom filters based on parameters
+    Object.keys(filterParams).forEach((param) => {
+      const paramValue = filterParams[param];
+      if (paramValue) {
+        filteredItems = filteredItems.filter((item) =>
+          item[param] && item[param].toString().includes(paramValue)
+        );
+      }
+    });
 
     return filteredItems;
   };
 
   const renderCategoryFilters = () => {
-    if (!category) return null;
+    if (loading) return <p>Loading filters...</p>;
+    if (error) return <p>Error: {error}</p>;
 
-    if (category.categoryId === 1) { // Car category
-      return (
-        <>
-          <div>
-            <label htmlFor="brand" style={{ fontWeight: 'bold' }}>Marka:</label>
+    return parameters.map((param, index) => {
+      if (param.parametrTypeId === 1) {
+        return (
+          <div key={index}>
+            <label htmlFor={`param-${index}`} style={{ fontWeight: "bold" }}>
+              {param.name}:
+            </label>
             <input
-              id="brand"
+              id={`param-${index}`}
               type="text"
-              placeholder="Maşın markasını daxil edin"
-              onChange={(e) => console.log("Brand filter:", e.target.value)} // Handle brand filter logic
+              placeholder={`Daxil edin ${param.name}`}
+              onChange={(e) =>
+                handleFilterChange(param.name, e.target.value)
+              }
             />
           </div>
-          <div>
-            <label htmlFor="model" style={{ fontWeight: 'bold' }}>Model:</label>
+        );
+      } else if (param.parametrTypeId === 2) {
+        return (
+          <div key={index}>
+            <label htmlFor={`param-${index}`} style={{ fontWeight: "bold" }}>
+              {param.name}:
+            </label>
             <input
-              id="model"
-              type="text"
-              placeholder="Maşın modelini daxil edin"
-              onChange={(e) => console.log("Model filter:", e.target.value)} // Handle model filter logic
+              id={`param-${index}`}
+              type="number"
+              placeholder={`Daxil edin ${param.name}`}
+              onChange={(e) =>
+                handleFilterChange(param.name, e.target.value)
+              }
             />
           </div>
-        </>
-      );
-    }
-    
-    if (category.categoryId === 2) { // Mouse category
-      return (
-        <>
-          <div>
-            <label htmlFor="color" style={{ fontWeight: 'bold' }}>Rəng:</label>
-            <input
-              id="color"
-              type="text"
-              placeholder="Siçanın rəngini daxil edin"
-              onChange={(e) => console.log("Color filter:", e.target.value)} // Handle color filter logic
-            />
+        );
+      } else if (param.parametrTypeId === 3) {
+        return (
+          <div key={index}>
+            <label htmlFor={`param-${index}`} style={{ fontWeight: "bold" }}>
+              {param.name}:
+            </label>
+            <select
+              id={`param-${index}`}
+              onChange={(e) => handleFilterChange(param.name, e.target.value)}
+            >
+              <option value="">Seçin</option>
+              {param.options &&
+                param.options.map((option, i) => (
+                  <option key={i} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+            </select>
           </div>
-        </>
-      );
-    }
-
+        );
+      }
+      return null;
+    });
   };
 
   const filteredItems = filterProducts();
-  const filteredCategory = category?.childCategories || [];
 
   return (
     <div className={style.CategoryProduct_container}>
       <Navbar />
-      <img src="https://img.freepik.com/free-vector/gradient-sale-background_52683-62895.jpg" alt="" className={style.m} />
+      <img
+        src="https://img.freepik.com/free-vector/gradient-sale-background_52683-62895.jpg"
+        alt=""
+        className={style.m}
+      />
       <div className="container">
         <div className={style.CategoryProduct_header}>
           <div>
-            {category ? (
-              <></>
-            ) : (
-              <p>Kategori Seçilmedi</p>
-            )}
+            {category ? <></> : <p>Kategori Seçilmedi</p>}
           </div>
           <p>Elan-({filteredItems.length})</p>
           <div className={style.CategoryProduct_filterBox}>
@@ -166,14 +232,20 @@ const CategoryProduct = () => {
             </div>
             {renderCategoryFilters()}
             <div>
-              <label htmlFor="titleFilter" style={{ fontWeight: 'bold' }}>Başlıq:</label>
+              <label htmlFor="titleFilter" style={{ fontWeight: "bold" }}>
+                Başlıq:
+              </label>
               <input
                 id="titleFilter"
                 type="text"
                 placeholder="Məhsul Başlığını Filtrə et"
                 value={filterTitle}
                 onChange={handleTitleChange}
-                style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
+                style={{
+                  padding: "5px",
+                  borderRadius: "5px",
+                  border: "1px solid #ccc",
+                }}
               />
             </div>
           </div>
@@ -193,7 +265,8 @@ const CategoryProduct = () => {
                         className={style.productCard_imgBox_img}
                       />
                       {likedProducts.some(
-                        (likedProduct) => likedProduct.productId === item.productId
+                        (likedProduct) =>
+                          likedProduct.productId === item.productId
                       ) ? (
                         <BsFillHeartFill
                           className={style.productCard_imgBox_heartIcon_check}
@@ -234,6 +307,5 @@ const CategoryProduct = () => {
     </div>
   );
 };
-
 
 export default CategoryProduct;
