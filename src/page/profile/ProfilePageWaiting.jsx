@@ -10,6 +10,7 @@ const ProfilePageWaiting = () => {
   const [products, setProducts] = useState([]);
   const [statusType, setStatusType] = useState(2);  // Set the initial statusType here (could be dynamically fetched)
 
+<<<<<<< HEAD
   const fetchData = async () => {
     try {
       // Retrieve the token (ensure it's stored somewhere like localStorage or sessionStorage)
@@ -36,6 +37,35 @@ const ProfilePageWaiting = () => {
       console.error('Error fetching products:', error);
     }
   };
+=======
+  useEffect(() => {
+    // Fetch data based on statusType
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("authToken"); // Token'i localStorage'dan alın
+        const response = await fetch(
+          `https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`, // Token'i Authorization başlığına əlavə edin
+            },
+          }
+        );
+  
+        const data = await response.json();
+        if (statusType === 1) {
+          setProducts(data); // Store the data only if statusType is 1
+        }
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+  
+    fetchData();
+  }, [statusType]);
+>>>>>>> 45be8b4e14f6d9ccae013bb79d85db49faf50fbe
   
 
   return (
