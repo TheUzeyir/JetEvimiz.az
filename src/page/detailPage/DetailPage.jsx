@@ -6,11 +6,12 @@ import { MdDiamond, MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useNavigate, useParams } from "react-router-dom";
 import style from "./detailPage.module.css";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
+import ImageGallery from "react-image-gallery";
+import "react-image-gallery/styles/css/image-gallery.css";
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
   const [product, setProduct] = useState({});
-  const [mainImage, setMainImage] = useState(null);
   const { slug } = useParams();
   const navigate = useNavigate();
 
@@ -25,7 +26,6 @@ const DetailPage = () => {
         }
         const result = await response.json();
         setProduct(result.data || {});
-        setMainImage(result.data.coverImage || null);
       } catch (error) {
         console.error(error.message);
       }
@@ -33,16 +33,19 @@ const DetailPage = () => {
     getProduct();
   }, [slug]);
 
-  const handleImageClick = (newImage) => {
-    setMainImage(newImage);
-  };
-
   const toggleComplaintBox = () => {
     setOpenComplaintBox((prev) => !prev);
   };
 
+  const galleryItems =
+  product.productGalleries?.map((gallery) => ({
+    original: gallery.productGalleryFile,
+    thumbnail: gallery.productGalleryFile,
+  })) || [];
+
+
   const isDynamicValue = (key, value) => {
-    const staticValues = ["300", "1344", "mercedes"]; // Təkrarlanan dəyərlər
+    const staticValues = ["300", "1344", "mercedes"];
     return !staticValues.includes(String(value)) && value !== null;
   };
 
@@ -56,25 +59,20 @@ const DetailPage = () => {
         <div className={style.detailPage_main}>
           <div className={style.detailPage_main_head}>
             <div className={style.detailPage_main_head_left}>
-              <div className={style.detailPage_main_head_left_mainImgBox}>
-                <img
-                  src={mainImage || product.coverImage}
-                  alt="Product"
-                  className={style.detailPage_main_head_left_mainImgBox_img}
-                />
-              </div>
-              <div className={style.detailPage_main_head_left_slideImgBox}>
-                {product.productGalleries &&
-                  product.productGalleries.map((gallery, index) => (
-                    <img
-                      key={index}
-                      src={gallery.productGalleryFile}
-                      alt={`Slide ${index + 1}`}
-                      className={style.detailPage_main_head_left_slideImgBox_img}
-                      onClick={() => handleImageClick(gallery.productGalleryFile)}
-                    />
-                  ))}
-              </div>
+            {product.productGalleries?.length > 0 ? (
+              <ImageGallery
+                items={galleryItems}
+                showThumbnails={true}
+                showFullscreenButton={true}
+                showPlayButton={false}
+              />
+            ) : (
+              <img
+                src={product.coverImage}
+                alt="Product"
+                className={style.detailPage_main_head_left_mainImgBox_img}
+              />
+            )}
             </div>
             <div className={style.detailPage_main_head_right}>
               <h4 className={style.detailPage_main_head_right_humanName}>

@@ -90,6 +90,10 @@ li{
     color: #2A2036;
   }
 
+  .image-gallery-thumbnails-wrapper{
+    display: none;
+  }
+
   @media screen and (max-width:968px) {
     .container{
       width: 94%;
