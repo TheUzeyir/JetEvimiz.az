@@ -253,6 +253,7 @@
     align-items: center;
     height: -moz-max-content;
     height: max-content;
+    margin-top: 100px;
   }
   .detailPage_main_head_right_emptyBox {
     display: none;

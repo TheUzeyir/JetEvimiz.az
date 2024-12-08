@@ -8,7 +8,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import style from "./detailPage.module.css";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
+// import "react-image-gallery/styles/css/image-gallery.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
 
@@ -79,7 +79,7 @@ const DetailPage = () => {
   };
 
   const filterProductDetails = (key, value) => {
-    const hiddenKeys = ["id", "slug", "userCode", "productId"]; // Gizlədiləcək açarların siyahısı
+    const hiddenKeys = ["id", "slug", "userCode", "productId"];
     return !hiddenKeys.includes(key) && isDynamicValue(key, value);
   };
 

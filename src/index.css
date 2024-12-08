@@ -89,14 +89,41 @@ li{
     .swiper-button-prev {
     color: #2A2036;
   }
-
-  .image-gallery-thumbnails-wrapper{
-    display: none;
+  
+  .image-gallery{
+    position: relative;
+    width: 100%;
   }
   
+  .image-gallery-image{
+    all: unset;
+    height: 550px;
+    width: 100%;
+  }
+  .image-gallery-svg{
+    all: unset;
+    height: 550px;
+    width: 100%;
+  }
+  .image-gallery-icon{
+    height: 550px;
+    position: absolute;
+    width: 100%;
+    top: 0;
+    opacity: 0;
+  }
+
+  .image-gallery-thumbnails-wrapper{
+    display: none;  
+  }
+
 
   @media screen and (max-width:968px) {
     .container{
       width: 94%;
+  }
+
+  .image-gallery-image{
+    height: 500px;
   }
   }
