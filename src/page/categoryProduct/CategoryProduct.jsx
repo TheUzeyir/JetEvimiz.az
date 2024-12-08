@@ -60,11 +60,9 @@ const CategoryProduct = () => {
   const handleTitleChange = (e) => setFilterTitle(e.target.value);
   const toggleVisibility = () => setIsVisible((prev) => !prev);
 
-  // Dynamically filter products based on criteria
   const filterProducts = () => {
     let filteredItems = items;
 
-    // Filter by price
     if (minPrice) {
       filteredItems = filteredItems.filter(item => item.price >= minPrice);
     }
@@ -72,7 +70,6 @@ const CategoryProduct = () => {
       filteredItems = filteredItems.filter(item => item.price <= maxPrice);
     }
 
-    // Filter by title (product name)
     if (filterTitle) {
       filteredItems = filteredItems.filter(item => item.productTitle.toLowerCase().includes(filterTitle.toLowerCase()));
     }
@@ -80,7 +77,6 @@ const CategoryProduct = () => {
     return filteredItems;
   };
 
-  // Dynamically render filters based on the category
   const renderCategoryFilters = () => {
     if (!category) return null;
 
@@ -125,12 +121,9 @@ const CategoryProduct = () => {
       );
     }
 
-    // Additional categories can be added here...
   };
 
   const filteredItems = filterProducts();
-
-  // Fixing the error related to filteredCategory
   const filteredCategory = category?.childCategories || [];
 
   return (
@@ -141,49 +134,7 @@ const CategoryProduct = () => {
         <div className={style.CategoryProduct_header}>
           <div>
             {category ? (
-              <>
-                {/* 
-                  Buradakı "categoryTitle", "categoryImage", "Seçili Alt Kategori" göstərilməsini istəmirsiniz, 
-                  ona görə aşağıdakı hissələri şərh etmişik:
-                */}
-                {/* <h3>Ana Kategori:</h3> */}
-                {/* {Object.entries(category)
-                  .filter(([key, value]) => key !== 'categoryId' && (typeof value === 'string' || typeof value === 'number'))
-                  .map(([key, value]) => (
-                    <div key={key} style={{ marginBottom: '10px' }}>
-                      <label htmlFor={key} style={{ marginRight: '10px', fontWeight: 'bold' }}>
-                        {key}:
-                      </label>
-                      <input
-                        id={key}
-                        type={typeof value === 'number' ? 'number' : 'text'}
-                        defaultValue={value}
-                        style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
-                      />
-                    </div>
-                  ))} */}
-                {/* {category.childCategories && category.childCategories.length > 0 && (
-                  <>
-                    <h3>Seçili Alt Kategori:</h3>
-                    {filteredCategory.map((childCategory, index) => (
-                      <div key={index} style={{ marginBottom: '10px' }}>
-                        <label
-                          htmlFor={`child-${index}`}
-                          style={{ marginRight: '10px', fontWeight: 'bold' }}
-                        >
-                          {childCategory.name}:
-                        </label>
-                        <input
-                          id={`child-${index}`}
-                          type="text"
-                          defaultValue={childCategory.value}
-                          style={{ padding: '5px', borderRadius: '5px', border: '1px solid #ccc' }}
-                        />
-                      </div>
-                    ))}
-                  </>
-                )} */}
-              </>
+              <></>
             ) : (
               <p>Kategori Seçilmedi</p>
             )}
