@@ -6,10 +6,12 @@ import 'swiper/css/navigation';
 import "./headerSlider.css"
 import { Navigation } from 'swiper/modules';
 import { FaCar } from "react-icons/fa";
-import { PiBuildingApartmentFill } from "react-icons/pi";
 import { GiClothes } from "react-icons/gi";
 import { MdOutlineElectricalServices } from "react-icons/md";
 import { FaBook } from "react-icons/fa6";
+import { FcDepartment } from "react-icons/fc";
+import { FaBusinessTime } from "react-icons/fa";
+import { IoPhonePortrait } from "react-icons/io5";
 
 export default function HeaderSliders() {
   return (
@@ -46,43 +48,31 @@ export default function HeaderSliders() {
         >
           <SwiperSlide className='headerSliderBox'>
               <FaCar/>
-              <h4 className='headerSliderBoxText'>Car</h4>
+              <h4 className='headerSliderBoxText'>Nəqliyyat</h4>
           </SwiperSlide>
           <SwiperSlide className='headerSliderBox'>
               <FaBook/>
-              <h4 className='headerSliderBoxText'>Book</h4>
+              <h4 className='headerSliderBoxText'>Hobbi və asudə</h4>
           </SwiperSlide>
           <SwiperSlide className='headerSliderBox'>
-              <PiBuildingApartmentFill/>
-              <h4 className='headerSliderBoxText'>Apartment</h4>
-          </SwiperSlide>
-          <SwiperSlide className='headerSliderBox'>
-              <GiClothes/>
-              <h4 className='headerSliderBoxText'>Clothes</h4>
-          </SwiperSlide>
-          <SwiperSlide className='headerSliderBox'>
-              <MdOutlineElectricalServices/>
-              <h4 className='headerSliderBoxText'>Electronitc</h4>
-          </SwiperSlide>
-          <SwiperSlide className='headerSliderBox'>
-              <FaCar/>
-              <h4 className='headerSliderBoxText'>Car</h4>
-          </SwiperSlide>
-          <SwiperSlide className='headerSliderBox'>
-              <FaBook/>
-              <h4 className='headerSliderBoxText'>Book</h4>
-          </SwiperSlide>
-          <SwiperSlide className='headerSliderBox'>
-              <PiBuildingApartmentFill/>
-              <h4 className='headerSliderBoxText'>Apartment</h4>
+              <FcDepartment/>
+              <h4 className='headerSliderBoxText'>Daşınmaz əmlak</h4>
           </SwiperSlide>
           <SwiperSlide className='headerSliderBox'>
               <GiClothes/>
-              <h4 className='headerSliderBoxText'>Clothes</h4>
+              <h4 className='headerSliderBoxText'>Şəxsi əşyalar</h4>
           </SwiperSlide>
           <SwiperSlide className='headerSliderBox'>
               <MdOutlineElectricalServices/>
-              <h4 className='headerSliderBoxText'>Electronitc</h4>
+              <h4 className='headerSliderBoxText'>Elektronika</h4>
+          </SwiperSlide>
+          <SwiperSlide className='headerSliderBox'>
+              <FaBusinessTime/>
+              <h4 className='headerSliderBoxText'>Xidmətlər və biznes</h4>
+          </SwiperSlide>
+          <SwiperSlide className='headerSliderBox'>
+              <IoPhonePortrait/>
+              <h4 className='headerSliderBoxText'>Telefonlar</h4>
           </SwiperSlide>
         </Swiper>
     </div>

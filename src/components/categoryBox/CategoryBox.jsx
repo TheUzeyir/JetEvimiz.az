@@ -12,7 +12,6 @@ const CategoryBox = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  // Kategorileri API'den çekme
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -61,7 +60,6 @@ const CategoryBox = () => {
     }
   };
 
-  // Kategoriyi genişletmek için
   const toggleCategory = (index) => {
     setActiveCategory(activeCategory === index ? null : index);
   };

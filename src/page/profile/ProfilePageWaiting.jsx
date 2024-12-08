@@ -8,18 +8,16 @@ const ProfilePageWaiting = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
-  const [statusType, setStatusType] = useState(2);  // Set the initial statusType here (could be dynamically fetched)
+  const [statusType, setStatusType] = useState(2); 
 
   const fetchData = async () => {
     try {
-      // Retrieve the token (ensure it's stored somewhere like localStorage or sessionStorage)
-      const token = localStorage.getItem('token'); // Or sessionStorage.getItem('token')
+      const token = localStorage.getItem('token');
   
-      // Fetch data with the Authorization header
       const response = await fetch(`https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`, {
         method: 'GET',
         headers: {
-          'Authorization': `Bearer ${token}`,  // Adding token in the Authorization header
+          'Authorization': `Bearer ${token}`, 
           'Content-Type': 'application/json'
         }
       });
@@ -30,31 +28,30 @@ const ProfilePageWaiting = () => {
   
       const data = await response.json();
       if (statusType === 2) {
-        setProducts(data);  // Store the data only if statusType is 1
+        setProducts(data); 
       }
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
   useEffect(() => {
-    // Fetch data based on statusType
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("authToken"); // Token'i localStorage'dan alın
+        const token = localStorage.getItem("authToken"); 
         const response = await fetch(
           `https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, // Token'i Authorization başlığına əlavə edin
+              Authorization: `Bearer ${token}`, 
             },
           }
         );
   
         const data = await response.json();
         if (statusType === 1) {
-          setProducts(data); // Store the data only if statusType is 1
+          setProducts(data);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
