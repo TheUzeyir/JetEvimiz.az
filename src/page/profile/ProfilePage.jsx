@@ -54,22 +54,22 @@ const ProfilePage = () => {
                 >
                 {useTranslation().t("profileCardCurrenrtText")}-0
                 </span>          
-                <span
+                {/* <span
                 className={`${style.aboutPage_head_title} ${
                     activeSection === "expired" ? style.aboutPage_head_title_active : ""
                 }`}
                 onClick={() => setActiveSection("expired")} 
                 >
                 {useTranslation().t("profileCardExpiredText")}-0
-                </span>
-                <span
+                </span> */}
+                {/* <span
                 className={`${style.aboutPage_head_title} ${
                     activeSection === "unpublished" ? style.aboutPage_head_title_active : ""
                 }`}
                 onClick={() => setActiveSection("unpublished")} 
                 >
                 {useTranslation().t("profileCardNotUnpublishedText")}-0
-                </span>
+                </span> */}
                 <span
                 className={`${style.aboutPage_head_title} ${
                     activeSection === "waiting" ? style.aboutPage_head_title_active : ""

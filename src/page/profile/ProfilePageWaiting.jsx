@@ -10,22 +10,33 @@ const ProfilePageWaiting = () => {
   const [products, setProducts] = useState([]);
   const [statusType, setStatusType] = useState(2);  // Set the initial statusType here (could be dynamically fetched)
 
-  useEffect(() => {
-    // Fetch data based on statusType
-    const fetchData = async () => {
-      try {
-        const response = await fetch(`https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`);
-        const data = await response.json();
-        if (statusType === 1) {
-          setProducts(data);  // Store the data only if statusType is 1
+  const fetchData = async () => {
+    try {
+      // Retrieve the token (ensure it's stored somewhere like localStorage or sessionStorage)
+      const token = localStorage.getItem('token'); // Or sessionStorage.getItem('token')
+  
+      // Fetch data with the Authorization header
+      const response = await fetch(`https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`, {
+        method: 'GET',
+        headers: {
+          'Authorization': `Bearer ${token}`,  // Adding token in the Authorization header
+          'Content-Type': 'application/json'
         }
-      } catch (error) {
-        console.error('Error fetching products:', error);
+      });
+  
+      if (!response.ok) { 
+        throw new Error('Failed to fetch');
       }
-    };
-
-    fetchData();
-  }, [statusType]);
+  
+      const data = await response.json();
+      if (statusType === 2) {
+        setProducts(data);  // Store the data only if statusType is 1
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
+  
 
   return (
     <div className={style.profileCardBox}>
