@@ -14,8 +14,6 @@ const Navbar = () => {
   const [isFilterCardOpen, setFilterCardOpen] = useState(false);
   const [input, setInput] = useState("");
   const [filterData, setFilterData] = useState([]);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { t } = useTranslation();
 
@@ -31,20 +29,8 @@ const Navbar = () => {
   const toggleFilterCard = () => setFilterCardOpen((prev) => !prev);
 
   const handleNewProductPageClick = () => {
-    if (user) {
-      navigate("/yeniElan");
-    } else {
-      navigate("/login");
-    }
+    navigate("/yeniElan");
   };
-
-  useEffect(() => {
-    const savedUserName = localStorage.getItem("userName");
-    if (savedUserName) {
-      setUser({ username: savedUserName });
-    }
-    setLoading(false);
-  }, []);
 
   useEffect(() => {
     if (input.trim() === "") {
@@ -52,19 +38,42 @@ const Navbar = () => {
       return;
     }
 
+    // Fetch products and categories
     const fetchProducts = axios.get(
       "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az"
     );
+    const fetchCategories = axios.get(
+      "https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az"
+    );
 
-    Promise.all([fetchProducts])
-      .then(([productResponse]) => {
+    Promise.all([fetchProducts, fetchCategories])
+      .then(([productResponse, categoryResponse]) => {
         const productData = productResponse.data.data.items || [];
+        const categoryData = categoryResponse.data.data || [];
 
+        // Log the raw product and category data
+        console.log("Fetched Products:", productData);
+        console.log("Fetched Categories:", categoryData);
+
+        // Filter products based on search input
         const filteredProducts = productData.filter((item) =>
           item.productTitle?.toLowerCase().includes(input.toLowerCase())
         );
 
-        setFilterData(filteredProducts);
+        // Filter categories based on search input
+        const filteredCategories = categoryData.filter((item) =>
+          item.categoryTitle?.toLowerCase().includes(input.toLowerCase())
+        );
+
+        // Log the filtered results
+        console.log("Filtered Products:", filteredProducts);
+        console.log("Filtered Categories:", filteredCategories);
+
+        // Combine both filtered products and categories
+        setFilterData([...filteredProducts, ...filteredCategories]);
+
+        // Log the final combined data
+        console.log("Combined Filtered Data:", [...filteredProducts, ...filteredCategories]);
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
@@ -72,9 +81,14 @@ const Navbar = () => {
       });
   }, [input]);
 
-  const handleItemClick = (item) => {
-    navigate("/searchResult", { state: { filteredProducts: filterData } });
-  };
+const handleItemClick = (item) => {
+  const stateData = item.productTitle
+    ? { products: { items: [item] } } // If it's a product, send as products
+    : { category: { categoryId: item.id, categoryName: item.categoryTitle } }; // If it's a category, send as category
+
+  navigate("/categoryProduct", { state: stateData });
+};
+
 
   return (
     <>
@@ -148,7 +162,7 @@ const Navbar = () => {
                 onClick={() => handleItemClick(item)}
                 style={{ cursor: "pointer" }}
               >
-                {item.productTitle}
+                {item.productTitle || item.categoryTitle}
               </p>
             ))}
           </div>
