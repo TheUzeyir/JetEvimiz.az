@@ -7,9 +7,9 @@ import { IoCalendarNumber } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
-import Footer from "../../layout/footer/Footer"
-import FooterResponsive from "../../layout/footer_responsive/FooterResponsive"
-import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop"
+import Footer from "../../layout/footer/Footer";
+import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
+import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
 
 const SearchResult = () => {
   const location = useLocation();
@@ -39,16 +39,7 @@ const SearchResult = () => {
       return;
     }
 
-    const isLiked = likedProducts.some(
-      (likedProduct) => likedProduct.productId === productItem.productId
-    );
-
     dispatch(addLikedProduct(productItem));
-  };
-
-  const handleCategoryClick = (category) => {
-    // Navigate to the child category details page or show the category's products
-    console.log("Category clicked:", category);
   };
 
   return (
@@ -57,24 +48,43 @@ const SearchResult = () => {
       <Navbar />
       <div className="container">
         <h2>Axtarış Nəticələri</h2>
+        <div className={style.categorySection_container}>
+  {categoryData && (
+    <>
+      <h3>{categoryData.categoryTitle}</h3>
+      {categoryData.childCategories && categoryData.childCategories.length > 0 && (
+        <div className={style.categorySection}>
+          {categoryData.childCategories.map((child) => (
+            <div key={child.categoryId} className={style.categoryItem}>
+              <Link to={`/category-details/${child.slug}`}>
+                <div className={style.productCard}>
+                  <div className={style.productCard_imgBox}>
+                    <img
+                      src={child.categoryImage}
+                      alt={child.categoryTitle}
+                      className={style.productCard_imgBox_img}
+                    />
+                  </div>
+                  <div className={style.productCard_title}>
+                    <span className={style.productCard_title_price}>
+                      {child.count} AZN
+                    </span>
+                    <div className={style.productCard_title_dayBox}>
+                      <IoCalendarNumber /> 1 Gün
+                    </div>
+                  </div>
+                  <p className={style.productCard_subTitle}>{child.categoryTitle}</p>
+                  <p className={style.productCard_text}>Şəhər: {child.city}</p>
+                </div>
+              </Link>
+            </div>
+          ))}
+        </div>
+      )}
+    </>
+  )}
+</div>
 
-        {/* Display Category Data if available */}
-        {categoryData && (
-          <div className={style.categorySection}>
-            <h3>{categoryData.categoryTitle}</h3>
-            {categoryData.childCategories && categoryData.childCategories.length > 0 && (
-              <ul>
-                {categoryData.childCategories.map((child, idx) => (
-                  <li key={idx} onClick={() => handleCategoryClick(child)} style={{ cursor: "pointer" }}>
-                    {child.categoryTitle}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
-        )}
-
-        {/* Display Filtered Products */}
         <div className={style.productCard_container}>
           {products.length ? (
             products.map((item) => (
