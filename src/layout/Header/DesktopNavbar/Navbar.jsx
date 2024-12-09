@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { IoSearchSharp, IoAddSharp, IoFilter } from "react-icons/io5";
-import { FaBars } from "react-icons/fa";
+import { IoSearchSharp, IoAddSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import style from "./navbar.module.css";
@@ -12,6 +11,7 @@ const Navbar = () => {
   const [filterData, setFilterData] = useState([]);
   const [user, setUser] = useState(null);
   const [error, setError] = useState("");
+  const [expandedCategoryId, setExpandedCategoryId] = useState(null); // State for managing expanded categories
   const { t } = useTranslation();
   const navigate = useNavigate();
   const cities = ["Bakı", "Gəncə", "Sumqayıt", "Şəki", "Lənkəran"];
@@ -53,10 +53,18 @@ const Navbar = () => {
           category.categoryTitle?.toLowerCase().includes(input.toLowerCase())
         );
 
-        setFilterData([
+        const allFilteredData = [
           ...filteredProducts.map((product) => ({ ...product, type: "product" })),
-          ...filteredCategories.map((category) => ({ ...category, type: "category" })),
-        ]);
+          ...filteredCategories.map((category) => ({
+            ...category,
+            type: "category",
+            hasChildren: category.childCategories && category.childCategories.length > 0,
+          })),
+        ];
+
+        console.log("Filtered Data:", allFilteredData); // Log the filtered data
+
+        setFilterData(allFilteredData);
       })
       .catch(() => {
         setError("Veriler alınırken bir hata oluştu.");
@@ -64,8 +72,15 @@ const Navbar = () => {
   }, [input]);
 
   const handleItemClick = (item) => {
-    navigate("/searchResult", { state: { filteredProducts: filterData } });
+    if (item.type === "category" && item.hasChildren) {
+      // Navigate to search result page with parent and child categories
+      navigate("/searchResult", { state: { categoryData: item } });
+    } else {
+      // For product or individual category click, navigate to the search results page
+      navigate("/searchResult", { state: { filteredProducts: filterData } });
+    }
   };
+  
 
   return (
     <>
@@ -114,15 +129,37 @@ const Navbar = () => {
         {filterData.length > 0 ? (
           <div>
             {filterData.map((item, index) => (
-              <p
-                key={index}
-                onClick={() => handleItemClick(item)}
-                style={{ cursor: "pointer" }}
-              >
-                {item.type === "product"
-                  ? item.productTitle
-                  : item.categoryTitle}
-              </p>
+              <div key={index}>
+                {item.type === "category" ? (
+                  <div>
+                    <p
+                      onClick={() => handleItemClick(item)}
+                      style={{ cursor: "pointer", fontWeight: "bold" }}
+                    >
+                      {item.categoryTitle}
+                    </p>
+                    {/* Render child categories if the parent is clicked */}
+                    {expandedCategoryId === item.categoryId &&
+                      item.childCategories &&
+                      item.childCategories.length > 0 && (
+                        <ul>
+                          {item.childCategories.map((child, idx) => (
+                            <li key={idx} onClick={() => handleItemClick(child)}>
+                              {child.categoryTitle}
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                  </div>
+                ) : (
+                  <p
+                    onClick={() => handleItemClick(item)}
+                    style={{ cursor: "pointer" }}
+                  >
+                    {item.productTitle}
+                  </p>
+                )}
+              </div>
             ))}
           </div>
         ) : (
