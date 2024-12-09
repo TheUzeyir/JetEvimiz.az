@@ -6,6 +6,10 @@ import { BsFillHeartFill, BsShop } from "react-icons/bs";
 import { IoCalendarNumber } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
+import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
+import Footer from "../../layout/footer/Footer"
+import FooterResponsive from "../../layout/footer_responsive/FooterResponsive"
+import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop"
 
 const SearchResult = () => {
   const location = useLocation();
@@ -36,61 +40,65 @@ const SearchResult = () => {
   };
 
   return (
+    <div className={style.searchResultContainer}>
+      <HeaderTop/>
+      <Navbar/>
     <div className="container">
       <h2>Axtarış Nəticələri</h2>
-      <div className={style.searchResult_container}>
+      <div className={style.productCard_container}>
         {products.length ? (
           products.map((item) => (
-            <div className={style.searchResult_card} key={item.productId}>
-              <Link to={`/product-details/${item.slug}`}>
-                <div className={style.searchResult_imgBox}>
-                  <img
-                    src={item.coverImage}
-                    alt={item.productTitle}
-                    className={style.searchResult_img}
+            <div className={style.productCard} key={item.productId}>
+            <Link to={`/product-details/${item.slug}`}>
+              <div className={style.productCard_imgBox}>
+                <img
+                  src={item.coverImage}
+                  alt={item.productTitle}
+                  className={style.productCard_imgBox_img}
+                />
+                {likedProducts.some(
+                  (likedProduct) => likedProduct.productId === item.productId
+                ) ? (
+                  <BsFillHeartFill
+                    className={style.productCard_imgBox_heartIcon_check}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleLiked(item);
+                    }}
                   />
-                  {likedProducts.some(
-                    (likedProduct) => likedProduct.productId === item.productId
-                  ) ? (
-                    <BsFillHeartFill
-                      className={style.searchResult_heartIcon_check}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleLiked(item);
-                      }}
-                    />
-                  ) : (
-                    <FaHeart
-                      className={style.searchResult_heartIcon}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleLiked(item);
-                      }}
-                    />
-                  )}
-                  <div className={style.searchResult_imgBox_title}>
-                    <BsShop /> Mağaza
-                  </div>
+                ) : (
+                  <FaHeart
+                    className={style.productCard_imgBox_heartIcon}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleLiked(item);
+                    }}
+                  />
+                )}
+                <div className={style.productCard_imgBox_title}>
+                  <BsShop /> Mağaza
                 </div>
-                <div className={style.searchResult_title}>
-                  <span className={style.searchResult_price}>
-                    {item.price} AZN
-                  </span>
-                  <div className={style.searchResult_dayBox}>
-                    <IoCalendarNumber /> 1 Gün
-                  </div>
+              </div>
+              <div className={style.productCard_title}>
+                <span className={style.productCard_title_price}>
+                  {item.price} AZN
+                </span>
+                <div className={style.productCard_title_dayBox}>
+                  <IoCalendarNumber /> 1 Gün
                 </div>
-                <p className={style.searchResult_subTitle}>
-                  {item.productTitle}
-                </p>
-                <p className={style.searchResult_text}>Şəhər: {item.city}</p>
-              </Link>
-            </div>
+              </div>
+              <p className={style.productCard_subTitle}>{item.productTitle}</p>
+              <p className={style.productCard_text}>Şəhər: {item.city}</p>
+            </Link>
+          </div>
           ))
         ) : (
           <p>Nəticə tapılmadı.</p>
         )}
       </div>
+    </div>
+    <FooterResponsive/>
+    <Footer/>
     </div>
   );
 };

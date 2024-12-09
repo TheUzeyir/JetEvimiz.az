@@ -46,31 +46,82 @@ const Navbar = () => {
     setLoading(false);
   }, []);
 
-  useEffect(() => {
-    if (input.trim() === "") {
-      setFilterData([]);
-      return;
-    }
+  const filterNestedCategories = (categories, searchTerm) => {
+    const filtered = categories
+      .map((category) => {
+        const isMatch = category.categoryTitle
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
-    const fetchProducts = axios.get(
-      "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az"
-    );
-
-    Promise.all([fetchProducts])
-      .then(([productResponse]) => {
-        const productData = productResponse.data.data.items || [];
-
-        const filteredProducts = productData.filter((item) =>
-          item.productTitle?.toLowerCase().includes(input.toLowerCase())
+        const filteredChildren = filterNestedCategories(
+          category.childCategories || [],
+          searchTerm
         );
 
-        setFilterData(filteredProducts);
+        if (isMatch || filteredChildren.length > 0) {
+          return {
+            ...category,
+            childCategories: filteredChildren,
+          };
+        }
+
+        return null;
       })
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-        setError("Veriler alınırken bir hata oluştu.");
-      });
-  }, [input]);
+      .filter((item) => item !== null);
+
+    return filtered;
+  };
+
+useEffect(() => {
+  if (input.trim() === "") {
+    setFilterData([]);
+    return;
+  }
+
+  const fetchProducts = axios.get(
+    "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az"
+  );
+  const fetchCategories = axios.get(
+    "https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az"
+  );
+
+  Promise.all([fetchProducts, fetchCategories])
+    .then(([productResponse, categoryResponse]) => {
+      const productData = productResponse.data.data.items || [];
+      const categoryData = categoryResponse.data.data || []; // Düzeltme yapıldı
+
+      console.log("Tüm Ürünler:", productData);
+      console.log("Tüm Kategoriler:", categoryData);
+
+      const filteredProducts = productData.filter((item) =>
+        item.productTitle?.toLowerCase().includes(input.toLowerCase())
+      );
+
+      const filteredCategories = filterNestedCategories(
+        categoryData, // Düzeltme yapıldı
+        input
+      );
+
+      console.log("Filtrelenmiş Ürünler:", filteredProducts);
+      console.log("Filtrelenmiş Kategoriler:", filteredCategories);
+
+      setFilterData([
+        ...filteredProducts.map((product) => ({
+          ...product,
+          type: "product",
+        })),
+        ...filteredCategories.map((category) => ({
+          ...category,
+          type: "category",
+        })),
+      ]);
+    })
+    .catch((err) => {
+      console.error("Error fetching data:", err);
+      setError("Veriler alınırken bir hata oluştu.");
+    });
+}, [input]);
+
 
   const handleItemClick = (item) => {
     navigate("/searchResult", { state: { filteredProducts: filterData } });
@@ -148,7 +199,9 @@ const Navbar = () => {
                 onClick={() => handleItemClick(item)}
                 style={{ cursor: "pointer" }}
               >
-                {item.productTitle}
+                {item.type === "product"
+                  ? item.productTitle
+                  : item.categoryTitle}
               </p>
             ))}
           </div>
