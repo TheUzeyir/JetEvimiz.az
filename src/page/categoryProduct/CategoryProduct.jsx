@@ -24,12 +24,13 @@ const CategoryProduct = () => {
   const [error, setError] = useState(null);
   const [filterParams, setFilterParams] = useState({});
 
-  const { products, category, selectedSubCategory } = location.state || {
-    products: { items: [] },
-    category: null,
-    selectedSubCategory: null,
-  };
-  const items = products.items || [];
+  const {
+    products = { items: [] },
+    category = null,
+    selectedSubCategory = null,
+  } = location.state || {};
+
+  const items = products.items;
 
   useEffect(() => {
     const likedProductsFromStorage = localStorage.getItem("likedProducts");
@@ -115,7 +116,6 @@ const CategoryProduct = () => {
       );
     }
 
-    // Apply custom filters based on parameters
     Object.keys(filterParams).forEach((param) => {
       const paramValue = filterParams[param];
       if (paramValue) {
