@@ -3,19 +3,23 @@ import { IoSearchSharp, IoAddSharp, IoFilter } from "react-icons/io5";
 import { FaBars } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import style from "./navbar.module.css";
 import { useTranslation } from "react-i18next";
 import CategoryModal from "../Category-Modal/CategoryModal";
 import HeaderFilterCard from "../headerFilterCard/HeaderFilterCard";
+import { useDebounce } from "use-debounce";
+
+import style from "./navbar.module.css";
 
 const Navbar = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [isModalOpen, setModalOpen] = useState(false);
   const [isFilterCardOpen, setFilterCardOpen] = useState(false);
   const [input, setInput] = useState("");
+  const [debouncedInput] = useDebounce(input, 500); // Debounce input for 500ms
   const [filterData, setFilterData] = useState([]);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [categories, setCategories] = useState([]);
   const [error, setError] = useState("");
   const { t } = useTranslation();
 
@@ -47,42 +51,85 @@ const Navbar = () => {
   }, []);
 
   useEffect(() => {
-    if (input.trim() === "") {
+    if (debouncedInput.trim() === "") {
       setFilterData([]);
       return;
     }
+  
+    const fetchData = async () => {
+      try {
+        const [productResponse, categoryResponse] = await Promise.all([
+          axios.get("https://restartbaku-001-site3.htempurl.com/api/Product/search?additionalProp1=string&additionalProp2=string&additionalProp3=string"),
+          axios.get("http://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az")
+        ]);
+  
+        const filteredProducts = productResponse.data.data.items.filter(item =>
+          item.productTitle.toLowerCase().includes(debouncedInput.toLowerCase())
+        );
+  
+        const filteredCategories = categoryResponse.data.data.filter(category =>
+          category.categoryTitle.toLowerCase().includes(debouncedInput.toLowerCase())
+        );
+  
+        const combinedData = [
+          ...filteredProducts.map(item => ({ title: item.productTitle, type: "product", slug: item.slug })),
+          ...filteredCategories.map(category => ({ title: category.categoryTitle, type: "category", slug: category.slug }))
+        ];
+  
+        setFilterData(combinedData);
+  
+      } catch (err) {
+        console.error("Error fetching data:", err);
+        setError("Veriler alınırken bir hata oluştu.");
+      }
+    };
+  
+    fetchData();
+  }, [debouncedInput]);
+  
 
-    axios
-      .get("https://restartbaku-001-site3.htempurl.com/api/Product/search?additionalProp1=string&additionalProp2=string&additionalProp3=string")
-      .then((response) => {
-        console.log("API Response:", response.data);
-
-        if (
-          response.data &&
-          response.data.data &&
-          Array.isArray(response.data.data.items)
-        ) {
-          const filtered = response.data.data.items.filter((item) => {
-            if (item.productTitle && item.productTitle.toLowerCase().includes(input.toLowerCase())) {
-              return true;
-            }
-            return false;
-          });
-          setFilterData(filtered);
-        } else {
-          setError("Beklenmeyen bir veri yapısı alındı.");
+  const handleCategoryClick = async (categoryId) => {
+    setLoading(true);
+  
+    try {
+      const response = await fetch(
+        `https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`
+      );
+      const result = await response.json();
+  
+      const category = categories.find(
+        (cat) =>
+          cat.categoryId === categoryId ||
+          (cat.childCategories || []).some((child) => child.categoryId === categoryId)
+      );
+  
+      const selectedSubCategory = category?.childCategories?.find(
+        (child) => child.categoryId === categoryId
+      );
+  
+      navigate("/CategoryProduct", {
+        state: {
+          products: result.data,
+          category,
+          selectedSubCategory,
         }
-      })
-      .catch((err) => {
-        console.error("Error fetching products:", err);
-        setError("Ürünler alınırken bir hata oluştu.");
       });
-  }, [input]);
-
-  const handleProductClick = (product) => {
-    navigate(`/product-details/${product.slug}`); 
+    } catch (error) {
+      console.error("Seçilen kategoriye ait veriler alınamadı:", error);
+    } finally {
+      setLoading(false);
+    }
   };
   
+  const handleProductClick = (item) => {
+    if (item.type === "category") {
+      navigate("/CategoryProduct", { state: { category: item } });
+    } else {
+      navigate(`/product-details/${item.slug}`);
+    }
+  };
+  
+
   return (
     <>
       <nav className={style.navbar}>
@@ -153,9 +200,9 @@ const Navbar = () => {
               <p
                 key={index}
                 onClick={() => handleProductClick(item)}
-                style={{ cursor: "pointer" }} 
+                style={{ cursor: "pointer" }}
               >
-                {item.productTitle}
+                {item.title}
               </p>
             ))}
           </div>

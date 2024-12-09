@@ -240,7 +240,7 @@ const CategoryProduct = () => {
                 type="text"
                 placeholder="Məhsul Başlığını Filtrə et"
                 value={filterTitle}
-                onChange={handleTitleChange} 
+                onChange={handleTitleChange}
                 style={{
                   padding: "5px",
                   borderRadius: "5px",
