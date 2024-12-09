@@ -20,6 +20,7 @@ import ProfilePageUnpublished from './page/profile/ProfilePageUnpublished'
 import ProfilePageWaiting from './page/profile/ProfilePageWaiting'
 import ProfilePageCurrently from './page/profile/ProfilePageCurrently'
 import ProfilePage from './page/profile/ProfilePage'
+import SearchResult from './components/SearchResult/SearchResult'
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path='/ProfilePageUnpublished' element={<ProfilePageUnpublished />} />
         <Route path='/ProfilePageWaiting' element={<ProfilePageWaiting />} />
         <Route path='/ProfilePageCurrently' element={<ProfilePageCurrently />} />
+        <Route path="/searchResult" element={<SearchResult />} />
       </Routes>
     </Router>
   )

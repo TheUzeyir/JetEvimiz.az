@@ -53,30 +53,18 @@ const Navbar = () => {
     }
 
     const fetchProducts = axios.get(
-      "https://restartbaku-001-site3.htempurl.com/api/Product/search?additionalProp1=string&additionalProp2=string&additionalProp3=string"
+      "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az"
     );
 
-    const fetchCategories = axios.get(
-      "http://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az"
-    );
-
-    Promise.all([fetchProducts, fetchCategories])
-      .then(([productResponse, categoryResponse]) => {
+    Promise.all([fetchProducts])
+      .then(([productResponse]) => {
         const productData = productResponse.data.data.items || [];
-        const categoryData = categoryResponse.data.data || [];
 
         const filteredProducts = productData.filter((item) =>
           item.productTitle?.toLowerCase().includes(input.toLowerCase())
         );
 
-        const filteredCategories = categoryData.filter((item) =>
-          item.categoryTitle?.toLowerCase().includes(input.toLowerCase())
-        );
-
-        setFilterData([
-          ...filteredProducts.map((item) => ({ ...item, type: "product" })),
-          ...filteredCategories.map((item) => ({ ...item, type: "category" })),
-        ]);
+        setFilterData(filteredProducts);
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
@@ -85,11 +73,7 @@ const Navbar = () => {
   }, [input]);
 
   const handleItemClick = (item) => {
-    if (item.type === "product") {
-      navigate(`/product-details/${item.slug}`);
-    } else if (item.type === "category") {
-      navigate("/CategoryProduct", { state: { categoryId: item.id } });
-    }
+    navigate("/searchResult", { state: { filteredProducts: filterData } });
   };
 
   return (
@@ -164,7 +148,7 @@ const Navbar = () => {
                 onClick={() => handleItemClick(item)}
                 style={{ cursor: "pointer" }}
               >
-                {item.type === "product" ? item.productTitle : item.categoryTitle}
+                {item.productTitle}
               </p>
             ))}
           </div>
