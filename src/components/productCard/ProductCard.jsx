@@ -15,22 +15,22 @@ const ProductCard = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [pageIndex, setPageIndex] = useState(1);
-  const [totalPages, setTotalPages] = useState(1);
+  const [pageIndex, setPageIndex] = useState(0); // pageIndex-i 0-dan başlatdıq
+
+  const pageSize = 15; // Backend-də hər səhifədə 15 məhsul göstərilir
 
   const fetchProducts = async (page) => {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az&pageIndex=${page}&pageSize=20`
+        `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az&pageIndex=${page}&pageSize=${pageSize}`
       );
       if (!response.ok) {
         throw new Error("Ürünlər alınarkən xəta baş verdi.");
       }
       const result = await response.json();
       if (result && result.data) {
-        setProducts(result.data.items || []);
-        setTotalPages(result.data.totalPages || 1);
+        setProducts(result.data.items || []); // Məhsulları yükləyirik
       } else {
         throw new Error("Məlumat tapılmadı.");
       }
@@ -43,7 +43,7 @@ const ProductCard = () => {
   };
 
   useEffect(() => {
-    fetchProducts(pageIndex);
+    fetchProducts(pageIndex); // `pageIndex`-i istifadə edərək məhsulları yükləyirik
   }, [pageIndex]);
 
   const toggleLiked = (productItem) => {
@@ -121,17 +121,16 @@ const ProductCard = () => {
       </div>
       <div className={style.pagination}>
         <button
-          onClick={() => setPageIndex((prev) => Math.max(prev - 1, 1))}
-          disabled={pageIndex === 1}
+          onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))} // Page index 0-a enesin deyisdi
+          disabled={pageIndex === 0} // Page 0-da olarsa, əvvəlki düyməsini deaktiv et
         >
           Əvvəlki
         </button>
         <span>
-          Səhifə {pageIndex} / {totalPages}
+          Səhifə {pageIndex + 1} {/* Page 0-dan başlasa belə, istifadəçiyə 1-ci səhifə olduğunu göstəririk */}
         </span>
         <button
-          onClick={() => setPageIndex((prev) => Math.min(prev + 1, totalPages))}
-          disabled={pageIndex === totalPages}
+          onClick={() => setPageIndex((prev) => prev + 1)} // Page index artdıqca daha çox məhsul yüklənəcək
         >
           Növbəti
         </button>
