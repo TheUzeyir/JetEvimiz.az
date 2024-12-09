@@ -10,32 +10,41 @@ import { addLikedProduct } from "../../redux/likedSlice";
 const ProductCard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  
-  const likedProducts = useSelector(state => state.likedProducts.items); 
+  const likedProducts = useSelector((state) => state.likedProducts.items);
+
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [pageIndex, setPageIndex] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const fetchProducts = async (page) => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az&pageIndex=${page}&pageSize=20`
+      );
+      if (!response.ok) {
+        throw new Error("Ürünlər alınarkən xəta baş verdi.");
+      }
+      const result = await response.json();
+      if (result && result.data) {
+        setProducts(result.data.items || []);
+        setTotalPages(result.data.totalPages || 1);
+      } else {
+        throw new Error("Məlumat tapılmadı.");
+      }
+    } catch (error) {
+      console.error("Xəta:", error);
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch(
-          "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products"
-        );
-        if (!response.ok) {
-          throw new Error("Ürünler alınırken hata oluştu.");
-        }
-        const result = await response.json();
-        setProducts(result.data.items || []);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+    fetchProducts(pageIndex);
+  }, [pageIndex]);
 
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");
@@ -48,21 +57,18 @@ const ProductCard = () => {
       (likedProduct) => likedProduct.productId === productItem.productId
     );
 
-    dispatch(addLikedProduct(productItem));
+    const updatedLikedProducts = isLiked
+      ? likedProducts.filter(
+          (likedProduct) => likedProduct.productId !== productItem.productId
+        )
+      : [...likedProducts, productItem];
 
-    let updatedLikedProducts;
-    if (isLiked) {
-      updatedLikedProducts = likedProducts.filter(
-        (likedProduct) => likedProduct.productId !== productItem.productId
-      );
-    } else {
-      updatedLikedProducts = [...likedProducts, productItem];
-    }
+    dispatch(addLikedProduct(productItem));
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
 
-  if (loading) return <p>Yükleniyor...</p>;
-  if (error) return <p>Hata: {error}</p>;
+  if (loading) return <p>Yüklənir...</p>;
+  if (error) return <p>Xəta: {error}</p>;
 
   return (
     <div className="container">
@@ -108,10 +114,27 @@ const ProductCard = () => {
                 </div>
               </div>
               <p className={style.productCard_subTitle}>{item.productTitle}</p>
-              <p className={style.productCard_text}>Şehir: {item.city}</p>
+              <p className={style.productCard_text}>Şəhər: {item.city}</p>
             </Link>
           </div>
         ))}
+      </div>
+      <div className={style.pagination}>
+        <button
+          onClick={() => setPageIndex((prev) => Math.max(prev - 1, 1))}
+          disabled={pageIndex === 1}
+        >
+          Əvvəlki
+        </button>
+        <span>
+          Səhifə {pageIndex} / {totalPages}
+        </span>
+        <button
+          onClick={() => setPageIndex((prev) => Math.min(prev + 1, totalPages))}
+          disabled={pageIndex === totalPages}
+        >
+          Növbəti
+        </button>
       </div>
     </div>
   );
