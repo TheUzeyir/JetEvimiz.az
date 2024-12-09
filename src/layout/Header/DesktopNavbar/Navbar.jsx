@@ -14,6 +14,8 @@ const Navbar = () => {
   const [isFilterCardOpen, setFilterCardOpen] = useState(false);
   const [input, setInput] = useState("");
   const [filterData, setFilterData] = useState([]);
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const { t } = useTranslation();
 
@@ -29,66 +31,101 @@ const Navbar = () => {
   const toggleFilterCard = () => setFilterCardOpen((prev) => !prev);
 
   const handleNewProductPageClick = () => {
-    navigate("/yeniElan");
+    if (user) {
+      navigate("/yeniElan");
+    } else {
+      navigate("/login");
+    }
   };
 
   useEffect(() => {
-    if (input.trim() === "") {
-      setFilterData([]);
-      return;
+    const savedUserName = localStorage.getItem("userName");
+    if (savedUserName) {
+      setUser({ username: savedUserName });
     }
+    setLoading(false);
+  }, []);
 
-    // Fetch products and categories
-    const fetchProducts = axios.get(
-      "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az"
-    );
-    const fetchCategories = axios.get(
-      "https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az"
-    );
+  const filterNestedCategories = (categories, searchTerm) => {
+    const filtered = categories
+      .map((category) => {
+        const isMatch = category.categoryTitle
+          ?.toLowerCase()
+          .includes(searchTerm.toLowerCase());
 
-    Promise.all([fetchProducts, fetchCategories])
-      .then(([productResponse, categoryResponse]) => {
-        const productData = productResponse.data.data.items || [];
-        const categoryData = categoryResponse.data.data || [];
-
-        // Log the raw product and category data
-        console.log("Fetched Products:", productData);
-        console.log("Fetched Categories:", categoryData);
-
-        // Filter products based on search input
-        const filteredProducts = productData.filter((item) =>
-          item.productTitle?.toLowerCase().includes(input.toLowerCase())
+        const filteredChildren = filterNestedCategories(
+          category.childCategories || [],
+          searchTerm
         );
 
-        // Filter categories based on search input
-        const filteredCategories = categoryData.filter((item) =>
-          item.categoryTitle?.toLowerCase().includes(input.toLowerCase())
-        );
+        if (isMatch || filteredChildren.length > 0) {
+          return {
+            ...category,
+            childCategories: filteredChildren,
+          };
+        }
 
-        // Log the filtered results
-        console.log("Filtered Products:", filteredProducts);
-        console.log("Filtered Categories:", filteredCategories);
-
-        // Combine both filtered products and categories
-        setFilterData([...filteredProducts, ...filteredCategories]);
-
-        // Log the final combined data
-        console.log("Combined Filtered Data:", [...filteredProducts, ...filteredCategories]);
+        return null;
       })
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-        setError("Veriler alınırken bir hata oluştu.");
-      });
-  }, [input]);
+      .filter((item) => item !== null);
 
-const handleItemClick = (item) => {
-  const stateData = item.productTitle
-    ? { products: { items: [item] } } // If it's a product, send as products
-    : { category: { categoryId: item.id, categoryName: item.categoryTitle } }; // If it's a category, send as category
+    return filtered;
+  };
 
-  navigate("/categoryProduct", { state: stateData });
-};
+useEffect(() => {
+  if (input.trim() === "") {
+    setFilterData([]);
+    return;
+  }
 
+  const fetchProducts = axios.get(
+    "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az"
+  );
+  const fetchCategories = axios.get(
+    "https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az"
+  );
+
+  Promise.all([fetchProducts, fetchCategories])
+    .then(([productResponse, categoryResponse]) => {
+      const productData = productResponse.data.data.items || [];
+      const categoryData = categoryResponse.data.data || []; // Düzeltme yapıldı
+
+      console.log("Tüm Ürünler:", productData);
+      console.log("Tüm Kategoriler:", categoryData);
+
+      const filteredProducts = productData.filter((item) =>
+        item.productTitle?.toLowerCase().includes(input.toLowerCase())
+      );
+
+      const filteredCategories = filterNestedCategories(
+        categoryData, // Düzeltme yapıldı
+        input
+      );
+
+      console.log("Filtrelenmiş Ürünler:", filteredProducts);
+      console.log("Filtrelenmiş Kategoriler:", filteredCategories);
+
+      setFilterData([
+        ...filteredProducts.map((product) => ({
+          ...product,
+          type: "product",
+        })),
+        ...filteredCategories.map((category) => ({
+          ...category,
+          type: "category",
+        })),
+      ]);
+    })
+    .catch((err) => {
+      console.error("Error fetching data:", err);
+      setError("Veriler alınırken bir hata oluştu.");
+    });
+}, [input]);
+
+
+  const handleItemClick = (item) => {
+    navigate("/searchResult", { state: { filteredProducts: filterData } });
+  };
 
   return (
     <>
@@ -162,7 +199,9 @@ const handleItemClick = (item) => {
                 onClick={() => handleItemClick(item)}
                 style={{ cursor: "pointer" }}
               >
-                {item.productTitle || item.categoryTitle}
+                {item.type === "product"
+                  ? item.productTitle
+                  : item.categoryTitle}
               </p>
             ))}
           </div>
