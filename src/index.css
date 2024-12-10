@@ -93,12 +93,10 @@ li{
     width: 100%;
   }
 
-  /* Fullscreen olduğunda yükseklik %100 olsun */
 .image-gallery-content.fullscreen .image-gallery-image {
   height: 100%;
 }
 
-/* Normal durumda yükseklik 550px olsun */
 .image-gallery-content:not(.fullscreen) .image-gallery-image {
   height: 550px;
 }
@@ -107,7 +105,6 @@ li{
   .image-gallery-image{
     all: unset;
     width: 100%;
-    /* height: 550px; */
   }
   .image-gallery-svg{
     all: unset;

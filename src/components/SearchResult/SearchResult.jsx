@@ -17,7 +17,8 @@ const SearchResult = () => {
   const likedProducts = useSelector((state) => state.likedProducts.items);
   const [products, setProducts] = useState([]);
   const [categoryData, setCategoryData] = useState(null);
-
+  const [filteredCategoryData, setFilteredCategoryData] = useState([]);
+  
   useEffect(() => {
     // Check if there's category data passed from the previous page
     if (location.state && location.state.categoryData) {
@@ -31,6 +32,19 @@ const SearchResult = () => {
       setProducts([]);
     }
   }, [location.state]);
+
+  useEffect(() => {
+    if (categoryData) {
+      // Ensure searchInput is defined before calling toLowerCase()
+      const searchInput = location.state?.searchInput || "";
+
+      // Filter categories based on search input
+      const filteredCategories = categoryData.childCategories.filter((category) =>
+        category.categoryTitle.toLowerCase().includes(searchInput.toLowerCase())
+      );
+      setFilteredCategoryData(filteredCategories);
+    }
+  }, [categoryData, location.state?.searchInput]);
 
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");
@@ -49,41 +63,41 @@ const SearchResult = () => {
       <div className="container">
         <h2>Axtarış Nəticələri</h2>
         <div className={style.categorySection_container}>
-  {categoryData && (
-    <>
-      <h3>{categoryData.categoryTitle}</h3>
-      {categoryData.childCategories && categoryData.childCategories.length > 0 && (
-        <div className={style.categorySection}>
-          {categoryData.childCategories.map((child) => (
-            <div key={child.categoryId} className={style.categoryItem}>
-              <Link to={`/category-details/${child.slug}`}>
-                <div className={style.productCard}>
-                  <div className={style.productCard_imgBox}>
-                    <img
-                      src={child.categoryImage}
-                      alt={child.categoryTitle}
-                      className={style.productCard_imgBox_img}
-                    />
-                  </div>
-                  <div className={style.productCard_title}>
-                    <span className={style.productCard_title_price}>
-                      {child.count} AZN
-                    </span>
-                    <div className={style.productCard_title_dayBox}>
-                      <IoCalendarNumber /> 1 Gün
+          {categoryData && (
+            <>
+              <h3>{categoryData.categoryTitle}</h3>
+              {filteredCategoryData.length > 0 && (
+                <div className={style.categorySection}>
+                  {filteredCategoryData.map((child) => (
+                    <div key={child.categoryId} className={style.categoryItem}>
+                      <Link to={`/category-details/${child.slug}`}>
+                        <div className={style.productCard}>
+                          <div className={style.productCard_imgBox}>
+                            <img
+                              src={child.categoryImage}
+                              alt={child.categoryTitle}
+                              className={style.productCard_imgBox_img}
+                            />
+                          </div>
+                          <div className={style.productCard_title}>
+                            <span className={style.productCard_title_price}>
+                              {child.count} AZN
+                            </span>
+                            <div className={style.productCard_title_dayBox}>
+                              <IoCalendarNumber /> 1 Gün
+                            </div>
+                          </div>
+                          <p className={style.productCard_subTitle}>{child.categoryTitle}</p>
+                          <p className={style.productCard_text}>Şəhər: {child.city}</p>
+                        </div>
+                      </Link>
                     </div>
-                  </div>
-                  <p className={style.productCard_subTitle}>{child.categoryTitle}</p>
-                  <p className={style.productCard_text}>Şəhər: {child.city}</p>
+                  ))}
                 </div>
-              </Link>
-            </div>
-          ))}
+              )}
+            </>
+          )}
         </div>
-      )}
-    </>
-  )}
-</div>
 
         <div className={style.productCard_container}>
           {products.length ? (

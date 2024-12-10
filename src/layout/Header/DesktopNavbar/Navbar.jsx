@@ -5,7 +5,7 @@ import axios from "axios";
 import style from "./navbar.module.css";
 import { FaBars } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
-import CategoryModal from "../Category-Modal/CategoryModal"
+import CategoryModal from "../Category-Modal/CategoryModal";
 import HeaderFilterCard from "../headerFilterCard/HeaderFilterCard";
 
 const Navbar = () => {
@@ -16,7 +16,6 @@ const Navbar = () => {
   const [isFilterCardOpen, setFilterCardOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState("");
-  const [expandedCategoryId, setExpandedCategoryId] = useState(null); // State for managing expanded categories
   const { t } = useTranslation();
   const navigate = useNavigate();
   const cities = ["Bakı", "Gəncə", "Sumqayıt", "Şəki", "Lənkəran"];
@@ -54,20 +53,34 @@ const Navbar = () => {
           item.productTitle?.toLowerCase().includes(input.toLowerCase())
         );
 
-        const filteredCategories = categories.filter((category) =>
-          category.categoryTitle?.toLowerCase().includes(input.toLowerCase())
-        );
+        const filteredCategories = categories.filter((category) => {
+          const categoryMatch = category.categoryTitle?.toLowerCase().includes(input.toLowerCase());
+
+          const childCategoryMatch = category.childCategories?.some((child) =>
+            child.categoryTitle?.toLowerCase().includes(input.toLowerCase())
+          );
+
+          return categoryMatch || childCategoryMatch;
+        });
 
         const allFilteredData = [
           ...filteredProducts.map((product) => ({ ...product, type: "product" })),
-          ...filteredCategories.map((category) => ({
-            ...category,
-            type: "category",
-            hasChildren: category.childCategories && category.childCategories.length > 0,
-          })),
-        ];
+          ...filteredCategories.flatMap((category) => {
+            const matchedItems = [
+              { ...category, type: "category", hasChildren: category.childCategories.length > 0 }
+            ];
 
-        console.log("Filtered Data:", allFilteredData); // Log the filtered data 
+            const matchedChildren = category.childCategories
+              .filter((child) => child.categoryTitle.toLowerCase().includes(input.toLowerCase()))
+              .map((child) => ({
+                ...child,
+                type: "category",
+                parentCategory: category.categoryTitle
+              }));
+
+            return [...matchedItems, ...matchedChildren];
+          }),
+        ];
 
         setFilterData(allFilteredData);
       })
@@ -78,13 +91,24 @@ const Navbar = () => {
 
   const handleItemClick = (item) => {
     if (item.type === "category" && item.hasChildren) {
-      // Navigate to search result page with parent and child categories
       navigate("/searchResult", { state: { categoryData: item } });
     } else {
-      // For product or individual category click, navigate to the search results page
-      navigate("/searchResult", { state: { filteredProducts: filterData } });
+      // Fetch products for the clicked category or subcategory
+      const categoryId = item.categoryId || item.parentCategoryId;  // Assuming `categoryId` is available on the clicked item
+
+      axios
+        .get(`https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`)
+        .then((response) => {
+          const products = response.data.data.items || [];
+          navigate("/searchResult", { state: { filteredProducts: products } });
+        })
+        .catch((error) => {
+          console.error("Error fetching products:", error);
+          setError("Veriler alınırken bir hata oluştu.");
+        });
     }
   };
+
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
 
@@ -97,8 +121,8 @@ const Navbar = () => {
               JetEvimiz
             </p>
             <div className={style.categoryBox} onClick={openModal}>
-                {t("category")}
-              </div>
+              {t("category")}
+            </div>
             <div className={style.inputGroup}>
               <select
                 value={selectedCity}
@@ -146,23 +170,29 @@ const Navbar = () => {
               <div key={index}>
                 {item.type === "category" ? (
                   <div>
-                    <p
-                      onClick={() => handleItemClick(item)}
-                      style={{ cursor: "pointer", fontWeight: "bold" }}
-                    >
-                      {item.categoryTitle}
-                    </p>
-                    {expandedCategoryId === item.categoryId &&
-                      item.childCategories &&
-                      item.childCategories.length > 0 && (
-                        <ul>
-                          {item.childCategories.map((child, idx) => (
-                            <li key={idx} onClick={() => handleItemClick(child)}>
-                              {child.categoryTitle}
-                            </li>
-                          ))}
-                        </ul>
-                      )}
+                    {item.parentCategory ? (
+                      <p
+                        onClick={() => handleItemClick(item)}
+                        style={{ cursor: "pointer", fontWeight: "bold" }}
+                      >
+                        {item.parentCategory} - {item.categoryTitle}
+                      </p>
+                    ) : (
+                      <p
+                        onClick={() => handleItemClick(item)}
+                        style={{ cursor: "pointer", fontWeight: "bold" }}
+                      >
+                        {item.categoryTitle}
+                      </p>
+                    )}
+                    {item.childCategories && item.childCategories.length > 0 && (
+                      <p
+                        onClick={() => handleItemClick(item.childCategories[0])}
+                        style={{ cursor: "pointer" }}
+                      >
+                        {item.categoryTitle} - {item.childCategories[0].categoryTitle}
+                      </p>
+                    )}
                   </div>
                 ) : (
                   <p
