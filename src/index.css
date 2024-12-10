@@ -92,11 +92,22 @@ li{
     position: relative;
     width: 100%;
   }
+
+  /* Fullscreen olduğunda yükseklik %100 olsun */
+.image-gallery-content.fullscreen .image-gallery-image {
+  height: 100%;
+}
+
+/* Normal durumda yükseklik 550px olsun */
+.image-gallery-content:not(.fullscreen) .image-gallery-image {
+  height: 550px;
+}
+
   
   .image-gallery-image{
     all: unset;
-    height: 550px;
     width: 100%;
+    /* height: 550px; */
   }
   .image-gallery-svg{
     all: unset;
@@ -115,6 +126,15 @@ li{
     display: none;  
   }
 
+  .image-gallery-fullscreen-button{
+    height:100vh;
+  }
+  .image-gallery-svg{
+    height:100vh;
+  }
+  .image-gallery-center{
+    height:100vh;
+  }
 
   @media screen and (max-width:968px) {
     .container{

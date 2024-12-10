@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
-
+ 
 const CategoryProduct = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -107,7 +107,7 @@ const CategoryProduct = () => {
     if (error) return <p>Error: {error}</p>;
   
     return parameters.map((param, index) => (
-      <div key={index}>
+      <div key={index} className={style.categoryBoxFilterCard}>
         <label htmlFor={`param-${index}`} style={{ fontWeight: "bold" }}>
           {param.name}:
         </label>
@@ -129,14 +129,19 @@ const CategoryProduct = () => {
             type="number"
             placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`} // Change placeholder text
             onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
+            className={style.categoryPageInput}
           />
         ) : (
-          <input
-            id={`param-${index}`}
-            type="text"
-            placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`} // Change placeholder text
-            onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
-          />
+          <label className={style.categoryPageLabel}>
+            <p>Başlıq:</p>
+            <input
+              id={`param-${index}`}
+              type="text"
+              placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`} // Change placeholder text
+              onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
+              className={style.categoryPageInput}
+            />
+          </label>
         )}
       </div>
     ));
@@ -151,53 +156,24 @@ const CategoryProduct = () => {
       <img
         src="https://img.freepik.com/free-vector/gradient-sale-background_52683-62895.jpg"
         alt=""
-        className={style.m}
+        className={style.categoryBoxImg}
       />
       <div className="container">
         <div className={style.CategoryProduct_header}>
           <p>Elan-({filteredItems.length})</p>
           <div className={style.CategoryProduct_filterBox}>
-            <div className={style.priceRangeContainer}>
-              <div onClick={() => setIsVisible(!isVisible)}>
-                <span>Qiymət</span>
-                <span className={style.arrow}>{isVisible ? "▲" : "▼"}</span>
-              </div>
-              {isVisible && (
-                <div className={style.inputsContainer}>
-                  <input
-                    type="text"
-                    placeholder="Minimum Qiymət"
-                    value={minPrice}
-                    onChange={(e) => setMinPrice(e.target.value)}
-                  />
-                  <span>-</span>
-                  <input
-                    type="text"
-                    placeholder="Maksimum Qiymət"
-                    value={maxPrice}
-                    onChange={(e) => setMaxPrice(e.target.value)}
-                  />
-                </div>
-              )}
-            </div>
             {renderCategoryFilters()}
-            <div>
-              <label htmlFor="titleFilter" style={{ fontWeight: "bold" }}>
-                Başlıq:
-              </label>
+              <label htmlFor="titleFilter" className={style.categoryPageLabel}>
+                <p>Başlıq:</p>
               <input
                 id="titleFilter"
                 type="text"
                 placeholder="Məhsul Başlığını Filtrə et"
                 value={filterTitle}
                 onChange={(e) => setFilterTitle(e.target.value)}
-                style={{
-                  padding: "5px",
-                  borderRadius: "5px",
-                  border: "1px solid #ccc",
-                }}
+                className={style.categoryPageInput}
               />
-            </div>
+              </label>
           </div>
         </div>
 
