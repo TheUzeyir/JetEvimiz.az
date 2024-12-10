@@ -7,6 +7,7 @@ import { addLikedProduct } from "../../redux/likedSlice";
 import { useDispatch } from "react-redux";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
+import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 
 const CategoryProduct = () => {
   const location = useLocation();
@@ -252,6 +253,7 @@ const CategoryProduct = () => {
         </div>
       </div>
       <Footer />
+      <FooterResponsive/>
     </div>
   );
 };

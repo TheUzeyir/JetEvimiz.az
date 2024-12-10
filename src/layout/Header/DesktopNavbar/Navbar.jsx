@@ -3,13 +3,18 @@ import { IoSearchSharp, IoAddSharp } from "react-icons/io5";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import style from "./navbar.module.css";
+import { FaBars } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
+import CategoryModal from "../Category-Modal/CategoryModal"
+import HeaderFilterCard from "../headerFilterCard/HeaderFilterCard";
 
 const Navbar = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [input, setInput] = useState("");
   const [filterData, setFilterData] = useState([]);
   const [user, setUser] = useState(null);
+  const [isFilterCardOpen, setFilterCardOpen] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState("");
   const [expandedCategoryId, setExpandedCategoryId] = useState(null); // State for managing expanded categories
   const { t } = useTranslation();
@@ -62,7 +67,7 @@ const Navbar = () => {
           })),
         ];
 
-        console.log("Filtered Data:", allFilteredData); // Log the filtered data
+        console.log("Filtered Data:", allFilteredData); // Log the filtered data 
 
         setFilterData(allFilteredData);
       })
@@ -80,7 +85,8 @@ const Navbar = () => {
       navigate("/searchResult", { state: { filteredProducts: filterData } });
     }
   };
-  
+  const openModal = () => setModalOpen(true);
+  const closeModal = () => setModalOpen(false);
 
   return (
     <>
@@ -90,6 +96,9 @@ const Navbar = () => {
             <p className={style.navbarBrand} onClick={() => navigate("/")}>
               JetEvimiz
             </p>
+            <div className={style.categoryBox} onClick={openModal}>
+                {t("category")}
+              </div>
             <div className={style.inputGroup}>
               <select
                 value={selectedCity}
@@ -120,10 +129,15 @@ const Navbar = () => {
             >
               <IoAddSharp /> {t("newAnnouncement")}
             </button>
+            <FaBars
+              className={style.bar_icon}
+              onClick={() => navigate("/headerBox")}
+            />
           </div>
         </div>
       </nav>
-
+      {isFilterCardOpen && <HeaderFilterCard isFilterCardOpen={isFilterCardOpen} />}
+      {isModalOpen && <CategoryModal closeModal={closeModal} />}
       <div className="container">
         {error && <p style={{ color: "red" }}>{error}</p>}
         {filterData.length > 0 ? (
@@ -138,7 +152,6 @@ const Navbar = () => {
                     >
                       {item.categoryTitle}
                     </p>
-                    {/* Render child categories if the parent is clicked */}
                     {expandedCategoryId === item.categoryId &&
                       item.childCategories &&
                       item.childCategories.length > 0 && (

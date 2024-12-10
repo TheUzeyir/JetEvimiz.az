@@ -72,6 +72,7 @@ const ProductCard = () => {
 
   return (
     <div className="container">
+      <div className={style.productCardPage_containers}>
       <div className={style.productCard_container}>
         {products.map((item) => (
           <div className={style.productCard} key={item.productId}>
@@ -121,8 +122,9 @@ const ProductCard = () => {
       </div>
       <div className={style.pagination}>
         <button
-          onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))} // Page index 0-a enesin deyisdi
-          disabled={pageIndex === 0} // Page 0-da olarsa, əvvəlki düyməsini deaktiv et
+          onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))} 
+          disabled={pageIndex === 0} 
+          className={style.paginationBtn}
         >
           Əvvəlki
         </button>
@@ -130,10 +132,12 @@ const ProductCard = () => {
           Səhifə {pageIndex + 1} {/* Page 0-dan başlasa belə, istifadəçiyə 1-ci səhifə olduğunu göstəririk */}
         </span>
         <button
-          onClick={() => setPageIndex((prev) => prev + 1)} // Page index artdıqca daha çox məhsul yüklənəcək
+          onClick={() => setPageIndex((prev) => prev + 1)}
+          className={style.paginationBtn}
         >
           Növbəti
         </button>
+      </div>
       </div>
     </div>
   );
