@@ -10,6 +10,7 @@ import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
+import axios from "axios"; // To make API requests
 
 const SearchResult = () => {
   const location = useLocation();
@@ -19,32 +20,51 @@ const SearchResult = () => {
   const [categoryData, setCategoryData] = useState(null);
   const [filteredCategoryData, setFilteredCategoryData] = useState([]);
   
+  // Fetch category data and products based on category or filtered search
   useEffect(() => {
-    // Check if there's category data passed from the previous page
-    if (location.state && location.state.categoryData) {
-      setCategoryData(location.state.categoryData);
-    }
+    if (location.state) {
+      const { categoryData: passedCategoryData, filteredProducts, searchInput } = location.state;
 
-    // If filtered products are passed, set them
-    if (location.state && location.state.filteredProducts) {
-      setProducts(location.state.filteredProducts);
-    } else {
-      setProducts([]);
+      // Set category data from the passed data
+      if (passedCategoryData) {
+        setCategoryData(passedCategoryData);
+      }
+
+      // Set products if passed in location state
+      if (filteredProducts) {
+        setProducts(filteredProducts);
+      } else {
+        setProducts([]);
+      }
+
+      // Filter categories based on search input
+      if (searchInput && passedCategoryData) {
+        const filteredCategories = passedCategoryData.childCategories.filter((category) =>
+          category.categoryTitle.toLowerCase().includes(searchInput.toLowerCase())
+        );
+        setFilteredCategoryData(filteredCategories);
+      }
     }
   }, [location.state]);
 
+  // Fetch child categories from the API based on category ID
   useEffect(() => {
     if (categoryData) {
-      // Ensure searchInput is defined before calling toLowerCase()
-      const searchInput = location.state?.searchInput || "";
+      const fetchChildCategories = async () => {
+        try {
+          const response = await axios.get(
+            `http://yourapiurl.com/api/Category/get-child-categories/${categoryData.categoryId}`
+          );
+          // Assuming the response contains child categories in data
+          setFilteredCategoryData(response.data); 
+        } catch (error) {
+          console.error("Error fetching child categories:", error);
+        }
+      };
 
-      // Filter categories based on search input
-      const filteredCategories = categoryData.childCategories.filter((category) =>
-        category.categoryTitle.toLowerCase().includes(searchInput.toLowerCase())
-      );
-      setFilteredCategoryData(filteredCategories);
+      fetchChildCategories();
     }
-  }, [categoryData, location.state?.searchInput]);
+  }, [categoryData]);
 
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");
@@ -62,6 +82,8 @@ const SearchResult = () => {
       <Navbar />
       <div className="container">
         <h2>Axtarış Nəticələri</h2>
+        
+        {/* Category Section */}
         <div className={style.categorySection_container}>
           {categoryData && (
             <>
@@ -99,6 +121,7 @@ const SearchResult = () => {
           )}
         </div>
 
+        {/* Product Section */}
         <div className={style.productCard_container}>
           {products.length ? (
             products.map((item) => (
@@ -151,6 +174,7 @@ const SearchResult = () => {
           )}
         </div>
       </div>
+
       <FooterResponsive />
       <Footer />
     </div>
