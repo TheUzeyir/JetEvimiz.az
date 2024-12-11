@@ -21,6 +21,7 @@ import ProfilePageWaiting from './page/profile/ProfilePageWaiting'
 import ProfilePageCurrently from './page/profile/ProfilePageCurrently'
 import ProfilePage from './page/profile/ProfilePage'
 import SearchResult from './components/SearchResult/SearchResult'
+import SearchResultCategory from './components/SearchResult/SearchResultCategory'
 
 
 function App() {
@@ -48,6 +49,7 @@ function App() {
         <Route path='/ProfilePageWaiting' element={<ProfilePageWaiting />} />
         <Route path='/ProfilePageCurrently' element={<ProfilePageCurrently />} />
         <Route path="/searchResult" element={<SearchResult />} />
+        <Route path="/k" element={<SearchResultCategory />} />
       </Routes>
     </Router>
   )

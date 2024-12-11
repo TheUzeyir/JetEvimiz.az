@@ -91,22 +91,29 @@ const Navbar = () => {
 
   const handleItemClick = (item) => {
     const categoryId = item.categoryId || item.parentCategoryId;
-
+  
     if (!categoryId) {
       console.error("CategoryId bulunamadı.");
       setError("Kategori ID bulunamadı.");
       return;
     }
-
+  
     console.log("Selected Category ID:", categoryId);
-
+  
     axios
       .get(`https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`)
       .then((response) => {
         if (response.data && response.data.data && response.data.data.items) {
           const products = response.data.data.items;
           console.log("Fetched Products:", products);
-          setFilterData(products.map((product) => ({ ...product, type: "product" })));
+  
+          // Yönlendirme ve veri aktarma
+          navigate("/k", {
+            state: {
+              category: item, // Tıklanan kategori
+              products, // Gelen ürünler
+            },
+          });
         } else {
           console.error("Beklenmeyen API yanıtı:", response);
           setError("API'den beklenmeyen bir yanıt alındı.");
@@ -123,6 +130,7 @@ const Navbar = () => {
         }
       });
   };
+  
 
   const openModal = () => setModalOpen(true);
   const closeModal = () => setModalOpen(false);
