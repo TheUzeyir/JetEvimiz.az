@@ -90,23 +90,38 @@ const Navbar = () => {
   }, [input]);
 
   const handleItemClick = (item) => {
-    if (item.type === "category" && item.hasChildren) {
-      navigate("/searchResult", { state: { categoryData: item } });
-    } else {
-      // Fetch products for the clicked category or subcategory
-      const categoryId = item.categoryId || item.parentCategoryId;  // Assuming `categoryId` is available on the clicked item
+    const categoryId = item.categoryId || item.parentCategoryId;
 
-      axios
-        .get(`https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`)
-        .then((response) => {
-          const products = response.data.data.items || [];
-          navigate("/searchResult", { state: { filteredProducts: products } });
-        })
-        .catch((error) => {
-          console.error("Error fetching products:", error);
-          setError("Veriler alınırken bir hata oluştu.");
-        });
+    if (!categoryId) {
+      console.error("CategoryId bulunamadı.");
+      setError("Kategori ID bulunamadı.");
+      return;
     }
+
+    console.log("Selected Category ID:", categoryId);
+
+    axios
+      .get(`https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`)
+      .then((response) => {
+        if (response.data && response.data.data && response.data.data.items) {
+          const products = response.data.data.items;
+          console.log("Fetched Products:", products);
+          setFilterData(products.map((product) => ({ ...product, type: "product" })));
+        } else {
+          console.error("Beklenmeyen API yanıtı:", response);
+          setError("API'den beklenmeyen bir yanıt alındı.");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error.message);
+        if (error.response) {
+          setError(`Sunucu hatası: ${error.response.status} - ${error.response.statusText}`);
+        } else if (error.request) {
+          setError("Sunucuya ulaşılamıyor. Lütfen ağ bağlantınızı kontrol edin.");
+        } else {
+          setError("Bilinmeyen bir hata oluştu.");
+        }
+      });
   };
 
   const openModal = () => setModalOpen(true);
@@ -117,12 +132,8 @@ const Navbar = () => {
       <nav className={style.navbar}>
         <div className="container">
           <div className={style.navbar_container}>
-            <p className={style.navbarBrand} onClick={() => navigate("/")}>
-              JetEvimiz
-            </p>
-            <div className={style.categoryBox} onClick={openModal}>
-              {t("category")}
-            </div>
+            <p className={style.navbarBrand} onClick={() => navigate("/")}>JetEvimiz</p>
+            <div className={style.categoryBox} onClick={openModal}>{t("category")}</div>
             <div className={style.inputGroup}>
               <select
                 value={selectedCity}
@@ -131,9 +142,7 @@ const Navbar = () => {
               >
                 <option value="">--{t("chooseCity")}--</option>
                 {cities.map((city, index) => (
-                  <option key={index} value={city}>
-                    {city}
-                  </option>
+                  <option key={index} value={city}>{city}</option>
                 ))}
               </select>
               <input
@@ -143,9 +152,7 @@ const Navbar = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
               />
-              <button className={style.searchBtn}>
-                <IoSearchSharp className={style.icon} />
-              </button>
+              <button className={style.searchBtn}><IoSearchSharp className={style.icon} /></button>
             </div>
             <button
               className={style.advertsBox_btn_new}
@@ -163,7 +170,7 @@ const Navbar = () => {
       {isFilterCardOpen && <HeaderFilterCard isFilterCardOpen={isFilterCardOpen} />}
       {isModalOpen && <CategoryModal closeModal={closeModal} />}
       <div className="container">
-        {error && <p style={{ color: "red" }}>{error}</p>}
+        {error && <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>}
         {filterData.length > 0 ? (
           <div>
             {filterData.map((item, index) => (
@@ -183,14 +190,6 @@ const Navbar = () => {
                         style={{ cursor: "pointer", fontWeight: "bold" }}
                       >
                         {item.categoryTitle}
-                      </p>
-                    )}
-                    {item.childCategories && item.childCategories.length > 0 && (
-                      <p
-                        onClick={() => handleItemClick(item.childCategories[0])}
-                        style={{ cursor: "pointer" }}
-                      >
-                        {item.categoryTitle} - {item.childCategories[0].categoryTitle}
                       </p>
                     )}
                   </div>
