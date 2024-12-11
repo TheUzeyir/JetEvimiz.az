@@ -10,7 +10,7 @@ import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
-import axios from "axios"; // To make API requests
+import axios from "axios";
 
 const SearchResult = () => {
   const location = useLocation();
@@ -20,24 +20,20 @@ const SearchResult = () => {
   const [categoryData, setCategoryData] = useState(null);
   const [filteredCategoryData, setFilteredCategoryData] = useState([]);
   
-  // Fetch category data and products based on category or filtered search
   useEffect(() => {
     if (location.state) {
       const { categoryData: passedCategoryData, filteredProducts, searchInput } = location.state;
 
-      // Set category data from the passed data
       if (passedCategoryData) {
         setCategoryData(passedCategoryData);
       }
 
-      // Set products if passed in location state
       if (filteredProducts) {
         setProducts(filteredProducts);
       } else {
         setProducts([]);
       }
 
-      // Filter categories based on search input
       if (searchInput && passedCategoryData) {
         const filteredCategories = passedCategoryData.childCategories.filter((category) =>
           category.categoryTitle.toLowerCase().includes(searchInput.toLowerCase())
@@ -47,7 +43,6 @@ const SearchResult = () => {
     }
   }, [location.state]);
 
-  // Fetch child categories from the API based on category ID
   useEffect(() => {
     if (categoryData) {
       const fetchChildCategories = async () => {
@@ -55,7 +50,6 @@ const SearchResult = () => {
           const response = await axios.get(
             `http://yourapiurl.com/api/Category/get-child-categories/${categoryData.categoryId}`
           );
-          // Assuming the response contains child categories in data
           setFilteredCategoryData(response.data); 
         } catch (error) {
           console.error("Error fetching child categories:", error);
@@ -83,7 +77,6 @@ const SearchResult = () => {
       <div className="container">
         <h2>Axtarış Nəticələri</h2>
         
-        {/* Category Section */}
         <div className={style.categorySection_container}>
           {categoryData && (
             <>
@@ -120,8 +113,6 @@ const SearchResult = () => {
             </>
           )}
         </div>
-
-        {/* Product Section */}
         <div className={style.productCard_container}>
           {products.length ? (
             products.map((item) => (

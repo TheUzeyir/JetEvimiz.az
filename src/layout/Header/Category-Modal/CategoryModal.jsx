@@ -64,7 +64,7 @@ const CategoryModal = ({ closeModal }) => {
     } finally {
       setLoading(false);
     }
-  };
+  }; 
   
 
   return (

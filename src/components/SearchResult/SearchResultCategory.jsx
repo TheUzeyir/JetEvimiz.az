@@ -1,42 +1,96 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import style from "./searchResult.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { FaHeart } from "react-icons/fa";
+import { BsFillHeartFill, BsShop } from "react-icons/bs";
+import { IoCalendarNumber } from "react-icons/io5";
+import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
+import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
+import Footer from "../../layout/footer/Footer";
+import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
+import { addLikedProduct } from "../../redux/likedSlice";
 
-const SearchResultCategory = () => {
+const SearchResult = () => {
+  const likedProducts = useSelector((state) => state.likedProducts.items);
+  const dispatch = useDispatch();
   const location = useLocation();
-  const { category, products } = location.state || {}; // Gelen veriler
+  const { category, products } = location.state || {}; 
+
+  const toggleLiked = (productItem) => {
+    const savedUserName = localStorage.getItem("userName");
+    if (!savedUserName) {
+      alert("Bəyənmək üçün giriş etməlisiniz.");
+      return;
+    }
+
+    dispatch(addLikedProduct(productItem));
+  };
 
   return (
     <div className={style.searchResultContainer}>
-      <h2>Axtarış Nəticələri</h2>
+      <HeaderTop/>
+      <Navbar/>
+      <div className="container">
+        <h2>Axtarış Nəticələri</h2>
+        <h3>Ürünler</h3>
+        {products && products.length > 0 ? (
+          <div className={style.productCard_container}>
+            {products.map((product) => (
+              <div className={style.productCard} key={product.productId}>
+                <Link to={`/product-details/${product.slug}`}>
+                  <div className={style.productCard_imgBox}>
+                    <img
+                      src={product.coverImage}
+                      alt={product.productTitle}
+                      className={style.productCard_imgBox_img}
+                    />
+                    {likedProducts.some(
+                      (likedProduct) => likedProduct.productId === product.productId
+                    ) ? (
+                      <BsFillHeartFill
+                        className={style.productCard_imgBox_heartIcon_check}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleLiked(product);
+                        }}
+                      />
+                    ) : (
+                      <FaHeart
+                        className={style.productCard_imgBox_heartIcon}
+                        onClick={(e) => {
+                          e.preventDefault();
+                          toggleLiked(product);
+                        }}
+                      />
+                    )}
+                    <div className={style.productCard_imgBox_title}>
+                      <BsShop /> Mağaza
+                    </div>
+                  </div>
+                  <div className={style.productCard_title}>
+                    <span className={style.productCard_title_price}>
+                      {product.price} AZN
+                    </span>
+                    <div className={style.productCard_title_dayBox}>
+                      <IoCalendarNumber /> 1 Gün
+                    </div>
+                  </div>
+                  <p className={style.productCard_subTitle}>{product.productTitle}</p>
+                  <p className={style.productCard_text}>Şəhər: {product.city}</p>
+                </Link>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <p>Bu kategori üçün məhsul tapılmadı.</p>
+        )}
+      </div>
 
-      {/* Kategori Bilgisi */}
-      {category && (
-        <div>
-          <h3>Seçilen Kategori</h3>
-          <p><strong>Kategori Başlık:</strong> {category.categoryTitle}</p>
-          {category.parentCategory && <p><strong>Üst Kategori:</strong> {category.parentCategory}</p>}
-        </div>
-      )}
-
-      {/* Ürün Listesi */}
-      {products && products.length > 0 ? (
-        <div>
-          <h3>Ürünlər</h3>
-          {products.map((product, index) => (
-            <div key={index} className={style.productCard}>
-              <img src={product.coverImage} alt={product.productTitle} />
-              <p><strong>{product.productTitle}</strong></p>
-              <p>Fiyat: {product.price} AZN</p>
-              <p>Şəhər: {product.city}</p>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <p>Bu kategori üçün məhsul tapılmadı.</p>
-      )}
+      <Footer/>
+      <FooterResponsive/>
     </div>
   );
 };
 
-export default SearchResultCategory;
+export default SearchResult;

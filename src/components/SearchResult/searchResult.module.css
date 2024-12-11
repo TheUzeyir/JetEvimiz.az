@@ -26,12 +26,13 @@
 }
 
 .productCard_imgBox {
+  height: 200px;
   position: relative;
 }
 
 .productCard_imgBox_img {
   width: 100%;
-  height: 200px;
+  height: 100%;
   border-radius: 8px;
 }
 

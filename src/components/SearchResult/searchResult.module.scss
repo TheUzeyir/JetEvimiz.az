@@ -26,13 +26,13 @@
   }
   
   .productCard_imgBox{
-  
+    height: 200px;
     position: relative;
   } 
   
   .productCard_imgBox_img{
     width: 100%;
-    height:200px;
+    height: 100%;
     border-radius: 8px;
   }
   
@@ -96,6 +96,7 @@
   .productCard_text{
     color: #8DA1CA;
   }
+  
   
   @media screen and (max-width:1080px) {
     .productCard_imgBox_title{

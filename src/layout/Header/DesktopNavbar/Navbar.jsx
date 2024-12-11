@@ -107,11 +107,10 @@ const Navbar = () => {
           const products = response.data.data.items;
           console.log("Fetched Products:", products);
   
-          // Yönlendirme ve veri aktarma
-          navigate("/k", {
+          navigate("/searchresult-category", {
             state: {
-              category: item, // Tıklanan kategori
-              products, // Gelen ürünler
+              category: item, 
+              products,
             },
           });
         } else {
@@ -177,45 +176,45 @@ const Navbar = () => {
       </nav>
       {isFilterCardOpen && <HeaderFilterCard isFilterCardOpen={isFilterCardOpen} />}
       {isModalOpen && <CategoryModal closeModal={closeModal} />}
-      <div className="container">
-        {error && <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>}
-        {filterData.length > 0 ? (
-          <div>
+      <div className={`container ${isFilterCardOpen ? 'blur-background' : ''}`}>
+    {error && <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>}
+    {filterData.length > 0 ? (
+        <div className={style.nawBarSearchResultCategory}>
             {filterData.map((item, index) => (
-              <div key={index}>
-                {item.type === "category" ? (
-                  <div>
-                    {item.parentCategory ? (
-                      <p
-                        onClick={() => handleItemClick(item)}
-                        style={{ cursor: "pointer", fontWeight: "bold" }}
-                      >
-                        {item.parentCategory} - {item.categoryTitle}
-                      </p>
+                <div key={index}>
+                    {item.type === "category" ? (
+                        <div>
+                            {item.parentCategory ? (
+                                <p
+                                    onClick={() => handleItemClick(item)}
+                                    className={style.nawBarSearchResultText_category}
+                                >
+                                    {item.parentCategory} - {item.categoryTitle}
+                                </p>
+                            ) : (
+                                <p
+                                    onClick={() => handleItemClick(item)}
+                                    className={style.nawBarSearchResultText_category}
+                                >
+                                    {item.categoryTitle}
+                                </p>
+                            )}
+                        </div>
                     ) : (
-                      <p
-                        onClick={() => handleItemClick(item)}
-                        style={{ cursor: "pointer", fontWeight: "bold" }}
-                      >
-                        {item.categoryTitle}
-                      </p>
+                        <p className={style.nawBarSearchResultText}
+                            onClick={() => handleItemClick(item)}
+                        >
+                            {item.productTitle}
+                        </p>
                     )}
-                  </div>
-                ) : (
-                  <p
-                    onClick={() => handleItemClick(item)}
-                    style={{ cursor: "pointer" }}
-                  >
-                    {item.productTitle}
-                  </p>
-                )}
-              </div>
+                </div>
             ))}
-          </div>
-        ) : (
-          <p>{t("searchInputResult")}.</p>
-        )}
-      </div>
+        </div>
+    ) : (
+        <p>{t("")}</p>
+    )}
+</div>
+
     </>
   );
 };
