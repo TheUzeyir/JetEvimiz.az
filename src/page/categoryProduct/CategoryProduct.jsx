@@ -161,11 +161,6 @@ const CategoryProduct = () => {
   return (
     <div className={style.CategoryProduct_container}>
       <Navbar />
-      <img
-        src="https://img.freepik.com/free-vector/gradient-sale-background_52683-62895.jpg"
-        alt=""
-        className={style.categoryBoxImg}
-      />
       <div className="container">
         <div className={style.CategoryProductPage}>
           <div className={style.CategoryProduct_header}>

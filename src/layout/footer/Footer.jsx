@@ -10,7 +10,7 @@ const Footer = () => {
   const {t}= useTranslation()
 
     const[email,setEmail]=useState('')
-    const handleClickEmail=(e)=>{
+    const handleClickEmail=(e)=>{ 
       setEmail(e.target.value)
     }
     const handleSubmit = (e) => {
