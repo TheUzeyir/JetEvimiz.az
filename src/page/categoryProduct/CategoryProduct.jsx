@@ -100,7 +100,7 @@ const CategoryProduct = () => {
         );
       }
     });
-
+ 
     return filteredItems;
   };
 

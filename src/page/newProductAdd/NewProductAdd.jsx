@@ -4,7 +4,10 @@ import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import style from "./newProductAdd.module.css";
 import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
 import { useTranslation } from "react-i18next"  
-
+import { FaChevronLeft } from "react-icons/fa";
+import { FaBars } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import Contack from "../about/Contack";
 
 const NewProductAdd = () => {
   const [categories, setCategories] = useState([]);
@@ -18,6 +21,7 @@ const NewProductAdd = () => {
   const [productTitle, setProductTitle] = useState("");
   const [description, setDescription] = useState("");
   const { t } = useTranslation(); 
+  const navigate=useNavigate()
 
   const authToken = localStorage.getItem("authToken");
 
@@ -129,7 +133,7 @@ const response = await fetchWithAuth(
     try {
       for (let i = 0; i < files.length; i++) {
         imageData.append("files", files[i]);
-        imageUrls.push(URL.createObjectURL(files[i])); // Generate a URL for preview
+        imageUrls.push(URL.createObjectURL(files[i])); 
       }
 
       setImages((prevImages) => [...prevImages, ...imageUrls]);
@@ -214,6 +218,11 @@ const response = await fetchWithAuth(
       <HeaderTop />
       <div className="container">
         <div className={style.addBox_container}>
+          <p className={style.addPageGoback} onClick={()=>navigate(-1)}><FaChevronLeft/>Go back</p>
+          <FaBars
+            className={style.bar_icon}
+            onClick={() => navigate("/headerBox")}
+          />
           <p className={style.addBox_title}>{t('addProductPageNewAcc')}</p>
           <div className={style.addBox}>
               <div className={style.addBox_left_box_top_card}>
@@ -352,6 +361,7 @@ const response = await fetchWithAuth(
           </div>
         </div>
       </div>
+      <Contack/>
       <Footer />
       <FooterResponsive />
     </div>

@@ -7,8 +7,8 @@ import { useTranslation } from "react-i18next"
 
 const Footer = () => {
   const navigate=useNavigate()
-  const {t}= useTranslation()
-
+  const {t}= useTranslation() 
+ 
     const[email,setEmail]=useState('')
     const handleClickEmail=(e)=>{ 
       setEmail(e.target.value)

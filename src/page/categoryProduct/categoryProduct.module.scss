@@ -6,7 +6,7 @@
     min-height: 100%;
 }
 
-.CategoryProduct_container{
+.CategoryProduct_container{ 
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -30,6 +30,7 @@
     padding: 20px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     margin-top: 10px;
+    width: 100%
 }
 
 .CategoryProduct_simple{

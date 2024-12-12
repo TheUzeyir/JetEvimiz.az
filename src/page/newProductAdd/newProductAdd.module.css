@@ -58,6 +58,7 @@
 .addBox_title {
   font-weight: bold;
   font-size: 30px;
+  margin-top: 80px;
 }
 
 .addBox_left_box_main_card {
@@ -203,8 +204,19 @@
 
 .errorText {
   position: absolute;
-  left: 8.2%;
-  top: 55%;
+  left: 7%;
+  top: 100px;
+}
+
+.addPageGoback {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.addPageGoback:hover {
+  color: red;
 }
 
 @media screen and (max-width: 968px) {
@@ -215,6 +227,15 @@
     margin-bottom: 80px;
   }
 }
+@media screen and (min-width: 768px) {
+  .bar_icon {
+    display: none;
+  }
+  .errorText {
+    left: 7%;
+    top: 20%;
+  }
+}
 @media screen and (max-width: 768px) {
   .imagePreviews {
     grid-template-columns: repeat(3, 1fr);
@@ -222,6 +243,24 @@
   }
   .addBox_button {
     width: 80%;
+  }
+  .errorText {
+    left: 3%;
+    top: 50px;
+  }
+  .addBox_title {
+    position: absolute;
+    top: -70px;
+    left: 40%;
+  }
+  .addBox {
+    margin-top: 50px;
+  }
+  .bar_icon {
+    position: absolute;
+    right: 5%;
+    top: 20px;
+    font-size: 20px;
   }
 }
 @media screen and (max-width: 400px) {

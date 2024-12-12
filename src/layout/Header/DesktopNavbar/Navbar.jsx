@@ -146,7 +146,7 @@ const Navbar = () => {
                 value={selectedCity}
                 onChange={handleCityChange}
                 className={style.navBar_selectBox}
-              >
+              > 
                 <option value="">--{t("chooseCity")}--</option>
                 {cities.map((city, index) => (
                   <option key={index} value={city}>{city}</option>
@@ -159,19 +159,25 @@ const Navbar = () => {
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
               />
-              <button className={style.searchBtn}><IoSearchSharp className={style.icon} /></button>
             </div>
             <button
               className={style.advertsBox_btn_new}
               onClick={handleNewProductPageClick}
             >
-              <IoAddSharp /> {t("newAnnouncement")}
+              <IoAddSharp /> <span className={style.advertsBox_btn_new_text}>{t("newAnnouncement")}</span>
             </button>
             <FaBars
               className={style.bar_icon}
               onClick={() => navigate("/headerBox")}
             />
           </div>
+          <input
+            placeholder={t("searchInput")}
+            type="text"
+            className={style.searchInput_responsive}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+          />
         </div>
       </nav>
       {isFilterCardOpen && <HeaderFilterCard isFilterCardOpen={isFilterCardOpen} />}
@@ -184,7 +190,7 @@ const Navbar = () => {
                 <div key={index}>
                     {item.type === "category" ? (
                         <div>
-                            {item.parentCategory ? ( 
+                            {item.parentCategory ? (
                                 <p
                                     onClick={() => handleItemClick(item)}
                                     className={style.nawBarSearchResultText_category}
