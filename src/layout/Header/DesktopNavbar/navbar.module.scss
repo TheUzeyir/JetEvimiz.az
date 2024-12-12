@@ -226,6 +226,34 @@
     border: 1px solid gray;
 }
 
+.nawBarSearchResultCategory {
+    position: absolute;
+    top: 24%;
+    z-index: 5;
+    background: white;
+    width: 50%;
+    left: 30%;
+    padding: 10px;
+    border-radius: 4px;
+    height: 400px;
+    overflow-y: scroll;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+} 
+
+.nawBarSearchResultText{
+    cursor: pointer;
+}
+.nawBarSearchResultText:hover{
+    color: blue;
+}
+.nawBarSearchResultText_category{
+    cursor: pointer;
+    font-weight: bold;
+}
+.nawBarSearchResultText_category:hover{
+    color: blue;
+}
+
 @media screen and (max-width: 1080px) {
     .navbar_container {
         gap: 30px;
@@ -295,32 +323,14 @@
     .nawBar_responsive_container {
         display: block;
     }
-}
 
-.nawBarSearchResultCategory {
-    position: absolute;
-    top: 24%;
-    z-index: 5;
-    background: white;
-    width: 50%;
-    left: 30%;
-    padding: 10px;
-    border-radius: 4px;
-    height: 400px;
-    overflow-y: scroll;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
-}
-
-.nawBarSearchResultText{
-    cursor: pointer;
-}
-.nawBarSearchResultText:hover{
-    color: blue;
-}
-.nawBarSearchResultText_category{
-    cursor: pointer;
-    font-weight: bold;
-}
-.nawBarSearchResultText_category:hover{
-    color: blue;
+    .nawBarSearchResultCategory{
+    width: 90%;
+    top: 12%;
+    left: 5%;
+    height: 300px;
+    }
+    .searchInput{
+        color: white;
+    }
 }

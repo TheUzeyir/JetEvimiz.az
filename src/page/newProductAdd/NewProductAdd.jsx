@@ -11,21 +11,60 @@ const NewProductAdd = () => {
   const [parameters, setParameters] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [loadingParameters, setLoadingParameters] = useState(false);
+  const [loadingParameters, setLoadingParameters] = useState(false); 
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({});
   const [productTitle, setProductTitle] = useState("");
   const [description, setDescription] = useState("");
-  const {t}= useTranslation() 
- 
+  const { t } = useTranslation(); 
+
   const authToken = localStorage.getItem("authToken");
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setLoadingCategories(true);
+  const fetchWithAuth = async (url, options = {}) => {
+    let authToken = localStorage.getItem("authToken");
+    const refreshToken = localStorage.getItem("refreshToken");
+    const expiresAt = localStorage.getItem("expiresAt");
+
+    if (Date.now() > expiresAt && refreshToken) {
       try {
-        const response = await fetch(
+        const response = await fetch("http://example.com/api/auth/refresh-token", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+  body: JSON.stringify({ refreshToken }),
+});
+
+if (!response.ok) throw new Error("Token yenileme başarısız!");
+
+const data = await response.json();
+authToken = data.accessToken;
+localStorage.setItem("authToken", authToken);
+localStorage.setItem("expiresAt", Date.now() + data.expiresIn * 1000);
+} catch (error) {
+console.error("Token yenileme hatası:", error);
+localStorage.removeItem("authToken");
+localStorage.removeItem("refreshToken");
+localStorage.removeItem("expiresAt");
+window.location.href = "/login";
+return;
+}
+}
+
+options.headers = {
+...options.headers,
+Authorization: `Bearer ${authToken}`,
+};
+
+return fetch(url, options);
+};
+
+useEffect(() => {
+const fetchCategories = async () => {
+setLoadingCategories(true);
+try {
+const response = await fetchWithAuth(
           "http://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az"
         );
         const data = await response.json();
@@ -50,7 +89,7 @@ const NewProductAdd = () => {
 
     setLoadingParameters(true);
     try {
-      const response = await fetch(
+      const response = await fetchWithAuth(
         `http://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${categoryId}&RequestFrontType=add`
       );
 
@@ -95,7 +134,7 @@ const NewProductAdd = () => {
 
       setImages((prevImages) => [...prevImages, ...imageUrls]);
 
-      const response = await fetch(
+      const response = await fetchWithAuth(
         "http://restartbaku-001-site3.htempurl.com/api/Product/add-image",
         {
           method: "POST",
@@ -141,13 +180,12 @@ const NewProductAdd = () => {
     console.log("Göndərilən payload:", payload);
   
     try {
-      const response = await fetch(
+      const response = await fetchWithAuth(
         "http://restartbaku-001-site3.htempurl.com/api/Product/add-product",
         { 
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
           },
           body: JSON.stringify(payload),
         }
@@ -156,7 +194,7 @@ const NewProductAdd = () => {
       const data = await response.json();
       if (data.isSuccessful) {
         alert("Elan uğurla əlavə edildi!");
-          setProductTitle("");
+        setProductTitle("");
         setSelectedCategory("");
         setImages([]);
         setFormData({});

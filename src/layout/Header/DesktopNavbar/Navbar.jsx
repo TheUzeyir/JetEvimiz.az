@@ -184,7 +184,7 @@ const Navbar = () => {
                 <div key={index}>
                     {item.type === "category" ? (
                         <div>
-                            {item.parentCategory ? (
+                            {item.parentCategory ? ( 
                                 <p
                                     onClick={() => handleItemClick(item)}
                                     className={style.nawBarSearchResultText_category}

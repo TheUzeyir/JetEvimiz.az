@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import style from "./searchResult.module.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,15 @@ const SearchResult = () => {
   const location = useLocation();
   const { category, products } = location.state || {}; 
 
+  // Pagination state
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageSize = 10; // Number of products per page
+
+  // Calculate paginated products
+  const paginatedProducts = products
+    ? products.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)
+    : [];
+
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");
     if (!savedUserName) {
@@ -27,16 +36,27 @@ const SearchResult = () => {
     dispatch(addLikedProduct(productItem));
   };
 
+  const handlePreviousPage = () => {
+    setPageIndex((prev) => Math.max(prev - 1, 0));
+  };
+
+  const handleNextPage = () => {
+    if (products && (pageIndex + 1) * pageSize < products.length) {
+      setPageIndex((prev) => prev + 1);
+    }
+  };
+
   return (
     <div className={style.searchResultContainer}>
-      <HeaderTop/>
-      <Navbar/>
+      <HeaderTop />
+      <Navbar />
       <div className="container">
+      <div className={style.categorySectionPage}>          
         <h2>Axtarış Nəticələri</h2>
         <h3>Ürünler</h3>
-        {products && products.length > 0 ? (
+        {paginatedProducts && paginatedProducts.length > 0 ? (
           <div className={style.productCard_container}>
-            {products.map((product) => (
+            {paginatedProducts.map((product) => (
               <div className={style.productCard} key={product.productId}>
                 <Link to={`/product-details/${product.slug}`}>
                   <div className={style.productCard_imgBox}>
@@ -85,10 +105,28 @@ const SearchResult = () => {
         ) : (
           <p>Bu kategori üçün məhsul tapılmadı.</p>
         )}
+        <div className={style.pagination}>
+          <button
+            onClick={handlePreviousPage}
+            disabled={pageIndex === 0}
+            className={style.paginationBtn}
+          >
+            Əvvəlki
+          </button>
+          <span>Səhifə {pageIndex + 1}</span>
+          <button
+            onClick={handleNextPage}
+            disabled={!products || (pageIndex + 1) * pageSize >= products.length}
+            className={style.paginationBtn}
+          >
+            Növbəti
+          </button>
+        </div>
+        </div>
       </div>
 
-      <Footer/>
-      <FooterResponsive/>
+      <Footer />
+      <FooterResponsive />
     </div>
   );
 };

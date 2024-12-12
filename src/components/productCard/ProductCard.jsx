@@ -136,7 +136,7 @@ const ProductCard = () => {
           className={style.paginationBtn}
         >
           Növbəti
-        </button>
+        </button> 
       </div>
       </div>
     </div>

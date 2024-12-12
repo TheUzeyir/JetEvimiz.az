@@ -8,7 +8,7 @@ import { useDispatch } from "react-redux";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
- 
+
 const CategoryProduct = () => {
   const location = useLocation();
   const navigate = useNavigate();
@@ -17,12 +17,14 @@ const CategoryProduct = () => {
   const [likedProducts, setLikedProducts] = useState([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
-  const [isVisible, setIsVisible] = useState(false);
   const [filterTitle, setFilterTitle] = useState("");
   const [parameters, setParameters] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filterParams, setFilterParams] = useState({});
+
+  const [pageIndex, setPageIndex] = useState(0);
+  const pageSize = 8; // Number of items per page
 
   const { products = { items: [] }, category } = location.state || {};
   const items = products.items;
@@ -105,7 +107,7 @@ const CategoryProduct = () => {
   const renderCategoryFilters = () => {
     if (loading) return <p>Loading filters...</p>;
     if (error) return <p>Error: {error}</p>;
-  
+
     return parameters.map((param, index) => (
       <div key={index} className={style.categoryBoxFilterCard}>
         <label htmlFor={`param-${index}`} style={{ fontWeight: "bold" }}>
@@ -127,7 +129,7 @@ const CategoryProduct = () => {
           <input
             id={`param-${index}`}
             type="number"
-            placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`} // Change placeholder text
+            placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`}
             onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
             className={style.categoryPageInput}
           />
@@ -137,7 +139,7 @@ const CategoryProduct = () => {
             <input
               id={`param-${index}`}
               type="text"
-              placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`} // Change placeholder text
+              placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`}
               onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
               className={style.categoryPageInput}
             />
@@ -146,9 +148,15 @@ const CategoryProduct = () => {
       </div>
     ));
   };
-  
 
   const filteredItems = filterProducts();
+
+  const paginatedItems = filteredItems.slice(
+    pageIndex * pageSize,
+    (pageIndex + 1) * pageSize
+  );
+
+  const totalPages = Math.ceil(filteredItems.length / pageSize);
 
   return (
     <div className={style.CategoryProduct_container}>
@@ -159,77 +167,96 @@ const CategoryProduct = () => {
         className={style.categoryBoxImg}
       />
       <div className="container">
-        <div className={style.CategoryProduct_header}>
-          <p>Elan-({filteredItems.length})</p>
-          <div className={style.CategoryProduct_filterBox}>
-            {renderCategoryFilters()}
+        <div className={style.CategoryProductPage}>
+          <div className={style.CategoryProduct_header}>
+            <p>Elan-({filteredItems.length})</p>
+            <div className={style.CategoryProduct_filterBox}>
+              {renderCategoryFilters()}
               <label htmlFor="titleFilter" className={style.categoryPageLabel}>
                 <p>Başlıq:</p>
-              <input
-                id="titleFilter"
-                type="text"
-                placeholder="Məhsul Başlığını Filtrə et"
-                value={filterTitle}
-                onChange={(e) => setFilterTitle(e.target.value)}
-                className={style.categoryPageInput}
-              />
+                <input
+                  id="titleFilter"
+                  type="text"
+                  placeholder="Məhsul Başlığını Filtrə et"
+                  value={filterTitle}
+                  onChange={(e) => setFilterTitle(e.target.value)}
+                  className={style.categoryPageInput}
+                />
               </label>
-          </div>
-        </div>
-
-        <div className={style.CategoryProduct_simple}>
-          <h2>Elanlar</h2>
-          {filteredItems.length > 0 ? (
-            <div className={style.productsGrid}>
-              {filteredItems.map((item) => (
-                <div className={style.productCard} key={item.productId}>
-                  <Link to={`/product-details/${item.slug}`}>
-                    <div className={style.productCard_imgBox}>
-                      <img
-                        src={item.coverImage}
-                        alt={item.productTitle}
-                        className={style.productCard_imgBox_img}
-                      />
-                      {likedProducts.some(
-                        (likedProduct) => likedProduct.productId === item.productId
-                      ) ? (
-                        <BsFillHeartFill
-                          className={style.productCard_imgBox_heartIcon_check}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            toggleLiked(item);
-                          }}
-                        />
-                      ) : (
-                        <FaHeart
-                          className={style.productCard_imgBox_heartIcon}
-                          onClick={(e) => {
-                            e.preventDefault();
-                            toggleLiked(item);
-                          }}
-                        />
-                      )}
-                    </div>
-                  </Link>
-                  <div className={style.productCard_info}>
-                    <h3>{item.productTitle}</h3>
-                    <p className={style.productCard_info_price}>
-                      {item.price} AZN
-                    </p>
-                    <p className={style.productCard_info_category}>
-                      {item.categoryName}
-                    </p>
-                  </div>
-                </div>
-              ))}
             </div>
-          ) : (
-            <p>No products found</p>
-          )}
+          </div>
+
+          <div className={style.CategoryProduct_simple}>
+            <h2>Elanlar</h2>
+            {paginatedItems.length > 0 ? (
+              <div className={style.productsGrid}>
+                {paginatedItems.map((item) => (
+                  <div className={style.productCard} key={item.productId}>
+                    <Link to={`/product-details/${item.slug}`}>
+                      <div className={style.productCard_imgBox}>
+                        <img
+                          src={item.coverImage}
+                          alt={item.productTitle}
+                          className={style.productCard_imgBox_img}
+                        />
+                        {likedProducts.some(
+                          (likedProduct) => likedProduct.productId === item.productId
+                        ) ? (
+                          <BsFillHeartFill
+                            className={style.productCard_imgBox_heartIcon_check}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleLiked(item);
+                            }}
+                          />
+                        ) : (
+                          <FaHeart
+                            className={style.productCard_imgBox_heartIcon}
+                            onClick={(e) => {
+                              e.preventDefault();
+                              toggleLiked(item);
+                            }}
+                          />
+                        )}
+                      </div>
+                    </Link>
+                    <div className={style.productCard_info}>
+                      <h3>{item.productTitle}</h3>
+                      <p className={style.productCard_info_price}>
+                        {item.price} AZN
+                      </p>
+                      <p className={style.productCard_info_category}>
+                        {item.categoryName}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <p>No products found</p>
+            )}
+            <div className={style.paginationContainer}>
+              <button
+                disabled={pageIndex === 0}
+                onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))}
+              >
+                Prev
+              </button>
+              <span>
+                Page {pageIndex + 1} of {totalPages}
+              </span>
+              <button
+                disabled={pageIndex === totalPages - 1}
+                onClick={() => setPageIndex((prev) => Math.min(prev + 1, totalPages - 1))}
+              >
+                Next
+              </button>
+            </div>
+          </div>
         </div>
       </div>
       <Footer />
-      <FooterResponsive/>
+      <FooterResponsive />
     </div>
   );
 };
