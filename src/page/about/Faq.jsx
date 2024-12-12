@@ -9,7 +9,7 @@ const Faq = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [openIndex, setOpenIndex] = useState(null);
-
+ 
   const clickBox = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };

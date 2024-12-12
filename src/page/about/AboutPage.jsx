@@ -5,7 +5,7 @@ import style from "./aboutPage.module.css"
 import Rules from './Rules'
 import TermCondition from './TermCondition'
 import Faq from './Faq'
-import Contack from './Contack'
+import Contack from './Contack' 
 import Info from "./Info"
 import { useNavigate } from 'react-router-dom';
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
