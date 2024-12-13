@@ -8,11 +8,13 @@ import { useDispatch } from "react-redux";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
+import { useTranslation } from "react-i18next"; // i18n-in import edilməsi
 
 const CategoryProduct = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { t, i18n } = useTranslation(); // i18n-dən istifadə edirik
 
   const [likedProducts, setLikedProducts] = useState([]);
   const [minPrice, setMinPrice] = useState("");
@@ -22,12 +24,20 @@ const CategoryProduct = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [filterParams, setFilterParams] = useState({});
-
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 8; // Number of items per page
 
   const { products = { items: [] }, category } = location.state || {};
   const items = products.items;
+
+  const getLanguageCode = () => {
+    const language = i18n.language; // Aktiv dili əldə edirik
+    if (language === "az") return "az"; // Azərbaycan dili
+    if (language === "ru") return "ru"; // Rus dili
+    if (language === "en") return "en"; // İngilis dili
+    if (language === "tr") return "tr"; // Türk dili
+    return "az"; // Varsayılan olaraq Azərbaycan dili
+  };
 
   useEffect(() => {
     const likedProductsFromStorage = localStorage.getItem("likedProducts");
@@ -41,8 +51,10 @@ const CategoryProduct = () => {
       const fetchParameters = async () => {
         setLoading(true);
         try {
+          const languageCode = getLanguageCode(); // Dil kodunu alırıq
+
           const response = await fetch(
-            `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${category.categoryId}&RequestFrontType=add`
+            `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=${languageCode}&CategoryId=${category.categoryId}&RequestFrontType=add`
           );
           if (!response.ok) throw new Error("Failed to fetch parameters");
           const data = await response.json();
@@ -100,13 +112,13 @@ const CategoryProduct = () => {
         );
       }
     });
- 
+
     return filteredItems;
   };
 
   const renderCategoryFilters = () => {
-    if (loading) return <p>Loading filters...</p>;
-    if (error) return <p>Error: {error}</p>;
+    if (loading) return <p>{t("loadingFilters")}</p>; // i18n istifadə edərək dilə uyğun məlumat
+    if (error) return <p>{t("error")}: {error}</p>;
 
     return parameters.map((param, index) => (
       <div key={index} className={style.categoryBoxFilterCard}>
@@ -118,7 +130,7 @@ const CategoryProduct = () => {
             id={`param-${index}`}
             onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
           >
-            <option value="">Seçin</option>
+            <option value="">{t("select")}</option>
             {param.options?.map((option, i) => (
               <option key={i} value={option.value}>
                 {option.label}
@@ -129,17 +141,17 @@ const CategoryProduct = () => {
           <input
             id={`param-${index}`}
             type="number"
-            placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`}
+            placeholder={`${t("enter")} ${param.parameterTitle}`}
             onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
             className={style.categoryPageInput}
           />
         ) : (
           <label className={style.categoryPageLabel}>
-            <p>Başlıq:</p>
+            <p>{t("title")}</p>
             <input
               id={`param-${index}`}
               type="text"
-              placeholder={`Məhsulun ${param.parameterTitle}-in daxil edin`}
+              placeholder={`${t("enter")} ${param.parameterTitle}`}
               onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
               className={style.categoryPageInput}
             />
@@ -164,15 +176,15 @@ const CategoryProduct = () => {
       <div className="container">
         <div className={style.CategoryProductPage}>
           <div className={style.CategoryProduct_header}>
-            <p>Elan-({filteredItems.length})</p>
+            <p>{t("ads")} ({filteredItems.length})</p>
             <div className={style.CategoryProduct_filterBox}>
               {renderCategoryFilters()}
               <label htmlFor="titleFilter" className={style.categoryPageLabel}>
-                <p>Başlıq:</p>
+                <p>{t("title")}</p>
                 <input
                   id="titleFilter"
                   type="text"
-                  placeholder="Məhsul Başlığını Filtrə et"
+                  placeholder={t("filterProductTitle")}
                   value={filterTitle}
                   onChange={(e) => setFilterTitle(e.target.value)}
                   className={style.categoryPageInput}
@@ -182,7 +194,7 @@ const CategoryProduct = () => {
           </div>
 
           <div className={style.CategoryProduct_simple}>
-            <h2>Elanlar</h2>
+            <h2>{t("ads")}</h2>
             {paginatedItems.length > 0 ? (
               <div className={style.productsGrid}>
                 {paginatedItems.map((item) => (
@@ -228,23 +240,23 @@ const CategoryProduct = () => {
                 ))}
               </div>
             ) : (
-              <p>No products found</p>
+              <p>{t("noProductsFound")}</p>
             )}
             <div className={style.paginationContainer}>
               <button
                 disabled={pageIndex === 0}
                 onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))}
               >
-                Prev
+                {t("prev")}
               </button>
               <span>
-                Page {pageIndex + 1} of {totalPages}
+                {t("page")} {pageIndex + 1} {t("of")} {totalPages}
               </span>
               <button
                 disabled={pageIndex === totalPages - 1}
                 onClick={() => setPageIndex((prev) => Math.min(prev + 1, totalPages - 1))}
               >
-                Next
+                {t("next")}
               </button>
             </div>
           </div>
