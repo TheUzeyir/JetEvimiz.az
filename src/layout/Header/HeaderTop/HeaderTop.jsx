@@ -64,7 +64,7 @@ export default function HeaderTop() {
   }, []);
 
   useEffect(() => {
-    axios.get('https://restartbaku-001-site4.htempurl.com/api/Language/get-all-languages')
+    axios.get('https://restartbaku-001-site3.htempurl.com/api/Language/get-all-languages')
       .then(response => {
         if (response.data.isSuccessful) {
           setLanguages(response.data.data);
