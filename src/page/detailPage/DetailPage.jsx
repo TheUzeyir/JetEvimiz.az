@@ -10,6 +10,7 @@ import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import ImageGallery from "react-image-gallery";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
+import { useTranslation } from "react-i18next"; // Import i18n hook
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
@@ -18,12 +19,21 @@ const DetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { i18n } = useTranslation(); // i18n hook to get the current language
 
+  // Get language code based on current language
+  const getLanguageCode = () => {
+    const language = i18n.language;
+    return language === 'az' ? 'az' : language === 'ru' ? 'ru' : language === 'en' ? 'en' : 'tr';
+  };
+
+  // Fetch product data based on language code
   useEffect(() => {
     const getProduct = async () => {
       try {
+        const languageCode = getLanguageCode();
         const response = await fetch(
-          `https://restartbaku-001-site3.htempurl.com/api/Product/get-product?LanguageCode=az&Slug=${slug}`
+          `https://restartbaku-001-site3.htempurl.com/api/Product/get-product?LanguageCode=${languageCode}&Slug=${slug}`
         );
         if (!response.ok) {
           throw new Error("Ürün bilgisi alınamadı.");
@@ -35,7 +45,7 @@ const DetailPage = () => {
       }
     };
     getProduct();
-  }, [slug]);
+  }, [slug, i18n.language]); // Re-fetch data when language changes
 
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");
@@ -104,7 +114,7 @@ const DetailPage = () => {
                   alt="Product"
                   className={style.detailPage_main_head_left_mainImgBox_img}
                 />
-              )} 
+              )}
             </div>
             <div className={style.detailPage_main_head_right}>
               <h4 className={style.detailPage_main_head_right_humanName}>
@@ -125,9 +135,7 @@ const DetailPage = () => {
           <div className={style.detailPage_main_bottom}>
             <div className={style.detailPage_main_bottom_left}>
               {Object.entries(product).map(([key, value]) => {
-                if (
-                  ["user", "parameters", "productGalleries"].includes(key)
-                ) {
+                if (["user", "parameters", "productGalleries"].includes(key)) {
                   return null;
                 }
                 if (typeof value === "object" || value === null) {
@@ -156,7 +164,6 @@ const DetailPage = () => {
                     <span>{param.parameterValue}</span>
                   </div>
                 ))}
-
               <h5>User Information</h5>
               {product.user &&
                 Object.entries(product.user).map(([key, value]) => {
@@ -231,7 +238,7 @@ const DetailPage = () => {
                     </div>
                   </div>
                 )}
-              </div> 
+              </div>
             </div>
           </div>
         </div>

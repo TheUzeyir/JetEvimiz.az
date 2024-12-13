@@ -3,7 +3,7 @@ import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import style from "./newProductAdd.module.css";
 import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
-import { useTranslation } from "react-i18next"  
+import { useTranslation } from "react-i18next";
 import { FaBars } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -20,17 +20,18 @@ const NewProductAdd = () => {
   const [formData, setFormData] = useState({});
   const [productTitle, setProductTitle] = useState("");
   const [description, setDescription] = useState("");
-  const {t}= useTranslation() 
-  const navigate=useNavigate()
- 
+  const { t, i18n } = useTranslation(); // i18n dildə dəyişiklikləri idarə etmək üçün
+  const navigate = useNavigate();
+
   const authToken = localStorage.getItem("authToken");
+  const currentLanguageCode = i18n.language; // İstifadəçinin seçdiyi dil kodu
 
   useEffect(() => {
     const fetchCategories = async () => {
       setLoadingCategories(true);
       try {
         const response = await fetch(
-          "http://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az"
+          `http://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${currentLanguageCode}`
         );
         const data = await response.json();
         setCategories(data.data || []);
@@ -41,7 +42,7 @@ const NewProductAdd = () => {
       }
     };
     fetchCategories();
-  }, []);
+  }, [currentLanguageCode]); // Dil dəyişdikdə yenidən çağırılır
 
   const handleCategoryChange = async (event) => {
     const categoryId = event.target.value;
@@ -55,7 +56,7 @@ const NewProductAdd = () => {
     setLoadingParameters(true);
     try {
       const response = await fetch(
-        `http://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${categoryId}&RequestFrontType=add`
+        `http://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=${currentLanguageCode}&CategoryId=${categoryId}&RequestFrontType=add`
       );
 
       const data = await response.json();
