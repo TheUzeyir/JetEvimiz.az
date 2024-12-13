@@ -4,8 +4,8 @@ import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import style from "./newProductAdd.module.css";
 import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
 import { useTranslation } from "react-i18next"  
-import { FaChevronLeft } from "react-icons/fa";
 import { FaBars } from "react-icons/fa";
+import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Contack from "../about/Contack";
 
@@ -14,61 +14,22 @@ const NewProductAdd = () => {
   const [parameters, setParameters] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loadingCategories, setLoadingCategories] = useState(true);
-  const [loadingParameters, setLoadingParameters] = useState(false); 
+  const [loadingParameters, setLoadingParameters] = useState(false);
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({});
   const [productTitle, setProductTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { t } = useTranslation(); 
+  const {t}= useTranslation() 
   const navigate=useNavigate()
-
+ 
   const authToken = localStorage.getItem("authToken");
 
-  const fetchWithAuth = async (url, options = {}) => {
-    let authToken = localStorage.getItem("authToken");
-    const refreshToken = localStorage.getItem("refreshToken");
-    const expiresAt = localStorage.getItem("expiresAt");
-
-    if (Date.now() > expiresAt && refreshToken) {
+  useEffect(() => {
+    const fetchCategories = async () => {
+      setLoadingCategories(true);
       try {
-        const response = await fetch("http://example.com/api/auth/refresh-token", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-  body: JSON.stringify({ refreshToken }),
-});
-
-if (!response.ok) throw new Error("Token yenileme başarısız!");
-
-const data = await response.json();
-authToken = data.accessToken;
-localStorage.setItem("authToken", authToken);
-localStorage.setItem("expiresAt", Date.now() + data.expiresIn * 1000);
-} catch (error) {
-console.error("Token yenileme hatası:", error);
-localStorage.removeItem("authToken");
-localStorage.removeItem("refreshToken");
-localStorage.removeItem("expiresAt");
-window.location.href = "/login";
-return;
-}
-}
-
-options.headers = {
-...options.headers,
-Authorization: `Bearer ${authToken}`,
-};
-
-return fetch(url, options);
-};
-
-useEffect(() => {
-const fetchCategories = async () => {
-setLoadingCategories(true);
-try {
-const response = await fetchWithAuth(
+        const response = await fetch(
           "http://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=az"
         );
         const data = await response.json();
@@ -93,7 +54,7 @@ const response = await fetchWithAuth(
 
     setLoadingParameters(true);
     try {
-      const response = await fetchWithAuth(
+      const response = await fetch(
         `http://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${categoryId}&RequestFrontType=add`
       );
 
@@ -133,12 +94,12 @@ const response = await fetchWithAuth(
     try {
       for (let i = 0; i < files.length; i++) {
         imageData.append("files", files[i]);
-        imageUrls.push(URL.createObjectURL(files[i])); 
+        imageUrls.push(URL.createObjectURL(files[i])); // Generate a URL for preview
       }
 
       setImages((prevImages) => [...prevImages, ...imageUrls]);
 
-      const response = await fetchWithAuth(
+      const response = await fetch(
         "http://restartbaku-001-site3.htempurl.com/api/Product/add-image",
         {
           method: "POST",
@@ -184,12 +145,13 @@ const response = await fetchWithAuth(
     console.log("Göndərilən payload:", payload);
   
     try {
-      const response = await fetchWithAuth(
+      const response = await fetch(
         "http://restartbaku-001-site3.htempurl.com/api/Product/add-product",
         { 
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
           },
           body: JSON.stringify(payload),
         }
@@ -198,7 +160,7 @@ const response = await fetchWithAuth(
       const data = await response.json();
       if (data.isSuccessful) {
         alert("Elan uğurla əlavə edildi!");
-        setProductTitle("");
+          setProductTitle("");
         setSelectedCategory("");
         setImages([]);
         setFormData({});
@@ -218,7 +180,7 @@ const response = await fetchWithAuth(
       <HeaderTop />
       <div className="container">
         <div className={style.addBox_container}>
-          <p className={style.addPageGoback} onClick={()=>navigate(-1)}><FaChevronLeft/>Go back</p>
+        <p className={style.addPageGoback} onClick={()=>navigate(-1)}><FaChevronLeft/>Go back</p>
           <FaBars
             className={style.bar_icon}
             onClick={() => navigate("/headerBox")}

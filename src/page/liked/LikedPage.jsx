@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import style from "./likedPage.module.css";
@@ -15,9 +15,36 @@ import Header from "../../layout/Header/Header";
 const LikedPage = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  
-  const likedProducts = useSelector(state => state.likedProducts.items); 
+  const likedProducts = useSelector((state) => state.likedProducts.items);
   const dispatch = useDispatch();
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1])); // Token'ı decode et
+        const isExpired = decoded.exp * 1000 < Date.now(); // Süresinin geçip geçmediğini kontrol et
+        if (isExpired) {
+          Swal.fire({
+            icon: "warning",
+            title: "Oturum Süresi Doldu",
+            text: "Oturumunuzun süresi dolduğu için yeniden giriş yapmanız gerekiyor.",
+            confirmButtonText: "Tamam",
+          }).then(() => {
+            localStorage.removeItem("authToken"); // Token'ı kaldır
+            navigate("/login"); // Giriş sayfasına yönlendir
+          });
+        }
+      } catch (error) {
+        console.error("Token decode hatası:", error);
+        localStorage.removeItem("authToken");
+        navigate("/login");
+      }
+    } else {
+      navigate("/login"); // Token yoksa giriş sayfasına yönlendir
+    }
+  }, [navigate]);
+  
 
   const toggleLiked = (productItem) => {
     dispatch(addLikedProduct(productItem));
@@ -40,10 +67,7 @@ const LikedPage = () => {
       <div className={style.likedPage}>
         <Header />
         <div className="container">
-          <p
-            className={style.productCard_goBack}
-            onClick={() => navigate(-1)}
-          >
+          <p className={style.productCard_goBack} onClick={() => navigate(-1)}>
             <MdOutlineKeyboardArrowLeft /> {t("goBack")}
           </p>
           <div className={style.productCard_container}>
@@ -59,18 +83,19 @@ const LikedPage = () => {
                     <BsFillHeartFill
                       className={
                         likedProducts.some(
-                          (likedProduct) => likedProduct.productId === item.productId
+                          (likedProduct) =>
+                            likedProduct.productId === item.productId
                         )
                           ? style.productCard_imgBox_heartIcon_active
                           : style.productCard_imgBox_heartIcon
                       }
-                      onClick={() => toggleLiked(item)} // Handle like/unlike
+                      onClick={() => toggleLiked(item)}
                     />
                     <div className={style.productCard_imgBox_title}>
                       <BsShop /> {t("likedPageStoreText")}
                     </div>
                   </div>
-                   <Link to={`/product-details/${item.productId}`}>
+                  <Link to={`/product-details/${item.productId}`}>
                     <div className={style.productCard_title}>
                       <span className={style.productCard_title_pirce}>
                         {item.price} AZN
@@ -79,7 +104,9 @@ const LikedPage = () => {
                         <IoCalendarNumber /> 1 Gün
                       </div>
                     </div>
-                    <p className={style.productCard_subTitle}>{item.productTitle}</p>
+                    <p className={style.productCard_subTitle}>
+                      {item.productTitle}
+                    </p>
                     <p className={style.productCard_text}>Baki</p>
                   </Link>
                 </div>
