@@ -34,6 +34,7 @@
   padding: 20px;
   transform: scale(0.8);
   animation: scaleIn 0.3s ease-in-out forwards;
+  overflow-y: scroll;
 }
 
 @keyframes scaleIn {

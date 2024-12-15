@@ -203,6 +203,33 @@ font-size: 25px;
     margin-right: 10px;
 }
 
+.imageGallery {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .navButton {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .navButton:first-of-type {
+    left: 10px;
+  }
+  
+  .navButton:last-of-type {
+    right: 10px;
+  }
+  
+
 @media screen and (max-width:968px) {
     .detailPage_main_head_left{
         flex-direction: column;

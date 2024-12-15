@@ -81,14 +81,19 @@ const DetailPage = () => {
       thumbnail: gallery.productGalleryFile,
     })) || [];
 
-  const isDynamicValue = (key, value) => {
-    const staticValues = ["300", "1344", "mercedes"];
-    return !staticValues.includes(String(value)) && value !== null;
+  const handleNextSlide = () => {
+    const gallery = document.querySelector('.react-image-gallery');
+    if (gallery) gallery.slideNext();
+  };
+
+  const handlePreviousSlide = () => {
+    const gallery = document.querySelector('.react-image-gallery');
+    if (gallery) gallery.slidePrev();
   };
 
   const filterProductDetails = (key, value) => {
     const hiddenKeys = ["id", "slug", "userCode", "productId", "coverImage"];
-    return !hiddenKeys.includes(key) && isDynamicValue(key, value);
+    return !hiddenKeys.includes(key) && value !== null;
   };
 
   return (
@@ -107,6 +112,7 @@ const DetailPage = () => {
                   showThumbnails={true}
                   showFullscreenButton={true}
                   showPlayButton={false}
+                  additionalClass="react-image-gallery"
                 />
               ) : (
                 <img
@@ -115,6 +121,18 @@ const DetailPage = () => {
                   className={style.detailPage_main_head_left_mainImgBox_img}
                 />
               )}
+              <button
+                className={style.detailPage_gallery_control}
+                onClick={handlePreviousSlide}
+              >
+                <MdOutlineKeyboardArrowLeft />
+              </button>
+              <button
+                className={style.detailPage_gallery_control}
+                onClick={handleNextSlide}
+              >
+                <MdOutlineKeyboardArrowLeft style={{ transform: 'rotate(180deg)' }} />
+              </button>
             </div>
             <div className={style.detailPage_main_head_right}>
               <h4 className={style.detailPage_main_head_right_humanName}>
@@ -218,20 +236,14 @@ const DetailPage = () => {
                 </p>
                 {openComplaintBox && (
                   <div
-                    className={
-                      style.detailPage_main_bottom_right_card_complaintBox_container
-                    }
+                    className={style.detailPage_main_bottom_right_card_complaintBox_container}
                   >
                     <div
-                      className={
-                        style.detailPage_main_bottom_right_card_complaintBox
-                      }
+                      className={style.detailPage_main_bottom_right_card_complaintBox}
                     >
                       <textarea placeholder="Şikayət mətni" />
                       <button
-                        className={
-                          style.detailPage_main_bottom_right_card_complaintBox_btn
-                        }
+                        className={style.detailPage_main_bottom_right_card_complaintBox_btn}
                       >
                         Göndər
                       </button>
