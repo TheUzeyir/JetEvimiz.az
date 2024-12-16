@@ -12,7 +12,7 @@ const ProductCard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const likedProducts = useSelector((state) => state.likedProducts.items);
-  const { i18n } = useTranslation(); // i18n-dən istifadə edirik
+  const { i18n } = useTranslation(); 
 
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -21,7 +21,6 @@ const ProductCard = () => {
 
   const pageSize = 15;
 
-  // Dil kodunu əldə edən funksiya
   const getLanguageCode = () => {
     const language = i18n.language; // Aktiv dili əldə edirik
     if (language === 'az') return 'az'; // Azərbaycan dili
