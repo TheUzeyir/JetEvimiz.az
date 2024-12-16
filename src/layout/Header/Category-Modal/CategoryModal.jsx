@@ -101,7 +101,7 @@ const CategoryModal = ({ closeModal }) => {
                 className={style.categoryItem}
               >
                 <span className={style.categoryIcon}></span>
-                <img className='cat-icon' src={category.categoryImage} alt="" />
+                <img className={style.caticon} src={category.categoryImage} alt="" />
                 {category.categoryTitle}
               </div>
             ))}

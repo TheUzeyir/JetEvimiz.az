@@ -70,12 +70,17 @@ background: linear-gradient(145deg, #ffffffe1, #f0f0f0);
     background: #2A3036;
     border-radius: 4px;
     margin-bottom: 5px;
+    width: 200px;
 }
 
 .categoryItem:hover {
     color: #2A2036;
     border:1px solid #2A2036;
     background: transparent;
+}
+
+.caticon{
+    height: 40px;
 }
 
 .products {
