@@ -69,17 +69,7 @@
     font-size: 0.8rem;
     margin: 1rem 0;
   }
-  .footerMain_login_contackLogo {
-    display: flex;
-    gap: 1rem;
-    font-size: 1.5rem;
-  }
-  .footerMain_login_contackLogo_icon {
-    cursor: pointer;
-  }
-  .footerMain_login_contackLogo_icon:hover {
-    color: white;
-  }
+
   
   @media screen and (max-width: 968px) {
     .footer {

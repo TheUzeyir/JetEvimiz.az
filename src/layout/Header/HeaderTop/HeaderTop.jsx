@@ -1,18 +1,19 @@
 import React, { useState, useEffect, useRef } from "react";
 import { FaUser, FaRegHeart } from "react-icons/fa";
-import { FaInstagram } from "react-icons/fa6";
 import { IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import style from "../header.module.css";
 import HeaderProfileCard from "../headerProfileCard/HeaderProfileCard";
+import { FaFacebook,FaPinterest } from "react-icons/fa";
+import { FaXTwitter,FaInstagram } from "react-icons/fa6";
 import axios from 'axios';
-import { useTranslation } from "react-i18next"; // i18next kullanımı
+import { useTranslation } from "react-i18next";
 
 export default function HeaderTop() {
-  const { t, i18n } = useTranslation(); // i18n değişkenini alın
+  const { t, i18n } = useTranslation(); 
   const navigate = useNavigate();
   const [languages, setLanguages] = useState([]);
-  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language); // Başlangıç dili
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language); 
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isProfileCardOpen, setProfileCardOpen] = useState(false);
@@ -85,14 +86,15 @@ export default function HeaderTop() {
     <div className={style.headerTop}>
       <div className="container">
         <div className={style.headerTop_container}>
-          <div className={style.headerTop_container_left}>
             <div className={style.contactNum}>
               <p>{t("support")}: (077) 613-59-59</p>
-              <div className={style.contactNum_box}>
-                <FaInstagram /> JetEvim.az
-              </div>
+              <div className={style.footerMain_login_contackLogo}>
+                <FaFacebook className={style.footerMain_login_contackLogo_icon} href='https://www.facebook.com/shopify'/>
+                <FaXTwitter className={style.footerMain_login_contackLogo_icon} href='https://www.twitter.com/shopify/'/>
+                <FaPinterest className={style.footerMain_login_contackLogo_icon} href='https://www.pinterest.com/shopify/'/>
+                <FaInstagram className={style.footerMain_login_contackLogo_icon} href='https://www.instagram.com/shopify/'/>
             </div>
-          </div>
+            </div>
           <div className={style.headerTop_container_right}>
             <select
               className={style.headerTop_container_right_langBox}

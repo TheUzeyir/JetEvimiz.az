@@ -1,7 +1,7 @@
 .headerTop {
   background: #2A2036;
   width: 100%;
-  padding: 20px 0;
+  padding-bottom: 14px;
   border-bottom: 1px solid gray;
   display: flex;
   align-items: center;
@@ -23,8 +23,9 @@
 
 .contactNum {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
 }
 
 .contactNum_box {
@@ -42,6 +43,7 @@
 }
 
 .headerTop_container {
+  color: white;
   width: 100%;
   display: flex;
   justify-content: space-between;
@@ -54,7 +56,7 @@
 .headerTop_container_right {
   display: flex;
   align-items: center;
-  gap: 30px;
+  gap: 10px;
 }
 
 .headerTop_container_right_icon {
@@ -62,6 +64,20 @@
 }
 
 .headerTop_container_right {
+  color: white;
+}
+
+.footerMain_login_contackLogo {
+  display: flex;
+  gap: 1rem;
+  font-size: 1.5rem;
+}
+
+.footerMain_login_contackLogo_icon {
+  cursor: pointer;
+}
+
+.footerMain_login_contackLogo_icon:hover {
   color: white;
 }
 
