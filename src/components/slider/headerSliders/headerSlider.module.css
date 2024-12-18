@@ -1,0 +1,19 @@
+.headerSliderBox {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 100%;
+  height: 150px;
+  cursor: pointer;
+}
+
+.headerSliderBoxText {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+@media screen and (max-width: 1200px) {
+  .headerSliderBoxText {
+    font-size: 15px;
+  }
+}/*# sourceMappingURL=headerSlider.module.css.map */

@@ -18,8 +18,7 @@ const Navbar = () => {
   const [error, setError] = useState("");
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const cities = ["Bakı", "Gəncə", "Sumqayıt", "Şəki", "Lənkəran"];
-
+  const [cities, setCities] = useState([]);
   const handleCityChange = (event) => setSelectedCity(event.target.value);
 
   const handleNewProductPageClick = () => {
@@ -129,6 +128,24 @@ const Navbar = () => {
         }
       });
   };
+
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const response = await axios.get("https://restartbaku-001-site3.htempurl.com/api/City/get-cities");
+        if (response.data && Array.isArray(response.data.data)) {
+          setCities(response.data.data); // Assuming `response.data.data` contains the array of cities
+        } else {
+          console.error("Unexpected API response:", response);
+        }
+      } catch (error) {
+        console.error("Error fetching cities:", error);
+        setError("Şəhərləri alarkən xəta baş verdi.");
+      }
+    };
+
+    fetchCities();
+  }, []);
   
 
   const openModal = () => setModalOpen(true);
@@ -142,14 +159,16 @@ const Navbar = () => {
             <p className={style.navbarBrand} onClick={() => navigate("/")}>JetEvimiz</p>
             <div className={style.categoryBox} onClick={openModal}>{t("category")}</div>
             <div className={style.inputGroup}>
-              <select
+            <select
                 value={selectedCity}
                 onChange={handleCityChange}
                 className={style.navBar_selectBox}
-              > 
+              >
                 <option value="">--{t("chooseCity")}--</option>
-                {cities.map((city, index) => (
-                  <option key={index} value={city}>{city}</option>
+                {cities.map((city) => (
+                  <option key={city.cityId} value={city.title}>
+                    {city.title}
+                  </option>
                 ))}
               </select>
               <input
