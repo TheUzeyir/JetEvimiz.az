@@ -237,7 +237,7 @@ i18n
             //NawBarResponsive finish
 
             //ProfileCard start
-            profileCardCurrenrtText: "Hazırda saytda",
+            profileCardCurrenrtText: "Hazırda saytda elan yoxdur",
             profileCardExpiredText: "Müddəti başa çatmış",
             profileCardNotUnpublishedText: "Dərc olunmamış",
             profileCardWaitText: "Gözləmədə",
@@ -479,7 +479,7 @@ i18n
             //NawBarResponsive finish
 
             //ProfileCard start
-            profileCardCurrenrtText: "Currently on the site",
+            profileCardCurrenrtText: "There are currently no ads on the site.",
             profileCardExpiredText: "Expired",
             profileCardNotUnpublishedText: "Unpublished",
             profileCardWaitText: "Waiting",
@@ -721,7 +721,7 @@ i18n
             //NawBarResponsive finish
 
             //ProfileCard start
-            profileCardCurrenrtText: "Şu anda sitede",
+            profileCardCurrenrtText: "Şu anda sitede ilan yok",
             profileCardExpiredText: "Süresi dolmuş",
             profileCardNotUnpublishedText: "Yayınlanmamış",
             profileCardWaitText: "Beklemede",
@@ -963,7 +963,7 @@ i18n
             //NawBarResponsive finish
 
             //ProfileCard start
-            profileCardCurrenrtText: "В настоящее время на сайте",
+            profileCardCurrenrtText: "На данный момент на сайте нет рекламы",
             profileCardExpiredText: "Просрочено",
             profileCardNotUnpublishedText: "Неопубликовано",
             profileCardWaitText: "Ожидание",

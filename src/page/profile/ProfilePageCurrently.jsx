@@ -39,7 +39,7 @@ const ProfilePageCurrently = () => {
 
   return (
     <div className={style.profileCardBox}>
-      <p className={style.profileCardBox_title}>{t('profileCardWaitProduct')}</p>
+      <p className={style.profileCardBox_title}>{t('profileCardCurrenrtText')}</p>
       {statusType === 1 && products.length > 0 ? (
         <div className={style.productList}>
           {products.map((product) => (
