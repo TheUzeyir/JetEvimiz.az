@@ -20,18 +20,18 @@ const NewProductAdd = () => {
   const [formData, setFormData] = useState({});
   const [productTitle, setProductTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { t, i18n } = useTranslation(); // i18n dildə dəyişiklikləri idarə etmək üçün
+  const { t, i18n } = useTranslation(); 
   const navigate = useNavigate();
 
   const authToken = localStorage.getItem("authToken");
-  const currentLanguageCode = i18n.language; // İstifadəçinin seçdiyi dil kodu
+  const currentLanguageCode = i18n.language; 
 
   useEffect(() => {
     const fetchCategories = async () => {
       setLoadingCategories(true);
       try {
         const response = await fetch(
-          `http://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${currentLanguageCode}`
+          `https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${currentLanguageCode}`
         );
         const data = await response.json();
         setCategories(data.data || []);
@@ -56,7 +56,7 @@ const NewProductAdd = () => {
     setLoadingParameters(true);
     try {
       const response = await fetch(
-        `http://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=${currentLanguageCode}&CategoryId=${categoryId}&RequestFrontType=add`
+        `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=${currentLanguageCode}&CategoryId=${categoryId}&RequestFrontType=add`
       );
 
       const data = await response.json();
@@ -95,19 +95,20 @@ const NewProductAdd = () => {
     try {
       for (let i = 0; i < files.length; i++) {
         imageData.append("files", files[i]);
-        imageUrls.push(URL.createObjectURL(files[i])); // Generate a URL for preview
+        imageUrls.push(URL.createObjectURL(files[i])); 
       }
 
       setImages((prevImages) => [...prevImages, ...imageUrls]);
 
       const response = await fetch(
-        "http://restartbaku-001-site3.htempurl.com/api/Product/add-image",
+        "https://restartbaku-001-site3.htempurl.com/api/Product/add-image",
         {
           method: "POST",
           body: imageData,
         }
       );
-
+      console.log(imageUrls);
+      
       if (!response.ok) {
         throw new Error("Failed to upload images");
       }
@@ -127,6 +128,7 @@ const NewProductAdd = () => {
 
   const handleRemoveImage = (index) => {
     setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    
   };
 
   const handleSubmit = async () => {
@@ -140,14 +142,14 @@ const NewProductAdd = () => {
       categoryId: selectedCategory,
       storeId: null,
       description: description || "2024121",
-      images,
+      images:images,
       parameters: formData,
     };
     console.log("Göndərilən payload:", payload);
   
     try {
       const response = await fetch(
-        "http://restartbaku-001-site3.htempurl.com/api/Product/add-product",
+        "https://restartbaku-001-site3.htempurl.com/api/Product/add-product",
         { 
           method: "POST",
           headers: {
