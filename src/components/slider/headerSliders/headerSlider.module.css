@@ -16,4 +16,9 @@
   .headerSliderBoxText {
     font-size: 15px;
   }
+}
+@media screen and (max-width: 450px) {
+  .headerSliderBoxText {
+    font-size: 10px;
+  }
 }/*# sourceMappingURL=headerSlider.module.css.map */

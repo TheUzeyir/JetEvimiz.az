@@ -188,7 +188,7 @@ i18n
             loginPageNotAccText:"Hesabınız yoxdur?",
             loginPageCteateAccText:"Hesab yaradın",
             signInRegstrationText:"Qeydiyyatdan keçin",
-            signInNameInput:"İstifadəçi adı",
+            signInNameInput:"İstifadəçi adı ve soyadı",
             signInFirstNameInput:"Ad",
             signInLastNameInput:"Soy Ad",
             signInPhoneInput:"Telefon",
@@ -237,7 +237,7 @@ i18n
             //NawBarResponsive finish
 
             //ProfileCard start
-            profileCardCurrenrtText: "Hazırda saytda",
+            profileCardCurrenrtText: "Hazırda saytda elan yoxdur",
             profileCardExpiredText: "Müddəti başa çatmış",
             profileCardNotUnpublishedText: "Dərc olunmamış",
             profileCardWaitText: "Gözləmədə",
@@ -431,7 +431,7 @@ i18n
             loginPageNotAccText:"Don't have an account?",
             loginPageCteateAccText:"Create an account",
             signInRegstrationText:"Register",
-            signInNameInput:"Username",
+            signInNameInput:"Username and Surname",
             signInFirstNameInput:"First name",
             signInLastNameInput:"Last name",
             signInPhoneInput:"Phone",
@@ -479,7 +479,7 @@ i18n
             //NawBarResponsive finish
 
             //ProfileCard start
-            profileCardCurrenrtText: "Currently on the site",
+            profileCardCurrenrtText: "There are currently no ads on the site.",
             profileCardExpiredText: "Expired",
             profileCardNotUnpublishedText: "Unpublished",
             profileCardWaitText: "Waiting",
@@ -673,7 +673,7 @@ i18n
             loginPageNotAccText:"Hesabınız yok mu?",
             loginPageCteateAccText:"Hesap oluştur",
             signInRegstrationText:"Kayıt ol",
-            signInNameInput:"Kullanıcı adi",
+            signInNameInput:"Kullanıcı adi ve soyadi",
             signInFirstNameInput:"Ad",
             signInLastNameInput:"Soyadı",
             signInPhoneInput:"Telefon",
@@ -721,7 +721,7 @@ i18n
             //NawBarResponsive finish
 
             //ProfileCard start
-            profileCardCurrenrtText: "Şu anda sitede",
+            profileCardCurrenrtText: "Şu anda sitede ilan yok",
             profileCardExpiredText: "Süresi dolmuş",
             profileCardNotUnpublishedText: "Yayınlanmamış",
             profileCardWaitText: "Beklemede",
@@ -915,7 +915,7 @@ i18n
             loginPageNotAccText:"Нет учетной записи?",
             loginPageCteateAccText:"Создать учетную запись",
             signInRegstrationText:"Зарегистрироваться",
-            signInNameInput:"Имя",
+            signInNameInput:"Имя пользователя",
             signInFirstNameInput:"Имя",
             signInLastNameInput:"Фамилия",
             signInPhoneInput:"Телефон",
@@ -963,7 +963,7 @@ i18n
             //NawBarResponsive finish
 
             //ProfileCard start
-            profileCardCurrenrtText: "В настоящее время на сайте",
+            profileCardCurrenrtText: "На данный момент на сайте нет рекламы",
             profileCardExpiredText: "Просрочено",
             profileCardNotUnpublishedText: "Неопубликовано",
             profileCardWaitText: "Ожидание",

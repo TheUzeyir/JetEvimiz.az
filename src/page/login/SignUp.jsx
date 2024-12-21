@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import backImg from "../../img/loginImg.png";
 import { useTranslation } from "react-i18next";
+import phoneImg from "../../img/phone.png";
 
 const SignUp = () => {
   const { t } = useTranslation();
@@ -149,7 +150,7 @@ const SignUp = () => {
             {
               name: "phone",
               placeholder: t("signInPhoneInput"),
-              icon: userIcon,
+              icon: phoneImg,
             },
             {
               name: "email",
@@ -211,7 +212,6 @@ const SignUp = () => {
             )}
           </div>
           <div>
-            <button type="submit">{t("signInCreateAcc")}</button>
             <span>
               {t("signInHaveAcc")}
               <Link to="/login">{t("signInLoginText")}</Link>

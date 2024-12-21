@@ -14,42 +14,49 @@ const ProfilePageWaiting = () => {
     try {
       const token = localStorage.getItem('token');
   
-      const response = await fetch(`https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`, 
-          'Content-Type': 'application/json'
+      const response = await fetch(
+        `https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`,
+        {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json',
+          },
         }
-      });
+      );
   
-      if (!response.ok) { 
+      if (!response.ok) {
         throw new Error('Failed to fetch');
       }
   
       const data = await response.json();
+      console.log('Fetched Products:', data); // API'den gelen veriyi logluyoruz.
       if (statusType === 2) {
-        setProducts(data); 
+        setProducts(data);
       }
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
+
+  
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("authToken"); 
+        const token = localStorage.getItem("authToken");
         const response = await fetch(
           `https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`,
           {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`, 
+              Authorization: `Bearer ${token}`,
             },
           }
         );
   
         const data = await response.json();
+        console.log('Fetched Products in useEffect:', data); // API'den gelen veriyi logluyoruz.
         if (statusType === 1) {
           setProducts(data);
         }
