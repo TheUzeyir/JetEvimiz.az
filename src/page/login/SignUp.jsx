@@ -124,7 +124,7 @@ const SignUp = () => {
         setTouched({});
       } else if (response.status === 409) {
         toast.error(
-          "Bu email artiq mövcuddur"
+          "Bu email artiq mövcuddur ve yaxud butun melumatlari daxil edin"
         );
       } else {
         toast.warning("Yenidən cəhd edin");
