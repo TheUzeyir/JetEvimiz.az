@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import { FaBars } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import Contack from "../about/Contack";
 
 const NewProductAdd = () => {
@@ -84,52 +85,9 @@ const NewProductAdd = () => {
     }));
   };
 
-  const handleImageUpload = async (event) => {
-    const files = event.target.files;
-    if (!files.length) return;
+ 
 
-    const imageData = new FormData();
-    const imageUrls = [];
-    setUploading(true);
 
-    try {
-      for (let i = 0; i < files.length; i++) {
-        imageData.append("files", files[i]);
-        imageUrls.push(URL.createObjectURL(files[i])); 
-      }
-
-      setImages((prevImages) => [...prevImages, ...imageUrls]);
-
-      const response = await fetch(
-        "https://restartbaku-001-site3.htempurl.com/api/Product/add-image",
-        {
-          method: "POST",
-          body: imageData,
-        }
-      );
-      console.log(imageUrls);
-      
-      if (!response.ok) {
-        throw new Error("Failed to upload images");
-      }
-
-      const data = await response.json();
-      if (data.isSuccessful) {
-        console.log("Görseller başarıyla yüklendi!");
-      } else {
-        throw new Error(data.messages.join(", "));
-      }
-    } catch (error) {
-      console.error("Error uploading images:", error);
-    } finally {
-      setUploading(false);
-    }
-  };
-
-  const handleRemoveImage = (index) => {
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    
-  };
 
   const handleSubmit = async () => {
     if (!productTitle || !selectedCategory || images.length === 0) {
@@ -169,6 +127,7 @@ const NewProductAdd = () => {
         setFormData({});
         setDescription("");
         setParameters([]);
+        navigate(-1);
       } else {
         alert("Xəta baş verdi: " + data.messages.join(", "));
       }
@@ -177,7 +136,51 @@ const NewProductAdd = () => {
       alert("Məhsul əlavə edilərkən xəta baş verdi: " + error.message);
     }
   };
+  const handleFileChange = async (event) => {
+    const files = event.target.files;
   
+    if (files.length > 0) {
+      const formDataArray = [];
+      for (const file of files) {
+        const formData = new FormData();
+        formData.append("files", file); 
+        formDataArray.push(formData);
+      }
+  
+      try {
+        const responses = await Promise.all(
+          formDataArray.map((formData) =>
+            axios.post(
+              "https://restartbaku-001-site3.htempurl.com/api/Product/add-image",
+              formData,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            )
+          )
+        );
+  
+        const newImages = responses
+          .filter((response) => response.data.isSuccessful)
+          .map((response) => response.data.data);
+  
+        setImages((prevImages) => [...prevImages, ...newImages]); 
+        
+      } catch (error) {
+        console.error("Xəta baş verdi:", error);
+      }
+    }
+  };
+  
+  const handleRemoveImage = (imageToRemove) => {
+    setImages((prevImages) =>
+      prevImages.filter((image) => image !== imageToRemove)
+    );
+    console.log(images);
+    
+  };
   return (
     <div className={style.addBox_main_container}>
       <HeaderTop />
@@ -277,15 +280,14 @@ const NewProductAdd = () => {
               <div className={style.addBox_left_box_top_card}>
                 <p>{t('addProductPageAddImgText')}</p>
                 <div className={style.imagePreviews}>
-                <label className={style.addBox_image_add}>
+                <label>
                   +
                   <input
                     type="file"
                     multiple
                     accept="image/*"
-                    className={style.addBox_image_input}
-                    onChange={handleImageUpload}
-                    disabled={uploading}
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
                   />
                 </label>
                   {images.map((image, index) => (
@@ -298,7 +300,6 @@ const NewProductAdd = () => {
                       <button
                         type="button"
                         className={style.removeImageButton}
-                        onClick={() => handleRemoveImage(index)}
                       >
                         X
                       </button>
