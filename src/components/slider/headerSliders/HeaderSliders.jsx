@@ -32,9 +32,9 @@ export default function HeaderSliders() {
   return (
     <div className="container">
   <Swiper
-  slidesPerView={Math.min(categories.length, 5)} // Slayt sayısını sınırlayın
+  slidesPerView={Math.min(categories.length, 5)}
   spaceBetween={80}
-  loop={categories.length > 5} // Loop için yeterli slayt olması lazım
+  loop={categories.length > 5}
   pagination={{
     clickable: true,
   }}

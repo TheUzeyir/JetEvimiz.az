@@ -23,7 +23,6 @@ import ProfilePage from './page/profile/ProfilePage'
 import SearchResult from './components/SearchResult/SearchResult'
 import SearchResultCategory from './components/SearchResult/SearchResultCategory'
 
-
 function App() {
   return (
     <Router>

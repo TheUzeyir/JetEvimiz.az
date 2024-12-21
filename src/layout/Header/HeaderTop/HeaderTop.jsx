@@ -4,8 +4,8 @@ import { IoIosArrowDown } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 import style from "../header.module.css";
 import HeaderProfileCard from "../headerProfileCard/HeaderProfileCard";
-import { FaFacebook,FaPinterest } from "react-icons/fa";
-import { FaXTwitter,FaInstagram } from "react-icons/fa6";
+import { FaFacebook, FaPinterest } from "react-icons/fa";
+import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
 
@@ -35,8 +35,29 @@ export default function HeaderTop() {
   };
 
   const handleLikedPageClick = () => {
-    if (user) {
-      navigate("/likedPage");
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        const isExpired = decoded.exp * 1000 < Date.now();
+        if (isExpired) {
+          Swal.fire({
+            icon: "warning",
+            title: "Oturum Süresi Doldu",
+            text: "Oturumunuzun süresi dolduğu için yeniden giriş yapmanız gerekiyor.",
+            confirmButtonText: "Tamam",
+          }).then(() => {
+            localStorage.removeItem("authToken");
+            navigate("/login");
+          });
+        } else {
+          navigate("/likedPage");
+        }
+      } catch (error) {
+        console.error("Token decode hatası:", error);
+        localStorage.removeItem("authToken");
+        navigate("/login");
+      }
     } else {
       navigate("/login");
     }
@@ -86,15 +107,15 @@ export default function HeaderTop() {
     <div className={style.headerTop}>
       <div className="container">
         <div className={style.headerTop_container}>
-            <div className={style.contactNum}>
-              <p>{t("support")}: (077) 613-59-59</p>
-              <div className={style.footerMain_login_contackLogo}>
-                <FaFacebook className={style.footerMain_login_contackLogo_icon} href='https://www.facebook.com/shopify'/>
-                <FaXTwitter className={style.footerMain_login_contackLogo_icon} href='https://www.twitter.com/shopify/'/>
-                <FaPinterest className={style.footerMain_login_contackLogo_icon} href='https://www.pinterest.com/shopify/'/>
-                <FaInstagram className={style.footerMain_login_contackLogo_icon} href='https://www.instagram.com/shopify/'/>
+          <div className={style.contactNum}>
+            <p>{t("support")}: (077) 613-59-59</p>
+            <div className={style.footerMain_login_contackLogo}>
+              <FaFacebook className={style.footerMain_login_contackLogo_icon} href='https://www.facebook.com/shopify'/>
+              <FaXTwitter className={style.footerMain_login_contackLogo_icon} href='https://www.twitter.com/shopify/'/>
+              <FaPinterest className={style.footerMain_login_contackLogo_icon} href='https://www.pinterest.com/shopify/'/>
+              <FaInstagram className={style.footerMain_login_contackLogo_icon} href='https://www.instagram.com/shopify/'/>
             </div>
-            </div>
+          </div>
           <div className={style.headerTop_container_right}>
             <select
               className={style.headerTop_container_right_langBox}
@@ -112,7 +133,7 @@ export default function HeaderTop() {
               onClick={handleLikedPageClick}
             >
               <FaRegHeart className={style.headerTop_container_right_icon} />
-              <span>{t("favorite")}</span>
+              <span>{user ? t("favorite") : t("login")}</span>
             </a>
             <a
               className={style.headerTop_container_right_item}

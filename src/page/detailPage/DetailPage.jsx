@@ -10,7 +10,7 @@ import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import ImageGallery from "react-image-gallery";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
-import { useTranslation } from "react-i18next"; // Import i18n hook
+import { useTranslation } from "react-i18next"; 
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
@@ -19,15 +19,13 @@ const DetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { i18n } = useTranslation(); // i18n hook to get the current language
+  const { i18n } = useTranslation(); 
 
-  // Get language code based on current language
   const getLanguageCode = () => {
     const language = i18n.language;
     return language === 'az' ? 'az' : language === 'ru' ? 'ru' : language === 'en' ? 'en' : 'tr';
   };
 
-  // Fetch product data based on language code
   useEffect(() => {
     const getProduct = async () => {
       try {
@@ -45,7 +43,7 @@ const DetailPage = () => {
       }
     };
     getProduct();
-  }, [slug, i18n.language]); // Re-fetch data when language changes
+  }, [slug, i18n.language]);
 
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");

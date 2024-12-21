@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 import ProfilePageExpired from "./ProfilePageExpired";
 import ProfilePageUnpublished from "./ProfilePageUnpublished";
 import ProfilePageWaiting from "./ProfilePageWaiting";
@@ -11,9 +13,37 @@ import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
 
 const ProfilePage = () => {
-  const [activeSection, setActiveSection] = useState("currently"); 
-  const {t}= useTranslation() 
- 
+  const navigate = useNavigate();
+  const { t } = useTranslation();
+  const [activeSection, setActiveSection] = useState("currently");
+
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1])); // Decode the token
+        const isExpired = decoded.exp * 1000 < Date.now(); // Check expiration
+        if (isExpired) {
+          Swal.fire({
+            icon: "warning",
+            title: t("sessionExpiredTitle"),
+            text: t("sessionExpiredMessage"),
+            confirmButtonText: t("ok"),
+          }).then(() => {
+            localStorage.removeItem("authToken"); // Remove the token
+            navigate("/login"); // Redirect to login page
+          });
+        }
+      } catch (error) {
+        console.error("Token decode error:", error);
+        localStorage.removeItem("authToken");
+        navigate("/login");
+      }
+    } else {
+      navigate("/login"); // Redirect to login if no token
+    }
+  }, [navigate, t]);
+
   const renderSection = () => {
     switch (activeSection) {
       case "ProfilePageCurrently":
@@ -31,55 +61,49 @@ const ProfilePage = () => {
 
   return (
     <div>
-        <HeaderTop/>
+      <HeaderTop />
       <Navbar />
       <div className={style.aboutPage_head_container}>
         <div className="container">
-            <div className={style.profileHeader}>
-                <p className={style.profileHeader_left}>{t('profileCardPersonalaccount')}</p>
-                <div className={style.profileHeader_right}>
-                    <div className={style.profileHeader_right_title}>
-                        <p className={style.profileHeader_right_title_headText}>{t('profileCardPersonalCalculation')}</p>
-                        <p className={style.profileHeader_right_title_text}>0,00 AZN</p>
-                    </div>
-                    <button className={style.profileHeader_right_btn}>{t('profileCardUpMoney')}</button>
-                </div>
+          <div className={style.profileHeader}>
+            <p className={style.profileHeader_left}>
+              {t("profileCardPersonalaccount")}
+            </p>
+            <div className={style.profileHeader_right}>
+              <div className={style.profileHeader_right_title}>
+                <p className={style.profileHeader_right_title_headText}>
+                  {t("profileCardPersonalCalculation")}
+                </p>
+                <p className={style.profileHeader_right_title_text}>0,00 AZN</p>
+              </div>
+              <button className={style.profileHeader_right_btn}>
+                {t("profileCardUpMoney")}
+              </button>
             </div>
-            <div className={style.profileMain_head}>
+          </div>
+          <div className={style.profileMain_head}>
             <span
-                className={`${style.aboutPage_head_title} ${
-                    activeSection === "ProfilePageCurrently" ? style.aboutPage_head_title_active : ""
-                }`}
-                onClick={() => setActiveSection("ProfilePageCurrently")} 
-                >
-                {useTranslation().t("profileCardCurrenrtText")}-0
-                </span>          
-                {/* <span
-                className={`${style.aboutPage_head_title} ${
-                    activeSection === "expired" ? style.aboutPage_head_title_active : ""
-                }`}
-                onClick={() => setActiveSection("expired")} 
-                >
-                {useTranslation().t("profileCardExpiredText")}-0
-                </span> */}
-                {/* <span
-                className={`${style.aboutPage_head_title} ${
-                    activeSection === "unpublished" ? style.aboutPage_head_title_active : ""
-                }`}
-                onClick={() => setActiveSection("unpublished")} 
-                >
-                {useTranslation().t("profileCardNotUnpublishedText")}-0
-                </span> */}
-                <span
-                className={`${style.aboutPage_head_title} ${
-                    activeSection === "waiting" ? style.aboutPage_head_title_active : ""
-                }`}
-                onClick={() => setActiveSection("waiting")}
-                >
-                {useTranslation().t("profileCardWaitText")}-0
-                </span>
-                </div>
-            {renderSection()}
+              className={`${style.aboutPage_head_title} ${
+                activeSection === "ProfilePageCurrently"
+                  ? style.aboutPage_head_title_active
+                  : ""
+              }`}
+              onClick={() => setActiveSection("ProfilePageCurrently")}
+            >
+              {t("profileCardCurrenrtText")}-0
+            </span>
+            <span
+              className={`${style.aboutPage_head_title} ${
+                activeSection === "waiting"
+                  ? style.aboutPage_head_title_active
+                  : ""
+              }`}
+              onClick={() => setActiveSection("waiting")}
+            >
+              {t("profileCardWaitText")}-0
+            </span>
+          </div>
+          {renderSection()}
         </div>
       </div>
       <Footer />

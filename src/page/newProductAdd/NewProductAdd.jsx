@@ -8,6 +8,7 @@ import { FaBars } from "react-icons/fa";
 import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Contack from "../about/Contack";
+import Swal from "sweetalert2";
 
 const NewProductAdd = () => {
   const [categories, setCategories] = useState([]);
@@ -20,12 +21,39 @@ const NewProductAdd = () => {
   const [formData, setFormData] = useState({});
   const [productTitle, setProductTitle] = useState("");
   const [description, setDescription] = useState("");
-  const { t, i18n } = useTranslation(); // i18n dildə dəyişiklikləri idarə etmək üçün
+  const { t, i18n } = useTranslation(); // Language handling
   const navigate = useNavigate();
+  const currentLanguageCode = i18n.language; // Current language code
 
-  const authToken = localStorage.getItem("authToken");
-  const currentLanguageCode = i18n.language; // İstifadəçinin seçdiyi dil kodu
+  // Validate the authToken
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1])); // Decode the token
+        const isExpired = decoded.exp * 1000 < Date.now(); // Check expiration
+        if (isExpired) {
+          Swal.fire({
+            icon: "warning",
+            title: t("sessionExpiredTitle"),
+            text: t("sessionExpiredMessage"),
+            confirmButtonText: t("ok"),
+          }).then(() => {
+            localStorage.removeItem("authToken"); // Remove the token
+            navigate("/login"); // Redirect to login page
+          });
+        }
+      } catch (error) {
+        console.error("Token decode error:", error);
+        localStorage.removeItem("authToken");
+        navigate("/login");
+      }
+    } else {
+      navigate("/login"); // Redirect to login if no token
+    }
+  }, [navigate, t]);
 
+  // Fetch categories based on the current language
   useEffect(() => {
     const fetchCategories = async () => {
       setLoadingCategories(true);
@@ -42,12 +70,12 @@ const NewProductAdd = () => {
       }
     };
     fetchCategories();
-  }, [currentLanguageCode]); // Dil dəyişdikdə yenidən çağırılır
+  }, [currentLanguageCode]);
 
   const handleCategoryChange = async (event) => {
     const categoryId = event.target.value;
     setSelectedCategory(categoryId);
-    
+
     setParameters([]);
     setFormData({});
 
@@ -61,14 +89,15 @@ const NewProductAdd = () => {
 
       const data = await response.json();
 
-      const initialFormData = data.data ? data.data.reduce((acc, parameter) => {
-        acc[parameter.parameterKey] = ""; 
-        return acc;
-      }, {}) : {};
+      const initialFormData = data.data
+        ? data.data.reduce((acc, parameter) => {
+            acc[parameter.parameterKey] = "";
+            return acc;
+          }, {})
+        : {};
 
       setParameters(data.data || []);
       setFormData((prevData) => ({ ...prevData, ...initialFormData }));
-
     } catch (error) {
       console.error("Error loading parameters:", error);
     } finally {
@@ -114,7 +143,7 @@ const NewProductAdd = () => {
 
       const data = await response.json();
       if (data.isSuccessful) {
-        console.log("Görseller başarıyla yüklendi!");
+        console.log("Images uploaded successfully!");
       } else {
         throw new Error(data.messages.join(", "));
       }
@@ -131,10 +160,10 @@ const NewProductAdd = () => {
 
   const handleSubmit = async () => {
     if (!productTitle || !selectedCategory || images.length === 0) {
-      alert("Bütün sahələri doldurun!");
+      alert("Please fill out all required fields!");
       return;
     }
-  
+
     const payload = {
       productTitle,
       categoryId: selectedCategory,
@@ -143,190 +172,194 @@ const NewProductAdd = () => {
       images,
       parameters: formData,
     };
-    console.log("Göndərilən payload:", payload);
-  
+    console.log("Payload sent:", payload);
+
     try {
       const response = await fetch(
         "http://restartbaku-001-site3.htempurl.com/api/Product/add-product",
-        { 
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${localStorage.getItem("authToken")}`,
           },
           body: JSON.stringify(payload),
         }
       );
-  
+
       const data = await response.json();
       if (data.isSuccessful) {
-        alert("Elan uğurla əlavə edildi!");
-          setProductTitle("");
+        alert("Product added successfully!");
+        setProductTitle("");
         setSelectedCategory("");
         setImages([]);
         setFormData({});
         setDescription("");
         setParameters([]);
       } else {
-        alert("Xəta baş verdi: " + data.messages.join(", "));
+        alert("Error occurred: " + data.messages.join(", "));
       }
     } catch (error) {
       console.error("Error adding product:", error);
-      alert("Məhsul əlavə edilərkən xəta baş verdi: " + error.message);
+      alert("Error adding product: " + error.message);
     }
   };
-  
+
   return (
     <div className={style.addBox_main_container}>
       <HeaderTop />
       <div className="container">
         <div className={style.addBox_container}>
-        <p className={style.addPageGoback} onClick={()=>navigate(-1)}><FaChevronLeft/>Go back</p>
+          <p className={style.addPageGoback} onClick={() => navigate(-1)}>
+            <FaChevronLeft />
+            Go back
+          </p>
           <FaBars
             className={style.bar_icon}
             onClick={() => navigate("/headerBox")}
           />
-          <p className={style.addBox_title}>{t('addProductPageNewAcc')}</p>
+          <p className={style.addBox_title}>{t("addProductPageNewAcc")}</p>
           <div className={style.addBox}>
-              <div className={style.addBox_left_box_top_card}>
-                <label>{t('addProductPageProductName')}</label>
-                <input
-                  type="text"
-                  value={productTitle}
-                  onChange={(e) => setProductTitle(e.target.value)}
-                  placeholder="Məhsulun adını daxil edin"
-                  className={style.addBox_left_box_top_card_item}
-                />
-              </div>
-              <div className={style.addBox_left_box_top_card}>
-                <label>{t('addProductPageCategeryText')}</label>
-                <select
-                  value={selectedCategory}
-                  onChange={handleCategoryChange}
-                  className={style.addBox_left_box_top_card_item}
-                  disabled={loadingCategories}
-                >
-                  <option value="">--{t('addProductPageChooseCategery')}--</option>
-                  {loadingCategories ? (
-                    <option disabled>{t('addProductPageLoading')}</option>
-                  ) : (
-                    categories.map((category) => (
-                      <React.Fragment key={category.categoryId}>
-                        <option
-                          value={category.categoryId}
-                          disabled
-                          className={style.parentCategoryTitle}
-                        >
-                          {category.categoryTitle}
-                        </option>
-                        {category.childCategories?.map((child) => (
-                          <option key={child.categoryId} value={child.categoryId}>
-                            -- {child.categoryTitle}
-                          </option>
-                        ))}
-                      </React.Fragment>
-                    ))
-                  )}
-                </select>
-              </div>
-              {loadingParameters ? (
-                <p>{t('addProductPageOptionLoading')}</p>
-              ) : parameters.length === 0 ? (
-                <p className={style.errorText}>{t('addProductPageOptionLoadingNotFoud')}</p>
-              ) : (
-                parameters.map((parameter) => (
-                  <div
-                    key={parameter.parameterKey}
-                    className={style.addBox_left_box_top_card}
-                  >
-                    <label>{parameter.parameterTitle}</label>
-                    {parameter.parameterTypeId === 3 ? (
-                      <select
-                        value={formData[parameter.parameterKey] || ""}
-                        onChange={(e) =>
-                          handleInputChange(e, parameter.parameterKey)
-                        }
-                        className={style.addBox_left_box_top_card_item}
+            {/* Product Title */}
+            <div className={style.addBox_left_box_top_card}>
+              <label>{t("addProductPageProductName")}</label>
+              <input
+                type="text"
+                value={productTitle}
+                onChange={(e) => setProductTitle(e.target.value)}
+                placeholder="Enter product name"
+                className={style.addBox_left_box_top_card_item}
+              />
+            </div>
+            {/* Category Selection */}
+            <div className={style.addBox_left_box_top_card}>
+              <label>{t("addProductPageCategeryText")}</label>
+              <select
+                value={selectedCategory}
+                onChange={handleCategoryChange}
+                className={style.addBox_left_box_top_card_item}
+                disabled={loadingCategories}
+              >
+                <option value="">--{t("addProductPageChooseCategery")}--</option>
+                {loadingCategories ? (
+                  <option disabled>{t("addProductPageLoading")}</option>
+                ) : (
+                  categories.map((category) => (
+                    <React.Fragment key={category.categoryId}>
+                      <option
+                        value={category.categoryId}
+                        disabled
+                        className={style.parentCategoryTitle}
                       >
-                        <option value="">--{t('addProductPageChooseText')}--</option>
-                        {parameter.parameterMasks?.map((mask) => (
-                          <option
-                            key={mask.parameterMaskId}
-                            value={mask.parameterMaskData}
-                          >
-                            {mask.parameterMaskData}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <input
-                        type="text"
-                        value={formData[parameter.parameterKey] || ""}
-                        onChange={(e) =>
-                          handleInputChange(e, parameter.parameterKey)
-                        }
-                        className={style.addBox_left_box_top_card_item}
-                        placeholder={parameter.parameterTitle}
-                      />
-                    )}
-                  </div>
-                ))
-              )}
-              <div className={style.addBox_left_box_top_card}>
-                <p>{t('addProductPageAddImgText')}</p>
-                <div className={style.imagePreviews}>
-                <label className={style.addBox_image_add}>
-                  +
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    className={style.addBox_image_input}
-                    onChange={handleImageUpload}
-                    disabled={uploading}
-                  />
-                </label>
+                        {category.categoryTitle}
+                      </option>
+                      {category.childCategories?.map((child) => (
+                        <option
+                          key={child.categoryId}
+                          value={child.categoryId}
+                        >
+                          -- {child.categoryTitle}
+                        </option>
+                      ))}
+                    </React.Fragment>
+                  ))
+                )}
+              </select>
+            </div>
+            {/* Parameter Input */}
+            {loadingParameters ? (
+              <p>{t("addProductPageOptionLoading")}</p>
+            ) : parameters.length === 0 ? (
+              <p className={style.errorText}>
+                {t("addProductPageOptionLoadingNotFoud")}
+              </p>
+            ) : (
+              parameters.map((parameter) => (
+                <div
+                  key={parameter.parameterKey}
+                  className={style.addBox_left_box_top_card}
+                >
+                  <label>{parameter.parameterTitle}</label>
+                  {parameter.parameterTypeId === 3 ? (
+                    <select
+                      value={formData[parameter.parameterKey] || ""}
+                      onChange={(e) =>
+                        handleInputChange(e, parameter.parameterKey)
+                      }
+                      className={style.addBox_left_box_top_card_item}
+                    >
+                      <option value="">
+                        --{t("addProductPageChooseText")}--
+                      </option>
+                      {parameter.parameterMasks?.map((mask) => (
+                        <option
+                          key={mask.parameterMaskId}
+                          value={mask.parameterMaskData}
+                        >
+                          {mask.parameterMaskData}
+                        </option>
+                      ))}
+                    </select>
+                  ) : (
+                    <input
+                      type="text"
+                      value={formData[parameter.parameterKey] || ""}
+                      onChange={(e) =>
+                        handleInputChange(e, parameter.parameterKey)
+                      }
+                      className={style.addBox_left_box_top_card_item}
+                      placeholder="Enter value"
+                    />
+                  )}
+                </div>
+              ))
+            )}
+            {/* Images Upload */}
+            <div className={style.addBox_left_box_top_card}>
+              <label>{t("addProductPagePhotos")}</label>
+              <input
+                type="file"
+                multiple
+                onChange={handleImageUpload}
+                className={style.addBox_left_box_top_card_item}
+                disabled={uploading}
+              />
+              {images.length > 0 && (
+                <div className={style.imagePreviewContainer}>
                   {images.map((image, index) => (
-                    <div key={index} className={style.imagePreview}>
+                    <div key={index} className={style.imagePreviewBox}>
                       <img
                         src={image}
-                        alt={`Uploaded preview ${index}`}
-                        className={style.imagePreviewImg}
+                        alt={`Preview ${index}`}
+                        className={style.imagePreview}
                       />
                       <button
-                        type="button"
-                        className={style.removeImageButton}
+                        className={style.imageRemoveButton}
                         onClick={() => handleRemoveImage(index)}
                       >
-                        X
+                        &times;
                       </button>
                     </div>
                   ))}
                 </div>
-              </div>
-              <div className={style.addBox_left_box_top_card}>
-                <span>{t('addProductPageProductDescribe')}</span>
-                <textarea
-                  placeholder="Məhsulun təsviri"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className={style.addBox_left_box_top_card_textArea}
-                />
+              )}
             </div>
-                <button
-                  type="button"
-                  className={style.addBox_button}
-                  onClick={handleSubmit}
-                  disabled={uploading}
-                >
-                   {t('addProductPageProductAddText')}
-                </button>
+            {/* Submit Button */}
+            <div className={style.submitButtonContainer}>
+              <button
+                onClick={handleSubmit}
+                className={style.submitButton}
+                disabled={uploading}
+              >
+                {uploading ? t("addProductPageUploadingText") : t("saveText")}
+              </button>
+            </div>
           </div>
         </div>
       </div>
-      <Contack/>
       <Footer />
       <FooterResponsive />
+      <Contack />
     </div>
   );
 };
