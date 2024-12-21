@@ -10,13 +10,12 @@ import { Link } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import backImg from "../../img/loginImg.png";
 import { useTranslation } from "react-i18next";
+import phoneImg from "../../img/phone.png";
 
 const SignUp = () => {
   const { t } = useTranslation();
   const [data, setData] = useState({
     name: "",
-    firstName: "",
-    lastName: "",
     phone: "",
     email: "",
     password: "",
@@ -51,8 +50,6 @@ const SignUp = () => {
         "https://restartbaku-001-site3.htempurl.com/api/auth/user-register";
       const payload = {
         userName: data.name,
-        userFirstName: data.firstName,
-        userLastName: data.lastName,
         userPhone: data.phone,
         userEmail: data.email,
         userPassword: data.password,
@@ -85,8 +82,6 @@ const SignUp = () => {
       toast.error("Please check the fields again");
       setTouched({
         name: true,
-        firstName: true,
-        lastName: true,
         phone: true,
         email: true,
         password: true,
@@ -101,8 +96,6 @@ const SignUp = () => {
       "https://restartbaku-001-site3.htempurl.com/api/auth/user-register";
     const payload = {
       userName: data.name,
-      userFirstName: data.firstName,
-      userLastName: data.lastName,
       userPhone: data.phone,
       userEmail: data.email,
       userPassword: data.password,
@@ -120,11 +113,9 @@ const SignUp = () => {
 
       if (response.ok) {
         const responseData = await response.json();
-        toast.success("Data successfully sent to the API!");
+        toast.success("Uğurla qeydiyyat olundunuz!");
         setData({
           name: "",
-          firstName: "",
-          lastName: "",
           phone: "",
           email: "",
           password: "",
@@ -134,13 +125,13 @@ const SignUp = () => {
         setTouched({});
       } else if (response.status === 409) {
         toast.error(
-          "Username or email already exists. Please choose a different one."
+          "Bu email artiq mövcuddur"
         );
       } else {
-        toast.warning("Unexpected response from the API.");
+        toast.warning("Yenidən cəhd edin");
       }
     } catch (error) {
-      toast.error("Failed to send data to the API.");
+      toast.error("Uğursuz əməliyyat.");
       console.error("API Error:", error);
     }
   };
@@ -157,19 +148,9 @@ const SignUp = () => {
           {[
             { name: "name", placeholder: t("signInNameInput"), icon: userIcon },
             {
-              name: "firstName",
-              placeholder: t("signInFirstNameInput"),
-              icon: userIcon,
-            },
-            {
-              name: "lastName",
-              placeholder: t("signInLastNameInput"),
-              icon: userIcon,
-            },
-            {
               name: "phone",
               placeholder: t("signInPhoneInput"),
-              icon: userIcon,
+              icon: phoneImg,
             },
             {
               name: "email",
@@ -231,7 +212,6 @@ const SignUp = () => {
             )}
           </div>
           <div>
-            <button type="submit">{t("signInCreateAcc")}</button>
             <span>
               {t("signInHaveAcc")}
               <Link to="/login">{t("signInLoginText")}</Link>

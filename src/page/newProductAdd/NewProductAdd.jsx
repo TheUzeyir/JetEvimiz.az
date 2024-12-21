@@ -31,9 +31,29 @@ const NewProductAdd = () => {
     const fetchCategories = async () => {
       setLoadingCategories(true);
       try {
+        const token = localStorage.getItem("authToken");
+        if (!token) {
+          alert("Sistemdən çıxmısınız, lütfən yenidən daxil olun.");
+          navigate("/login"); // İstifadəçini giriş səhifəsinə yönləndirir
+          return;
+        }
+  
         const response = await fetch(
-          `https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${currentLanguageCode}`
+          `https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${currentLanguageCode}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
+  
+        if (response.status === 401) {
+          alert("Giriş vaxtınız bitib, lütfən yenidən daxil olun.");
+          navigate("/login");
+          return;
+        }
+  
         const data = await response.json();
         setCategories(data.data || []);
       } catch (error) {
@@ -42,8 +62,10 @@ const NewProductAdd = () => {
         setLoadingCategories(false);
       }
     };
+  
     fetchCategories();
-  }, [currentLanguageCode]); // Dil dəyişdikdə yenidən çağırılır
+  }, [currentLanguageCode, navigate]);
+  
 
   const handleCategoryChange = async (event) => {
     const categoryId = event.target.value;
@@ -85,13 +107,17 @@ const NewProductAdd = () => {
     }));
   };
 
- 
-
-
 
   const handleSubmit = async () => {
     if (!productTitle || !selectedCategory || images.length === 0) {
       alert("Bütün sahələri doldurun!");
+      return;
+    }
+  
+    const token = localStorage.getItem("authToken");
+    if (!token) {
+      alert("Sistemdən çıxmısınız, lütfən yenidən daxil olun.");
+      navigate("/login");
       return;
     }
   
@@ -100,28 +126,35 @@ const NewProductAdd = () => {
       categoryId: selectedCategory,
       storeId: null,
       description: description || "2024121",
-      images:images,
+      images: images,
       parameters: formData,
     };
+  
     console.log("Göndərilən payload:", payload);
   
     try {
       const response = await fetch(
         "https://restartbaku-001-site3.htempurl.com/api/Product/add-product",
-        { 
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(payload),
         }
       );
   
+      if (response.status === 401) {
+        alert("Giriş vaxtınız bitib, lütfən yenidən daxil olun.");
+        navigate("/login");
+        return;
+      }
+  
       const data = await response.json();
       if (data.isSuccessful) {
         alert("Elan uğurla əlavə edildi!");
-          setProductTitle("");
+        setProductTitle("");
         setSelectedCategory("");
         setImages([]);
         setFormData({});
@@ -136,6 +169,8 @@ const NewProductAdd = () => {
       alert("Məhsul əlavə edilərkən xəta baş verdi: " + error.message);
     }
   };
+  
+
   const handleFileChange = async (event) => {
     const files = event.target.files;
   

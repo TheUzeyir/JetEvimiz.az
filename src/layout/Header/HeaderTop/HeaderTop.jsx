@@ -23,11 +23,29 @@ export default function HeaderTop() {
   const closeProfileCard = () => setProfileCardOpen(false);
 
   const handleLoginClick = () => {
-    if (user) {
-      if (isProfileCardOpen) {
-        closeProfileCard();
-      } else {
-        openProfileCard();
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        const isExpired = decoded.exp * 1000 < Date.now();
+        if (isExpired) {
+          Swal.fire({
+            icon: "warning",
+            title: "Oturum Süresi Doldu",
+            text: "Oturumunuzun süresi dolduğu için yeniden giriş yapmanız gerekiyor.",
+            confirmButtonText: "Tamam",
+          }).then(() => {
+            localStorage.removeItem("authToken");
+            navigate("/login");
+          });
+        } else {
+          setUser({ username: decoded.username });
+          openProfileCard();
+        }
+      } catch (error) {
+        console.error("Token decode hatası:", error);
+        localStorage.removeItem("authToken");
+        navigate("/login");
       }
     } else {
       navigate("/login");
