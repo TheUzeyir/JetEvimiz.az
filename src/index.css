@@ -78,6 +78,29 @@ li{
     color: #2A2036;
   }
 
+  .image-gallery{
+    width: 100%;
+  }
+
+  /* .image-gallery-slide--in .image-gallery-image {
+    width: 100%;
+    height: 480px; 
+  } */
+  
+  .image-gallery-content.image-gallery-thumbnails-bottom .image-gallery-slide .image-gallery-image {
+    width: 100%;
+    height: 480px;
+  }
+  .image-gallery-content.image-gallery-thumbnails-bottom.fullscreen .image-gallery-slide .image-gallery-image {
+    width: 100%;
+    height: 100%;
+  }
+  
+  
+
+  .image-gallery-content .image-gallery-slide .image-gallery-image{
+    width: 100%;
+  }
 
   
   @media screen and (max-width:968px) {

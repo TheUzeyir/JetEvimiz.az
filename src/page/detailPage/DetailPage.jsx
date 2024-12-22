@@ -85,8 +85,6 @@ const DetailPage = () => {
     return !hiddenKeys.includes(key) && value !== null;
   };
 
-  
-
   return (
     <div className={style.detailPage}>
       <Header />
