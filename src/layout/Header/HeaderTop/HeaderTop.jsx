@@ -8,6 +8,7 @@ import { FaFacebook, FaPinterest } from "react-icons/fa";
 import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
+import Swal from "sweetalert2";
 
 export default function HeaderTop() {
   const { t, i18n } = useTranslation(); 
@@ -39,8 +40,11 @@ export default function HeaderTop() {
             navigate("/login");
           });
         } else {
-          setUser({ username: decoded.username });
-          openProfileCard();
+          if (isProfileCardOpen) {
+            closeProfileCard();
+          } else {
+            openProfileCard();
+          }
         }
       } catch (error) {
         console.error("Token decode hatası:", error);
@@ -121,6 +125,7 @@ export default function HeaderTop() {
     i18n.changeLanguage(selectedLang);
   };
 
+
   return (
     <div className={style.headerTop}>
       <div className="container">
@@ -151,7 +156,7 @@ export default function HeaderTop() {
               onClick={handleLikedPageClick}
             >
               <FaRegHeart className={style.headerTop_container_right_icon} />
-              <span>{user ? t("favorite") : t("favorite")}</span>
+              <span>{user ? t("favorite") : t("login")}</span>
             </a>
             <a
               className={style.headerTop_container_right_item}
