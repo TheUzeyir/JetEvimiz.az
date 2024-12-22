@@ -8,12 +8,11 @@ const ProfilePageWaiting = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
-  const [statusType, setStatusType] = useState(2); 
 
-  const fetchData = async () => {
+  // API'den veri çəkmək üçün ümumi funksiya
+  const fetchProducts = async (statusType) => {
     try {
-      const token = localStorage.getItem('token');
-  
+      const token = localStorage.getItem('authToken');  // Tokeni alın
       const response = await fetch(
         `https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`,
         {
@@ -24,55 +23,27 @@ const ProfilePageWaiting = () => {
           },
         }
       );
-  
+
       if (!response.ok) {
         throw new Error('Failed to fetch');
       }
-  
+
       const data = await response.json();
-      console.log('Fetched Products:', data); // API'den gelen veriyi logluyoruz.
-      if (statusType === 2) {
-        setProducts(data);
-      }
+      console.log('Fetched Products:', data);
+      setProducts(data);  
     } catch (error) {
       console.error('Error fetching products:', error);
     }
   };
 
-  
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const token = localStorage.getItem("authToken");
-        const response = await fetch(
-          `https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-  
-        const data = await response.json();
-        console.log('Fetched Products in useEffect:', data); // API'den gelen veriyi logluyoruz.
-        if (statusType === 1) {
-          setProducts(data);
-        }
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-  
-    fetchData();
-  }, [statusType]);
-  
+    fetchProducts(1);  
+  }, []);
 
   return (
     <div className={style.profileCardBox}>
       <p className={style.profileCardBox_title}>{t('profileCardWaitProduct')}</p>
-      {statusType === 1 && products.length > 0 ? (
+      {products.length > 0 ? (
         <div className={style.productList}>
           {products.map((product) => (
             <div key={product.id} className={style.productItem}>

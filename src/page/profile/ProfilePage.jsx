@@ -100,7 +100,7 @@ const ProfilePage = () => {
               }`}
               onClick={() => setActiveSection("waiting")}
             >
-              {t("profileCardWaitText")}-0
+              {t("profileCardWaitText")}-
             </span>
           </div>
           {renderSection()}
