@@ -109,3 +109,137 @@
 .aboutPage_head_title:hover{
     color: red;
 }
+
+.productCardPage_containers{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 21vh;
+}
+.productList{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 40px;
+    margin-top: 20px;
+    width: 100%;
+}
+
+.productCard{
+    border-radius: 8px;
+    position: relative;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    cursor: pointer;
+}
+
+.productCard_imgBox{
+
+    position: relative;
+} 
+
+.productCard_imgBox_img{
+    width: 100%;
+    height:200px;
+    border-radius: 8px;
+}
+
+.productCard_imgBox_heartIcon{
+position: absolute;
+right: 10px;
+top: 10px;
+color: black;
+cursor: pointer;
+}
+
+.productCard_imgBox_heartIcon_check{
+color: red;
+position: absolute;
+right: 10px;
+top: 10px;
+cursor: pointer;
+}
+
+.productCard_imgBox_title{
+    position: absolute;
+    top: 65%;
+    left: 5%;
+    color: white;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: purple;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+
+
+.productCard_title{
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.productCard_title_pirce{
+    font-weight: bold;
+}
+
+.productCard_title_dayBox{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.productCard_subTitle,
+.productCard_text{ 
+    padding:0 10px ;
+}
+.productCard_subTitle{
+    font-weight: bold;
+    height:20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.productCard_text{
+    color: #8DA1CA;
+}
+
+.pagination{
+    font-size: 20px;
+}
+
+.paginationBtn{
+    padding: 8px 15px;
+    margin: 50px 10px 0 10px;
+    border: none;
+    border-radius: 4px;
+}
+
+@media screen and (max-width:1080px) {
+    .productCard_imgBox_title{
+        font-size: 10px;
+    }
+}
+@media screen and (max-width:968px) {
+    
+    .productCardPage_containers{
+        margin-bottom: 120px;
+    }
+    .productCard_container{
+        grid-template-columns: repeat(3,1fr);
+        gap: 10px;
+    }
+
+    .productCard_imgBox_title{
+        font-size: 14px;
+    }
+
+}
+@media screen and (max-width:596px) {
+    .productCard_container{
+        grid-template-columns: repeat(2,1fr);
+    }
+
+    .productCard_imgBox_img{
+        height: 150px;
+    }
+}
