@@ -133,7 +133,7 @@ export default function HeaderTop() {
               onClick={handleLikedPageClick}
             >
               <FaRegHeart className={style.headerTop_container_right_icon} />
-              <span>{user ? t("favorite") : t("login")}</span>
+              <span>{user ? t("favorite") : t("favorite")}</span>
             </a>
             <a
               className={style.headerTop_container_right_item}

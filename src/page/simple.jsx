@@ -1,6 +1,6 @@
 import React from "react";
 import ImageGallery from "react-image-gallery";
-import "react-image-gallery/styles/css/image-gallery.css";
+import "react-image-gallery/styles/scss/image-gallery.scss";
 
 const Simple = () => {
 
@@ -25,7 +25,6 @@ const Simple = () => {
       <h1>Lorem, ipsum.</h1>
      <ImageGallery items={images}
      showPlayButton={false}
-     showFullscreenButton={false}
      slideInterval={1000}
      slideOnThumbnailOver={true}
      showIndex={true}
