@@ -11,6 +11,7 @@ import ImageGallery from "react-image-gallery";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
 import { useTranslation } from "react-i18next"; 
+import "react-image-gallery/styles/scss/image-gallery.scss";
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
@@ -84,6 +85,8 @@ const DetailPage = () => {
     return !hiddenKeys.includes(key) && value !== null;
   };
 
+  
+
   return (
     <div className={style.detailPage}>
       <Header />
@@ -95,13 +98,14 @@ const DetailPage = () => {
           <div className={style.detailPage_main_head}>
             <div className={style.detailPage_main_head_left}>
               {product.productGalleries?.length > 0 ? (
-                <ImageGallery
-                  items={galleryItems}
-                  showThumbnails={true}
-                  showFullscreenButton={true}
-                  showPlayButton={false}
-                  additionalClass="react-image-gallery"
-                />
+              <ImageGallery 
+              items={galleryItems} // galleryItems'ı items prop'una bağlayın
+              showPlayButton={false}
+              slideInterval={1000}
+              slideOnThumbnailOver={true}
+              showIndex={true}
+            />
+            
               ) : (
                 <img
                   src={product.coverImage}

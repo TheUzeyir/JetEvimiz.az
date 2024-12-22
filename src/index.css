@@ -77,81 +77,8 @@ li{
     .swiper-button-prev {
     color: #2A2036;
   }
-  
-  .image-gallery{
-    position: relative;
-    width: 100%;
-  }
 
-.image-gallery-content.fullscreen .image-gallery-image {
-  height: 100%;
-}
 
-.image-gallery-content:not(.fullscreen) .image-gallery-image {
-  height: 550px;
-}
-
-  
-  .image-gallery-image{
-    all: unset;
-    width: 100%;
-  }
-  .image-gallery-svg{
-    all: unset;
-    height: 550px;
-    width: 100%;
-  }
-  .image-gallery-icon{
-    height: 550px;
-    position: absolute;
-    width: 100%;
-    top: 0;
-    opacity: 0;
-  }
-
-  .image-gallery-thumbnails-wrapper{
-    display: none;  
-  }
-
-  .image-gallery-fullscreen-button{
-    height:100vh;
-  }
-  .image-gallery-svg{
-    height:100vh;
-  }
-  .image-gallery-center{
-    height:100vh;
-  }
-/* 
-  .slick-arrow {
-  all: unset;
-}
-
-.slick-prev {
-  display: none;
-}
-
-.slick-next {
-  display: none;
-}
-
-.slider-container img {
-  width: 100px;
-  height: 50px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-}
-
-.categoryTitle{
-  font-weight: 400;
-  font-size: 10px;
-  width: 100px;
-  text-align: center;
-}
-
-.slider-container{
-  margin-left: 30px;
-} */
   
   @media screen and (max-width:968px) {
     .container{
