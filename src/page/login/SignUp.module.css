@@ -34,7 +34,6 @@
 
 .formLogin input[type=text],
 .formLogin input[type=email],
-.formLogin input[type=number],
 .formLogin input[type=password] {
   background: #fff;
   border-radius: 4px;

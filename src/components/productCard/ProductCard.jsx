@@ -33,7 +33,7 @@ const ProductCard = () => {
   const fetchProducts = async (page) => {
     setLoading(true);
     try {
-      const languageCode = getLanguageCode(); // Dil kodunu alırıq
+      const languageCode = getLanguageCode();
       const response = await fetch(
         `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=${languageCode}&pageIndex=${page}&pageSize=${pageSize}`
       );
@@ -85,7 +85,7 @@ const ProductCard = () => {
   return (
     <div className="container">
       <div className={style.productCardPage_containers}>
-        <div className={style.productCard_container}>
+        <div className={style.productCard_container}> 
           {products.map((item) => (
             <div className={style.productCard} key={item.productId}>
               <Link to={`/product-details/${item.slug}`}>

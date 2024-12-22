@@ -71,7 +71,10 @@ const ProfilePageWaiting = ({ onProductCountUpdate }) => {
         <div className={style.productList}>
           {products.map((product) => (
             <div className={style.productCard} key={product.productId}>
-              <Link to={`/product-details/${product.slug}`}>
+              <Link
+                to={`/detailPageProfile`}
+                state={product} 
+              >
                 <div className={style.productCard_imgBox}>
                   <img
                     src={product.coverImage}
@@ -119,8 +122,8 @@ const ProfilePageWaiting = ({ onProductCountUpdate }) => {
         </div>
       ) : (
         <p className={style.profileCardBox_title}>
-        {t("profileCardWaitProduct")}
-      </p>
+          {t("profileCardWaitProduct")}
+        </p>
       )}
       <button
         className={style.profileCardBox_btn}
