@@ -8,7 +8,6 @@ import { FaFacebook, FaPinterest } from "react-icons/fa";
 import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 import axios from 'axios';
 import { useTranslation } from "react-i18next";
-import Swal from "sweetalert2";
 
 export default function HeaderTop() {
   const { t, i18n } = useTranslation(); 
@@ -24,32 +23,11 @@ export default function HeaderTop() {
   const closeProfileCard = () => setProfileCardOpen(false);
 
   const handleLoginClick = () => {
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      try {
-        const decoded = JSON.parse(atob(token.split(".")[1]));
-        const isExpired = decoded.exp * 1000 < Date.now();
-        if (isExpired) {
-          Swal.fire({
-            icon: "warning",
-            title: "Oturum Süresi Doldu",
-            text: "Oturumunuzun süresi dolduğu için yeniden giriş yapmanız gerekiyor.",
-            confirmButtonText: "Tamam",
-          }).then(() => {
-            localStorage.removeItem("authToken");
-            navigate("/login");
-          });
-        } else {
-          if (isProfileCardOpen) {
-            closeProfileCard();
-          } else {
-            openProfileCard();
-          }
-        }
-      } catch (error) {
-        console.error("Token decode hatası:", error);
-        localStorage.removeItem("authToken");
-        navigate("/login");
+    if (user) {
+      if (isProfileCardOpen) {
+        closeProfileCard();
+      } else {
+        openProfileCard();
       }
     } else {
       navigate("/login");
@@ -125,7 +103,6 @@ export default function HeaderTop() {
     i18n.changeLanguage(selectedLang);
   };
 
-
   return (
     <div className={style.headerTop}>
       <div className="container">
@@ -156,7 +133,7 @@ export default function HeaderTop() {
               onClick={handleLikedPageClick}
             >
               <FaRegHeart className={style.headerTop_container_right_icon} />
-              <span>{user ? t("favorite") : t("login")}</span>
+              <span>{user ? t("favorite") : t("favorite")}</span>
             </a>
             <a
               className={style.headerTop_container_right_item}
