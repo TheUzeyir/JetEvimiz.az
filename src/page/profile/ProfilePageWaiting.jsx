@@ -29,7 +29,7 @@ const ProfilePageWaiting = () => {
       }
 
       const data = await response.json();
-      console.log('Fetched Products:', data.data.items);
+      console.log('Fetched Products:', data);
       setProducts(data);  
     } catch (error) {
       console.error('Error fetching products:', error);
@@ -43,7 +43,7 @@ const ProfilePageWaiting = () => {
   return (
     <div className={style.profileCardBox}>
       <p className={style.profileCardBox_title}>{t('profileCardWaitProduct')}</p>
-      {products.data.items.length > 0 ? (
+      {products.length > 0 ? (
         <div className={style.productList}>
           {products.map((product) => (
             <div key={product.id} className={style.productItem}>
