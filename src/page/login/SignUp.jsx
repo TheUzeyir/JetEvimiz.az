@@ -151,6 +151,7 @@ const SignUp = () => {
               name: "phone",
               placeholder: t("signInPhoneInput"),
               icon: phoneImg,
+              type:"number",
             },
             {
               name: "email",
