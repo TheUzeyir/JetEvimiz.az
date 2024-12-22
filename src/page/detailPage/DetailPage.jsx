@@ -97,7 +97,7 @@ const DetailPage = () => {
             <div className={style.detailPage_main_head_left}>
               {product.productGalleries?.length > 0 ? (
               <ImageGallery 
-              items={galleryItems} // galleryItems'ı items prop'una bağlayın
+              items={galleryItems}
               showPlayButton={false}
               slideInterval={1000}
               slideOnThumbnailOver={true}

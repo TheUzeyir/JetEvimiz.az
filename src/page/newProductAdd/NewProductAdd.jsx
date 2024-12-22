@@ -315,16 +315,16 @@ const NewProductAdd = () => {
               <div className={style.addBox_left_box_top_card}>
                 <p>{t('addProductPageAddImgText')}</p>
                 <div className={style.imagePreviews}>
-                <label>
-                  +
-                  <input
-                    type="file"
-                    multiple
-                    accept="image/*"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                  />
-                </label>
+                  <label>
+                    +
+                    <input
+                      type="file"
+                      multiple
+                      accept="image/*"
+                      onChange={handleFileChange}
+                      style={{ display: "none" }}
+                    />
+                  </label>
                   {images.map((image, index) => (
                     <div key={index} className={style.imagePreview}>
                       <img
@@ -335,6 +335,7 @@ const NewProductAdd = () => {
                       <button
                         type="button"
                         className={style.removeImageButton}
+                        onClick={() => handleRemoveImage(image)} // Properly pass the image to the function
                       >
                         X
                       </button>

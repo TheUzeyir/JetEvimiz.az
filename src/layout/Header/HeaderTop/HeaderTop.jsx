@@ -22,12 +22,41 @@ export default function HeaderTop() {
   const openProfileCard = () => setProfileCardOpen(true);
   const closeProfileCard = () => setProfileCardOpen(false);
 
+  // const handleLoginClick = () => {
+  //   if (user) {
+  //     if (isProfileCardOpen) {
+  //       closeProfileCard();
+  //     } else {
+  //       openProfileCard();
+  //     }
+  //   } else {
+  //     navigate("/login");
+  //   }
+  // };
+
   const handleLoginClick = () => {
-    if (user) {
-      if (isProfileCardOpen) {
-        closeProfileCard();
-      } else {
-        openProfileCard();
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      try {
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        const isExpired = decoded.exp * 1000 < Date.now();
+        if (isExpired) {
+          Swal.fire({
+            icon: "warning",
+            title: "Oturum Süresi Doldu",
+            text: "Oturumunuzun süresi dolduğu için yeniden giriş yapmanız gerekiyor.",
+            confirmButtonText: "Tamam",
+          }).then(() => {
+            localStorage.removeItem("authToken");
+            navigate("/login");
+          });
+        } else {
+          openProfileCard();
+        }
+      } catch (error) {
+        console.error("Token decode hatası:", error);
+        localStorage.removeItem("authToken");
+        navigate("/login");
       }
     } else {
       navigate("/login");
@@ -103,6 +132,7 @@ export default function HeaderTop() {
     i18n.changeLanguage(selectedLang);
   };
 
+
   return (
     <div className={style.headerTop}>
       <div className="container">
@@ -141,7 +171,7 @@ export default function HeaderTop() {
             >
               <FaUser className={style.headerTop_container_right_icon} />
               <span>
-                {loading ? t("loading") : user ? <IoIosArrowDown /> : t("login")}
+              <span>{user ? t("") : t("login")}</span>
               </span>
             </a>
           </div>

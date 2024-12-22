@@ -8,23 +8,15 @@ import Header from "../../layout/Header/Header";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import { useTranslation } from "react-i18next"; 
+import "react-image-gallery/styles/scss/image-gallery.scss";
 
 const DetailPageProfile = () => {
   const location = useLocation();
   const product = location.state || {};
   const navigate = useNavigate();
-    const [openComplaintBox, setOpenComplaintBox] = useState(false);
-    const { i18n } = useTranslation(); 
+  const [openComplaintBox, setOpenComplaintBox] = useState(false);
+  const { i18n } = useTranslation(); 
   
-  const handleNextSlide = () => {
-    const gallery = document.querySelector('.react-image-gallery');
-    if (gallery) gallery.slideNext();
-  };
-
-  const handlePreviousSlide = () => {
-    const gallery = document.querySelector('.react-image-gallery');
-    if (gallery) gallery.slidePrev();
-  };
 
   const toggleComplaintBox = () => {
     setOpenComplaintBox((prev) => !prev);
@@ -47,13 +39,14 @@ const DetailPageProfile = () => {
           <div className={style.detailPage_main_head}>
             <div className={style.detailPage_main_head_left}>
               {product.productGalleries?.length > 0 ? (
-                <ImageGallery
-                  items={galleryItems}
-                  showThumbnails={true}
-                  showFullscreenButton={true}
-                  showPlayButton={false}
-                  additionalClass="react-image-gallery"
-                />
+              <ImageGallery 
+              items={galleryItems}
+              showPlayButton={false}
+              slideInterval={1000}
+              slideOnThumbnailOver={true}
+              showIndex={true}
+            />
+            
               ) : (
                 <img
                   src={product.coverImage}
@@ -61,18 +54,6 @@ const DetailPageProfile = () => {
                   className={style.detailPage_main_head_left_mainImgBox_img}
                 />
               )}
-              <button
-                className={style.detailPage_gallery_control}
-                onClick={handlePreviousSlide}
-              >
-                <MdOutlineKeyboardArrowLeft />
-              </button>
-              <button
-                className={style.detailPage_gallery_control}
-                onClick={handleNextSlide}
-              >
-                <MdOutlineKeyboardArrowLeft style={{ transform: 'rotate(180deg)' }} />
-              </button>
             </div>
             <div className={style.detailPage_main_head_right}>
               <h4 className={style.detailPage_main_head_right_humanName}>
