@@ -79,16 +79,6 @@ const DetailPage = () => {
       thumbnail: gallery.productGalleryFile,
     })) || [];
 
-  const handleNextSlide = () => {
-    const gallery = document.querySelector('.react-image-gallery');
-    if (gallery) gallery.slideNext();
-  };
-
-  const handlePreviousSlide = () => {
-    const gallery = document.querySelector('.react-image-gallery');
-    if (gallery) gallery.slidePrev();
-  };
-
   const filterProductDetails = (key, value) => {
     const hiddenKeys = ["id", "slug", "userCode", "productId", "coverImage"];
     return !hiddenKeys.includes(key) && value !== null;
@@ -119,18 +109,6 @@ const DetailPage = () => {
                   className={style.detailPage_main_head_left_mainImgBox_img}
                 />
               )}
-              <button
-                className={style.detailPage_gallery_control}
-                onClick={handlePreviousSlide}
-              >
-                <MdOutlineKeyboardArrowLeft />
-              </button>
-              <button
-                className={style.detailPage_gallery_control}
-                onClick={handleNextSlide}
-              >
-                <MdOutlineKeyboardArrowLeft style={{ transform: 'rotate(180deg)' }} />
-              </button>
             </div>
             <div className={style.detailPage_main_head_right}>
               <h4 className={style.detailPage_main_head_right_humanName}>

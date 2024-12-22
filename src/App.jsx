@@ -23,12 +23,14 @@ import ProfilePage from './page/profile/ProfilePage'
 import SearchResult from './components/SearchResult/SearchResult'
 import SearchResultCategory from './components/SearchResult/SearchResultCategory'
 import DetailPageProfile from './page/detailPage/DetailPageProfile'
+import Simple from './page/simple'
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path='/' element={<Main />} />
+        <Route path='/s' element={<Simple />} />
         <Route path='/detailPageProfile' element={<DetailPageProfile />} />
         <Route path='/about' element={<AboutPage />} />
         <Route path='/info' element={<Info />} />
