@@ -15,7 +15,9 @@ import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [activeSection, setActiveSection] = useState("currently");
+  const [waitingCount, setWaitingCount] = useState(0);
+  const [currentCount, setCurrentCount] = useState(0);
+  const [activeSection, setActiveSection] = useState("ProfilePageCurrently");
 
   useEffect(() => {
     const token = localStorage.getItem("authToken");
@@ -40,20 +42,28 @@ const ProfilePage = () => {
         navigate("/login");
       }
     } else {
-      navigate("/login"); // Redirect to login if no token
+      navigate("/login");
     }
   }, [navigate, t]);
 
   const renderSection = () => {
     switch (activeSection) {
       case "ProfilePageCurrently":
-        return <ProfilePageCurrently />;
+        return (
+          <ProfilePageCurrently
+            onProductCountUpdate={(count) => setCurrentCount(count)}
+          />
+        );
+      case "waiting":
+        return (
+          <ProfilePageWaiting
+            onProductCountUpdate={(count) => setWaitingCount(count)}
+          />
+        );
       case "expired":
         return <ProfilePageExpired />;
       case "unpublished":
         return <ProfilePageUnpublished />;
-      case "waiting":
-        return <ProfilePageWaiting />;
       default:
         return <ProfilePageCurrently />;
     }
@@ -90,7 +100,7 @@ const ProfilePage = () => {
               }`}
               onClick={() => setActiveSection("ProfilePageCurrently")}
             >
-              {t("profileCardCurrenrtText")}-0
+              {t("profileCardCurrenrtText")}-{currentCount}
             </span>
             <span
               className={`${style.aboutPage_head_title} ${
@@ -100,7 +110,7 @@ const ProfilePage = () => {
               }`}
               onClick={() => setActiveSection("waiting")}
             >
-              {t("profileCardWaitText")}-
+              {t("profileCardWaitText")}-{waitingCount}
             </span>
           </div>
           {renderSection()}
