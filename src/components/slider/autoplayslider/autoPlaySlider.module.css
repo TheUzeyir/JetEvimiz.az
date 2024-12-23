@@ -1,0 +1,25 @@
+.slider_title {
+  font-size: 10px;
+}
+
+.slider_img {
+  width: 50px;
+  margin-left: 25%;
+  padding-top: 10px;
+}
+
+.sliderBox {
+  border-radius: 6x;
+  text-align: center;
+  height: 100px;
+  background: #F6F7FA;
+}
+
+@media screen and (max-width: 433px) {
+  .slider_title {
+    font-size: 8px;
+  }
+  .slider_img {
+    margin-left: 20%;
+  }
+}/*# sourceMappingURL=autoPlaySlider.module.css.map */

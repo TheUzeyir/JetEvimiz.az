@@ -5,28 +5,26 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
 
 const CategoryModal = ({ closeModal }) => {
-  const [categories, setCategories] = useState([]); // Kateqoriyalar
-  const [selectedCategory, setSelectedCategory] = useState(null); // Seçilmiş kateqoriya
-  const [loading, setLoading] = useState(false); // Yüklənmə vəziyyəti
+  const [categories, setCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(null); 
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const { t, i18n } = useTranslation(); // i18n-dən istifadə edirik
+  const { t, i18n } = useTranslation();
 
-  // Dil kodunu əldə edən funksiya
   const getLanguageCode = () => {
-    const language = i18n.language; // Aktiv dili əldə edirik
-    if (language === 'az') return 'az'; // Azərbaycan dili
-    if (language === 'ru') return 'ru'; // Rus dili
-    if (language === 'en') return 'en'; // İngilis dili
-    if (language === 'tr') return 'tr'; // Türk dili
-    return 'az'; // Varsayılan olaraq Azərbaycan dili
+    const language = i18n.language; 
+    if (language === 'az') return 'az'; 
+    if (language === 'ru') return 'ru'; 
+    if (language === 'en') return 'en'; 
+    if (language === 'tr') return 'tr';
+    return 'az'; 
   };
 
-  // Kateqoriyaları çəkmək üçün useEffect
   useEffect(() => {
     const fetchCategories = async () => {
-      setLoading(true); // Yükləməyi aktiv et
+      setLoading(true); 
       try {
-        const languageCode = getLanguageCode(); // Dil kodunu alırıq
+        const languageCode = getLanguageCode();
         const response = await fetch(
           `https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${languageCode}`
         );
@@ -36,24 +34,23 @@ const CategoryModal = ({ closeModal }) => {
             (category) => category.parentId === null
           );
           setCategories(filteredCategories);
-          setSelectedCategory(null); // Dil dəyişdikdə əvvəlki seçimi sıfırla
+          setSelectedCategory(null); 
         }
       } catch (error) {
         console.error('Kateqoriyaları çəkməkdə səhv:', error);
       } finally {
-        setLoading(false); // Yükləməyi dayandır
+        setLoading(false); 
       }
     };
 
-    // Dil dəyişdikdə yenidən kateqoriyaları çəkmək
     fetchCategories();
 
-  }, [i18n.language]); // Dil dəyişdikdə yenidən dataları çəkir
+  }, [i18n.language]);
 
   const handleCategoryClick = async (categoryId) => {
     setLoading(true);
     try {
-      const languageCode = getLanguageCode(); // Dil kodunu alırıq
+      const languageCode = getLanguageCode(); 
       console.log(languageCode);
       
       const response = await fetch(

@@ -31,10 +31,16 @@ const SignUp = () => {
   }, [data, touched]);
 
   const changeHandler = (event) => {
-    if (event.target.name === "IsAccepted") {
-      setData({ ...data, [event.target.name]: event.target.checked });
+    const { name, value } = event.target;
+
+    if (name === "IsAccepted") {
+      setData({ ...data, [name]: event.target.checked });
+    } else if (name === "phone") {
+      // Telefon girişini yalnızca sayılarla sınırlandır
+      const formattedValue = value.replace(/\D/g, "");
+      setData({ ...data, [name]: formattedValue });
     } else {
-      setData({ ...data, [event.target.name]: event.target.value });
+      setData({ ...data, [name]: value });
     }
   };
 
@@ -151,7 +157,7 @@ const SignUp = () => {
               name: "phone",
               placeholder: t("signInPhoneInput"),
               icon: phoneImg,
-              type:"number",
+              type: "text",
             },
             {
               name: "email",

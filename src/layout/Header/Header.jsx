@@ -4,7 +4,7 @@ import HeaderBottom from './HeaderBottom/HeaderBottom';
 import Navbar from './DesktopNavbar/Navbar';
 import HeaderSliders from '../../components/slider/headerSliders/HeaderSliders';
 import HeaderFilterCard from './headerFilterCard/HeaderFilterCard';
-// import AutoPlaySlider from '../../components/slider/autoplayslider/AutoPlaySlider';
+import AutoPlay from '../../components/slider/autoplayslider/AutoPlaySlider';
 
 export default function Header() {
   return (
@@ -14,7 +14,7 @@ export default function Header() {
       <HeaderFilterCard/>
       <HeaderBottom/>
       <HeaderSliders/> 
-      {/* <AutoPlaySlider/> */}
+      <AutoPlay/>
     </header>
   );
 }

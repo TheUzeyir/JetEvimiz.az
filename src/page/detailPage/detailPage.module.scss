@@ -158,9 +158,8 @@ font-size: 25px;
 
 .detailPage_main_bottom_left_box{
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    gap: 100px;
-    margin-bottom: 10px;
 }
 
 .detailPage_main_bottom_right{
