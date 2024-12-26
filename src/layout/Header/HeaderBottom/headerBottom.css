@@ -1,7 +1,12 @@
+.headerBottomContainer{
+    margin-top: -20px;
+}
+
 .headerBottom{
     display: flex;
     justify-content: space-between;
     width: 100%;
+    margin-top: -40px;
 }
 
 .headerBottomContainer{

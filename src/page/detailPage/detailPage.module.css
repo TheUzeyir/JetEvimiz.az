@@ -238,7 +238,7 @@
     flex-direction: column;
   }
   .detailPage_main_bottom {
-    margin-top: 120px;
+    margin-top: 200px;
     margin-bottom: 40px;
   }
   .detailPage_main_head_left_slideImgBox {
@@ -247,6 +247,9 @@
   }
 }
 @media screen and (max-width: 768px) {
+  .detailPage_goBack {
+    margin-top: -80px;
+  }
   .detailPage_main_head_left {
     flex-direction: row;
   }
@@ -278,7 +281,7 @@
     align-items: center;
     height: -moz-max-content;
     height: max-content;
-    margin-top: 100px;
+    margin-top: 190px;
   }
   .detailPage_main_head_right_emptyBox {
     display: none;

@@ -9,6 +9,8 @@ import { FaChevronLeft } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Contack from "../about/Contack";
+import { useQuery } from "@tanstack/react-query";
+
 
 const NewProductAdd = () => {
   const [categories, setCategories] = useState([]);
@@ -16,6 +18,7 @@ const NewProductAdd = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingParameters, setLoadingParameters] = useState(false);
+  const [selectedCity, setSelectedCity] = useState("");
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({});
@@ -34,7 +37,7 @@ const NewProductAdd = () => {
         const token = localStorage.getItem("authToken");
         if (!token) {
           alert("Sistemdən çıxmısınız, lütfən yenidən daxil olun.");
-          navigate("/login"); // İstifadəçini giriş səhifəsinə yönləndirir
+          navigate("/login"); 
           return;
         }
   
@@ -208,6 +211,21 @@ const NewProductAdd = () => {
       }
     }
   };
+
+  const {
+    data: cities = [],
+    isLoading: citiesLoading,
+    isError: citiesError,
+  } = useQuery({
+    queryKey: ["cities"],
+    queryFn: async () => {
+      const response = await axios.get(
+        "https://restartbaku-001-site3.htempurl.com/api/City/get-cities"
+      );
+      return response.data.data;
+    },
+    onError: () => setError("Şəhərləri alarkən xəta baş verdi."),
+  });
   
   const handleRemoveImage = (imageToRemove) => {
     setImages((prevImages) =>
@@ -269,6 +287,28 @@ const NewProductAdd = () => {
                   )}
                 </select>
               </div>
+              <div className={style.addBox_left_box_top_card}>
+                <label>{t('addProductPageCityText')}</label>
+                <select
+                  value={selectedCity}
+                  onChange={(e) => setSelectedCity(e.target.value)}
+                  className={style.addBox_left_box_top_card_item}
+                  disabled={citiesLoading}
+                >
+                  <option value="">--{t('addProductPageCityText')}--</option>
+                  {citiesLoading ? (
+                    <option disabled>{t('addProductPageLoading')}</option>
+                  ) : cities.length > 0 ? (
+                    cities.map((city) => (
+                      <option key={city.cityId} value={city.cityId}>
+                        {city.title}
+                      </option>
+                    ))
+                  ) : (
+                    <option disabled>{t('addProductPageCityNotFound')}</option>
+                  )}
+                </select>
+              </div>
               {loadingParameters ? (
                 <p>{t('addProductPageOptionLoading')}</p>
               ) : parameters.length === 0 ? (
@@ -313,7 +353,7 @@ const NewProductAdd = () => {
                 ))
               )}
               <div className={style.addBox_left_box_top_card}>
-                <p>{t('addProductPageAddImgText')}</p>
+                <p className={style.addBox_left_box_top_card_title}>{t('addProductPageAddImgText')}</p>
                 <div className={style.imagePreviews}>
                   <label>
                     +
@@ -344,7 +384,7 @@ const NewProductAdd = () => {
                 </div>
               </div>
               <div className={style.addBox_left_box_top_card}>
-                <span>{t('addProductPageProductDescribe')}</span>
+                <span  className={style.addBox_left_box_top_card_title}>{t('addProductPageProductDescribe')}</span>
                 <textarea
                   placeholder="Məhsulun təsviri"
                   value={description}

@@ -6,17 +6,35 @@ import { useNavigate } from 'react-router-dom';
 import style from "./nawBarResponsive.module.css"
 import { FaEarthOceania } from "react-icons/fa6";
 import { useTranslation } from "react-i18next"; 
-import axios from 'axios';
-
+import { useQuery } from "@tanstack/react-query";
 
 const NawBarResponsive = () => {
   const { t, i18n } = useTranslation(); 
-const navigate = useNavigate();
-const [user, setUser] = useState(null);
-const [loading, setLoading] = useState(true);
-const [languages, setLanguages] = useState([]);
-const [selectedLanguage, setSelectedLanguage] = useState(i18n.language); 
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [selectedLanguage, setSelectedLanguage] = useState(i18n.language); 
 
+  const fetchLanguages = async () => {
+    const response = await fetch(
+      "https://restartbaku-001-site3.htempurl.com/api/Language/get-all-languages"
+    );
+    const data = await response.json();
+    if (!response.ok || !data.isSuccessful) {
+      throw new Error(data.message || "Dil siyahısını çəkmək mümkün olmadı.");
+    }
+    return data.data;
+  };
+
+  const {
+    data: languages = [],
+    isLoading: isLanguagesLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["languages"],
+    queryFn: fetchLanguages,
+  });
 
   useEffect(() => {
     const savedUserName = localStorage.getItem("userName");
@@ -28,28 +46,15 @@ const [selectedLanguage, setSelectedLanguage] = useState(i18n.language);
 
   const handleLoginClick = () => {
     if (user) {
-     { 
-       navigate('/profil')
-      }
+      navigate("/profil");
     } else {
       navigate("/login");
     }
   };
 
-  useEffect(() => {
-    axios.get('https://restartbaku-001-site3.htempurl.com/api/Language/get-all-languages')
-      .then(response => {
-        if (response.data.isSuccessful) {
-          setLanguages(response.data.data);
-        } else {
-          console.error('API başarısız:', response.data.message);
-        }
-      })
-      .catch(error => console.error('API hatası:', error));
-  }, []);
   const handleLanguageChange = (event) => {
     const selectedLang = event.target.value;
-    setSelectedLanguage(selectedLang); 
+    setSelectedLanguage(selectedLang);
     i18n.changeLanguage(selectedLang);
   };
 

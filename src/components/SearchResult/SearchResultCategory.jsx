@@ -17,11 +17,9 @@ const SearchResult = () => {
   const location = useLocation();
   const { category, products } = location.state || {}; 
 
-  // Pagination state
   const [pageIndex, setPageIndex] = useState(0);
   const pageSize = 10; // Number of products per page
 
-  // Calculate paginated products
   const paginatedProducts = products
     ? products.slice(pageIndex * pageSize, (pageIndex + 1) * pageSize)
     : [];

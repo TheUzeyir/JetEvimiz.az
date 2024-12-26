@@ -1,88 +1,71 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import style from './categoryModal.module.css';
 import { IoIosArrowForward } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import { useQuery } from '@tanstack/react-query';
 
 const CategoryModal = ({ closeModal }) => {
-  const [categories, setCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(null); 
-  const [loading, setLoading] = useState(false);
+  const [selectedCategory, setSelectedCategory] = useState(null);
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
   const getLanguageCode = () => {
-    const language = i18n.language; 
-    if (language === 'az') return 'az'; 
-    if (language === 'ru') return 'ru'; 
-    if (language === 'en') return 'en'; 
+    const language = i18n.language;
+    if (language === 'az') return 'az';
+    if (language === 'ru') return 'ru';
+    if (language === 'en') return 'en';
     if (language === 'tr') return 'tr';
-    return 'az'; 
+    return 'az';
   };
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      setLoading(true); 
-      try {
-        const languageCode = getLanguageCode();
-        const response = await fetch(
-          `https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${languageCode}`
-        );
-        const result = await response.json();
-        if (result.isSuccessful) {
-          const filteredCategories = result.data.filter(
-            (category) => category.parentId === null
-          );
-          setCategories(filteredCategories);
-          setSelectedCategory(null); 
-        }
-      } catch (error) {
-        console.error('Kateqoriyaları çəkməkdə səhv:', error);
-      } finally {
-        setLoading(false); 
-      }
-    };
-
-    fetchCategories();
-
-  }, [i18n.language]);
-
-  const handleCategoryClick = async (categoryId) => {
-    setLoading(true);
-    try {
-      const languageCode = getLanguageCode(); 
-      console.log(languageCode);
-      
+  const { data: categories = [], isLoading: categoriesLoading } = useQuery({
+    queryKey: ['categories', i18n.language],
+    queryFn: async () => {
       const response = await fetch(
-        `https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}&LanguageCode=${languageCode}`
+        `https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${getLanguageCode()}`
       );
       const result = await response.json();
-  
-      const category = categories.find((cat) => 
-        cat.categoryId === categoryId || 
-        (cat.childCategories || []).some((child) => child.categoryId === categoryId)
+      if (!result.isSuccessful) throw new Error(result.message || 'Kategoriler yüklenemedi.');
+      return result.data.filter((category) => category.parentId === null);
+    },
+    staleTime: 60000,
+    cacheTime: 300000, 
+  });
+
+  const fetchProducts = async (categoryId) => {
+    const response = await fetch(
+      `https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}&LanguageCode=${getLanguageCode()}`
+    );
+    const result = await response.json();
+    if (!result.isSuccessful) throw new Error(result.message || 'Ürünler yüklenemedi.');
+    return result.data;
+  };
+
+  const handleCategoryClick = async (categoryId) => {
+    try {
+      const products = await fetchProducts(categoryId);
+      const category = categories.find((cat) =>
+        cat.categoryId === categoryId || (cat.childCategories || []).some((child) => child.categoryId === categoryId)
       );
-  
-      const selectedCategory = category?.childCategories?.find((child) => child.categoryId === categoryId) || category;
-  
-      setSelectedCategory({
-        parentCategory: category,
-        selectedSubCategory: selectedCategory 
-      });
-  
+      const selectedSubCategory =
+        category?.childCategories?.find((child) => child.categoryId === categoryId) || category;
+
+      setSelectedCategory({ parentCategory: category, selectedSubCategory });
+
       navigate('/CategoryProduct', {
         state: {
-          products: result.data,
-          category: category,
-          selectedSubCategory: selectedCategory, 
+          products,
+          category,
+          selectedSubCategory,
         },
       });
     } catch (error) {
       console.error('Seçilen kategoriye ait veriler alınamadı:', error);
-    } finally {
-      setLoading(false);
     }
   };
+
+  if (categoriesLoading) return <p>{t('loading')}</p>;
 
   return (
     <div className={style.modalCategoryModal}>

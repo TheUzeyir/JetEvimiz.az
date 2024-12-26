@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import style from "./productCard.module.css";
 import { FaHeart } from "react-icons/fa";
 import { BsFillHeartFill, BsShop } from "react-icons/bs";
@@ -6,57 +6,53 @@ import { IoCalendarNumber } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
-import { useTranslation } from "react-i18next"; // i18n import edilir
+import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+  
+const pageSize = 15;
+
+const fetchProducts = async ({ languageCode, page }) => {
+  const response = await fetch(
+    `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=${languageCode}&pageIndex=${page}&pageSize=${pageSize}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Ürünlər alınarkən xəta baş verdi.");
+  }
+  return response.json();
+};
 
 const ProductCard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const likedProducts = useSelector((state) => state.likedProducts.items);
-  const { i18n } = useTranslation(); 
+  const { i18n } = useTranslation();
 
-  const [products, setProducts] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [pageIndex, setPageIndex] = useState(0);
 
-  const pageSize = 15;
-
   const getLanguageCode = () => {
-    const language = i18n.language; // Aktiv dili əldə edirik
-    if (language === 'az') return 'az'; // Azərbaycan dili
-    if (language === 'ru') return 'ru'; // Rus dili
-    if (language === 'en') return 'en'; // İngilis dili
-    if (language === 'tr') return 'tr'; // Türk dili
-    return 'az'; // Varsayılan olaraq Azərbaycan dili
+    const language = i18n.language;
+    if (language === "az") return "az";
+    if (language === "ru") return "ru";
+    if (language === "en") return "en";
+    if (language === "tr") return "tr";
+    return "az";
   };
 
-  const fetchProducts = async (page) => {
-    setLoading(true);
-    try {
-      const languageCode = getLanguageCode();
-      const response = await fetch(
-        `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=${languageCode}&pageIndex=${page}&pageSize=${pageSize}`
-      );
-      if (!response.ok) {
-        throw new Error("Ürünlər alınarkən xəta baş verdi.");
-      }
-      const result = await response.json();
-      if (result && result.data) {
-        setProducts(result.data.items || []);
-      } else {
-        throw new Error("Məlumat tapılmadı.");
-      }
-    } catch (error) {
-      console.error("Xəta:", error);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchProducts(pageIndex);
-  }, [pageIndex, i18n.language]); // Dil dəyişdikdə məhsullar yenilənir
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["products", getLanguageCode(), pageIndex],
+    queryFn: () =>
+      fetchProducts({
+        languageCode: getLanguageCode(),
+        page: pageIndex,
+      }),
+    keepPreviousData: true, 
+  });
 
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");
@@ -79,13 +75,15 @@ const ProductCard = () => {
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
 
-  if (loading) return <p>Yüklənir...</p>;
-  if (error) return <p>Xəta: {error}</p>;
+  if (isLoading) return <p>Yüklənir...</p>;
+  if (isError) return <p>Xəta: {error.message}</p>;
+
+  const products = data?.data?.items || [];
 
   return (
     <div className="container">
       <div className={style.productCardPage_containers}>
-        <div className={style.productCard_container}> 
+        <div className={style.productCard_container}>
           {products.map((item) => (
             <div className={style.productCard} key={item.productId}>
               <Link to={`/product-details/${item.slug}`}>
@@ -140,9 +138,7 @@ const ProductCard = () => {
           >
             Əvvəlki
           </button>
-          <span>
-            Səhifə {pageIndex + 1}
-          </span>
+          <span>Səhifə {pageIndex + 1}</span>
           <button
             onClick={() => setPageIndex((prev) => prev + 1)}
             className={style.paginationBtn}

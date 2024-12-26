@@ -113,13 +113,13 @@ const DetailPage = () => {
               )}
             </div>
             <div className={style.detailPage_main_head_right}>
-              <h4 className={style.detailPage_main_head_right_humanName}>
-                Sahibi-{product.sahib || "Unknown Seller"}
-              </h4>
-              <p className={style.detailPage_main_head_right_phone}>
-                <FaPhoneAlt className={style.detailPage_main_head_right_phone_icon} />
-                {product.user?.telefon || "050-000-00-00"}
-              </p>
+            {product.user && (
+                <div className={style.detailPage_main_bottom_left_box}>
+                  <p>Sahibin Adi-{product.user.userFirstName}</p>
+                  <p>Sahibin Telefonu-{product.user.userPhone}</p>
+                  <p>Sahibin Emaili-{product.user.userAddress || "Qeyd Olunmayib"}</p>
+                </div>
+              )}
               <button className={style.detailPage_main_head_right_btn}>
                 <MdDiamond /> Elanı VIP et
               </button>

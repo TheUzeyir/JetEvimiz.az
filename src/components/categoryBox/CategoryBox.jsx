@@ -4,65 +4,65 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 import style from "./categoryBox.module.css";
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next";
+import { useQuery, useMutation } from "@tanstack/react-query";
 
 const CategoryBox = () => {
   const [activeCategory, setActiveCategory] = useState(null);
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await fetch('https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories');
-        const result = await response.json();
-        console.log(result);
-        if (result.isSuccessful) {
-          setCategories(result.data);
-        } else {
-          console.error("Kategori yüklenemedi:", result.message);
-        }
-      } catch (error) {
-        console.error('Kategorileri çekerken hata:', error);
-      }
-    };
-
-    fetchCategories();
-  }, []);
-
-  const handleCategoryClick = async (categoryId) => {
-    setLoading(true);
-    try {
+  const { data: categories = [], isLoading: isCategoriesLoading } = useQuery({
+    queryKey: ["categories"],
+    queryFn: async () => {
       const response = await fetch(
-        `https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`
+        "https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories"
       );
       const result = await response.json();
-
-      const category = categories.find((cat) =>
-        cat.categoryId === categoryId || 
-        (cat.childCategories || []).some((child) => child.categoryId === categoryId)
-      );
-
-      const selectedSubCategory = category?.childCategories?.find((child) => child.categoryId === categoryId);
-
-      navigate('/CategoryProduct', {
-        state: {
-          products: result.data,
-          category: category,
-          selectedSubCategory: selectedSubCategory,
-        },
-      });
-    } catch (error) {
-      console.error('Seçilen kategoriye ait veriler alınamadı:', error);
-    } finally {
-      setLoading(false);
+      if (!result.isSuccessful) {
+        throw new Error(result.message || "Kategoriler yüklenemedi.");
+      }
+      return result.data;
+    },
+  });
+  
+  const fetchProductsByCategory = async (categoryId) => {
+    const response = await fetch(
+      `https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`
+    );
+    const result = await response.json();
+    if (!result.isSuccessful) {
+      throw new Error(result.message || "Ürünler alınamadı.");
     }
+    return result.data;
   };
 
-  const toggleCategory = (index) => {
-    setActiveCategory(activeCategory === index ? null : index);
-  };
+  const { mutate: fetchProducts, isLoading: isProductsLoading } = useMutation(
+    fetchProductsByCategory,
+    {
+      onSuccess: (data, categoryId) => {
+        const category = categories.find(
+          (cat) =>
+            cat.categoryId === categoryId ||
+            (cat.childCategories || []).some((child) => child.categoryId === categoryId)
+        );
+
+        const selectedSubCategory = category?.childCategories?.find(
+          (child) => child.categoryId === categoryId
+        );
+
+        navigate("/CategoryProduct", {
+          state: {
+            products: data,
+            category: category,
+            selectedSubCategory: selectedSubCategory,
+          },
+        });
+      },
+      onError: (error) => {
+        console.error("Seçilen kategoriye ait ürünler alınamadı:", error.message);
+      },
+    }
+  );
 
   return (
     <div className={style.categoryBox_container}>

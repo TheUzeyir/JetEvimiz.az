@@ -22,18 +22,6 @@ export default function HeaderTop() {
   const openProfileCard = () => setProfileCardOpen(true);
   const closeProfileCard = () => setProfileCardOpen(false);
 
-  // const handleLoginClick = () => {
-  //   if (user) {
-  //     if (isProfileCardOpen) {
-  //       closeProfileCard();
-  //     } else {
-  //       openProfileCard();
-  //     }
-  //   } else {
-  //     navigate("/login");
-  //   }
-  // };
-
   const handleLoginClick = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
@@ -131,7 +119,6 @@ export default function HeaderTop() {
     setSelectedLanguage(selectedLang); 
     i18n.changeLanguage(selectedLang);
   };
-
 
   return (
     <div className={style.headerTop}>
