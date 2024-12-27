@@ -127,7 +127,7 @@ const Navbar = () => {
               category: item,
               products,
             },
-          });
+          }); 
         } else {
           console.error("Beklenmeyen API yanıtı:", response);
           setError("API'den beklenmeyen bir yanıt alındı.");

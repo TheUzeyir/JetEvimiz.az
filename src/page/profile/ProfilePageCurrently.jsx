@@ -9,7 +9,7 @@ import { FaHeart } from "react-icons/fa";
 import { BsFillHeartFill, BsShop } from "react-icons/bs";
 import { IoCalendarNumber } from "react-icons/io5";
 
-const ProfilePageCurrently = () => {
+const ProfilePageCurrently = ({ onProductCountUpdate }) => {
   const navigate = useNavigate();
     const likedProducts = useSelector((state) => state.likedProducts.items);
     const dispatch = useDispatch();
@@ -37,7 +37,8 @@ const ProfilePageCurrently = () => {
 
       const data = await response.json();
       console.log('Fetched Products:', data.data.items);
-      setProducts(data.data.items); // Update state with the items array
+      setProducts(data.data.items);
+      onProductCountUpdate(data.data.items.length);
     } catch (error) {
       console.error('Error fetching products:', error);
     }
@@ -73,7 +74,7 @@ const ProfilePageCurrently = () => {
       {products.length > 0 ? (
   <div className={style.productList}>
     {products.map((product) => ( 
-      <div className={style.productCard} key={product.productId}>
+      <div className={style.productCard} key={product.productId}> 
         <Link to={`/product-details/${product.slug}`}>
           <div className={style.productCard_imgBox}>
             <img

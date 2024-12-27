@@ -156,6 +156,7 @@
   padding: 20px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   border-radius: 4px;
+  width: 60%;
 }
 
 .detailPage_main_bottom_left_box {
@@ -289,5 +290,8 @@
   .detailPage_main_head_right_btn {
     height: -moz-max-content;
     height: max-content;
+  }
+  .detailPage_main_bottom_left {
+    width: 100%;
   }
 }/*# sourceMappingURL=detailPage.module.css.map */

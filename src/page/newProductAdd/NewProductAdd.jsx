@@ -4,8 +4,7 @@ import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import style from "./newProductAdd.module.css";
 import HeaderTop from "../../layout/Header/HeaderTop/HeaderTop";
 import { useTranslation } from "react-i18next";
-import { FaBars } from "react-icons/fa";
-import { FaChevronLeft } from "react-icons/fa";
+import { FaBars, FaChevronLeft, FaPlus } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Contack from "../about/Contack";
@@ -16,9 +15,11 @@ const NewProductAdd = () => {
   const [categories, setCategories] = useState([]);
   const [parameters, setParameters] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("");
+  const [expandedCategories, setExpandedCategories] = useState({}); 
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingParameters, setLoadingParameters] = useState(false);
   const [selectedCity, setSelectedCity] = useState("");
+  const [dropdownOpen, setDropdownOpen] = useState(false);
   const [images, setImages] = useState([]);
   const [uploading, setUploading] = useState(false);
   const [formData, setFormData] = useState({});
@@ -37,10 +38,10 @@ const NewProductAdd = () => {
         const token = localStorage.getItem("authToken");
         if (!token) {
           alert("Sistemdən çıxmısınız, lütfən yenidən daxil olun.");
-          navigate("/login"); 
+          navigate("/login");
           return;
         }
-  
+
         const response = await fetch(
           `https://restartbaku-001-site3.htempurl.com/api/Category/get-all-categories?LanguageCode=${currentLanguageCode}`,
           {
@@ -50,13 +51,13 @@ const NewProductAdd = () => {
             },
           }
         );
-  
+
         if (response.status === 401) {
           alert("Giriş vaxtınız bitib, lütfən yenidən daxil olun.");
           navigate("/login");
           return;
         }
-  
+
         const data = await response.json();
         setCategories(data.data || []);
       } catch (error) {
@@ -65,42 +66,52 @@ const NewProductAdd = () => {
         setLoadingCategories(false);
       }
     };
-  
+
     fetchCategories();
   }, [currentLanguageCode, navigate]);
+
+  const toggleCategoryExpansion = (categoryId) => {
+    setExpandedCategories((prev) => ({
+      ...prev,
+      [categoryId]: !prev[categoryId],
+    }));
+  };
   
 
-  const handleCategoryChange = async (event) => {
-    const categoryId = event.target.value;
+  const handleCategoryChange = async (categoryId) => {
     setSelectedCategory(categoryId);
-    
-    setParameters([]);
+  
+    setParameters([]); 
     setFormData({});
-
+  
     if (!categoryId) return;
-
-    setLoadingParameters(true);
+  
+    setLoadingParameters(true); 
     try {
       const response = await fetch(
         `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=${currentLanguageCode}&CategoryId=${categoryId}&RequestFrontType=add`
       );
-
+  
+      if (!response.ok) throw new Error("Parameters could not be fetched.");
+  
       const data = await response.json();
-
-      const initialFormData = data.data ? data.data.reduce((acc, parameter) => {
-        acc[parameter.parameterKey] = ""; 
-        return acc;
-      }, {}) : {};
-
-      setParameters(data.data || []);
+      const initialFormData = data.data
+        ? data.data.reduce((acc, parameter) => {
+            acc[parameter.parameterKey] = ""; 
+            return acc;
+          }, {})
+        : {};
+  
+      setParameters(data.data || []); 
       setFormData((prevData) => ({ ...prevData, ...initialFormData }));
-
+  
     } catch (error) {
       console.error("Error loading parameters:", error);
     } finally {
-      setLoadingParameters(false);
+      setLoadingParameters(false); 
     }
   };
+  
 
   const handleInputChange = (event, parameterKey) => {
     const { value } = event.target;
@@ -125,14 +136,13 @@ const NewProductAdd = () => {
     }
   
     const payload = {
-      productTitle,
-      categoryId: selectedCategory,
+      productTitle: productTitle || "Varsayılan Başlık",
+      categoryId: selectedCategory || 0,
       storeId: null,
-      description: description || "2024121",
-      images: images,
-      parameters: formData,
+      description: description || "Varsayılan Açıklama",
+      images: images || [],
+      parameters: formData || [],
     };
-  
     console.log("Göndərilən payload:", payload);
   
     try {
@@ -234,6 +244,8 @@ const NewProductAdd = () => {
     console.log(images);
     
   };
+
+  const toggleDropdown = () => setDropdownOpen((prev) => !prev);
   return (
     <div className={style.addBox_main_container}>
       <HeaderTop />
@@ -257,35 +269,59 @@ const NewProductAdd = () => {
                 />
               </div>
               <div className={style.addBox_left_box_top_card}>
-                <label>{t('addProductPageCategeryText')}</label>
-                <select
-                  value={selectedCategory}
-                  onChange={handleCategoryChange}
-                  className={style.addBox_left_box_top_card_item}
-                  disabled={loadingCategories}
-                >
-                  <option value="">--{t('addProductPageChooseCategery')}--</option>
-                  {loadingCategories ? (
-                    <option disabled>{t('addProductPageLoading')}</option>
-                  ) : (
-                    categories.map((category) => (
-                      <React.Fragment key={category.categoryId}>
-                        <option
-                          value={category.categoryId}
-                          disabled
-                          className={style.parentCategoryTitle}
-                        >
-                          {category.categoryTitle}
-                        </option>
-                        {category.childCategories?.map((child) => (
-                          <option key={child.categoryId} value={child.categoryId}>
-                            -- {child.categoryTitle}
-                          </option>
+                <label>{t("addProductPageCategeryText")}</label>
+                <div className={style.categoryDropdown}>
+                {loadingCategories ? (
+                  <p>{t("addProductPageLoading")}</p>
+                ) : (
+                  <div className={style.selectBox}>
+                    <div
+                      className={style.selectedCategory}
+                      onClick={() => setDropdownOpen(!dropdownOpen)}
+                    >
+                      {selectedCategory
+                        ? categories
+                            .flatMap((cat) => cat.childCategories || [])
+                            .find((child) => child.categoryId === selectedCategory)
+                            ?.categoryTitle || t("addProductPageCategeryText")
+                        : t("addProductPageCategeryText")}
+                    </div>
+                    {dropdownOpen && (
+                      <div className={style.dropdownMenu}>
+                        {categories.map((category) => (
+                          <div key={category.categoryId} className={style.parentCategory}>
+                            <div className={style.parentCategoryHeader}>
+                              <span>{category.categoryTitle}</span>
+                              {category.childCategories?.length > 0 && (
+                                <FaPlus
+                                  className={style.expandIcon}
+                                  onClick={() => toggleCategoryExpansion(category.categoryId)}
+                                />
+                              )}
+                            </div>
+                            {expandedCategories[category.categoryId] && (
+                              <ul className={style.childCategoryList}>
+                                {category.childCategories.map((child) => (
+                                  <li
+                                    key={child.categoryId}
+                                    className={style.childCategory}
+                                    onClick={() => {
+                                      handleCategoryChange(child.categoryId);
+                                      setDropdownOpen(false); // Dropdown bağlanacaq
+                                    }}
+                                  >
+                                    {child.categoryTitle}
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
                         ))}
-                      </React.Fragment>
-                    ))
-                  )}
-                </select>
+                      </div>
+                    )}
+                  </div>
+                )}
+              </div>
               </div>
               <div className={style.addBox_left_box_top_card}>
                 <label>{t('addProductPageCityText')}</label>

@@ -16,7 +16,7 @@ const ProfilePageWaiting = ({ onProductCountUpdate }) => {
   const { t } = useTranslation();
   const [products, setProducts] = useState([]);
 
-  const fetchProducts = async () => {
+  const fetchProducts = async () => { 
     try {
       const token = localStorage.getItem("authToken");
       const response = await fetch(

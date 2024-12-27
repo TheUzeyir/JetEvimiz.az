@@ -153,8 +153,7 @@ const DetailPage = () => {
               <h5>User Information</h5>
               {product.user && (
                 <div className={style.detailPage_main_bottom_left_box}>
-                  <p>Sahibin Adi-{product.user.userFirstName}</p>
-                  <p>Sahibin Soyadi-{product.user.userLastName}</p>
+                  <p>Sahibi-{product.user.userFirstName}</p>
                   <p>Sahibin Telefonu-{product.user.userPhone}</p>
                   <p>Sahibin Emaili-{product.user.userAddress || "N.A"}</p>
                 </div>
