@@ -45,7 +45,7 @@ const ProfilePageCurrently = ({ onProductCountUpdate }) => {
   };
 
   useEffect(() => {
-    fetchProducts(2); // Fetch products with status type 1
+    fetchProducts(2); 
   }, []);
 
     const toggleLiked = (productItem) => {

@@ -86,7 +86,7 @@ const NewProductAdd = () => {
   
     if (!categoryId) return;
   
-    setLoadingParameters(true); 
+    setLoadingParameters(true);  
     try {
       const response = await fetch(
         `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=${currentLanguageCode}&CategoryId=${categoryId}&RequestFrontType=add`

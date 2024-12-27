@@ -7,9 +7,12 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import backImg from "../../img/loginImg.png";
 import { useTranslation } from "react-i18next"  
+import { MdKeyboardArrowLeft } from "react-icons/md";
 
 const Login = () => {
   const {t}= useTranslation()
+  const navigate = useNavigate();
+
   const errorMessages = (message) => {
     Swal.fire({
       icon: "error",
@@ -23,8 +26,6 @@ const Login = () => {
     userName: "",
     password: "",
   });
-
-  const navigate = useNavigate();
 
   const changeHandler = (event) => {
     setData({ ...data, [event.target.name]: event.target.value });
@@ -72,6 +73,7 @@ const Login = () => {
   };
   return (
     <div className={styles.container}>
+      <p className={styles.navigateText} onClick={()=>{navigate('/')}}><MdKeyboardArrowLeft/></p>
       <div className={styles.formContainer}>
         <form
           className={styles.formLogin}

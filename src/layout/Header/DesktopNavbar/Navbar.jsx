@@ -183,7 +183,7 @@ const Navbar = () => {
                     </option>
                   ))}
                 </optgroup>
-              </select>
+              </select> 
               <input
                 placeholder={t("searchInput")}
                 type="text"

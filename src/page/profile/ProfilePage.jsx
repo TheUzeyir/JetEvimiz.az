@@ -23,8 +23,8 @@ const ProfilePage = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
       try {
-        const decoded = JSON.parse(atob(token.split(".")[1])); // Decode the token
-        const isExpired = decoded.exp * 1000 < Date.now(); // Check expiration
+        const decoded = JSON.parse(atob(token.split(".")[1])); 
+        const isExpired = decoded.exp * 1000 < Date.now();
         if (isExpired) {
           Swal.fire({
             icon: "warning",
@@ -32,8 +32,8 @@ const ProfilePage = () => {
             text: t("sessionExpiredMessage"),
             confirmButtonText: t("ok"),
           }).then(() => {
-            localStorage.removeItem("authToken"); // Remove the token
-            navigate("/login"); // Redirect to login page
+            localStorage.removeItem("authToken"); 
+            navigate("/login"); 
           });
         }
       } catch (error) {

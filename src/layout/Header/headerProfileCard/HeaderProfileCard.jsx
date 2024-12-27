@@ -14,8 +14,8 @@ const HeaderProfileCard = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
       try {
-        const decoded = JSON.parse(atob(token.split(".")[1])); // Token'ı decode et
-        const isExpired = decoded.exp * 1000 < Date.now(); // Token süresinin geçerliliğini kontrol et
+        const decoded = JSON.parse(atob(token.split(".")[1])); // Decode the token
+        const isExpired = decoded.exp * 1000 < Date.now(); // Check token expiration
         if (isExpired) {
           Swal.fire({
             icon: "warning",
@@ -28,15 +28,22 @@ const HeaderProfileCard = () => {
           });
         } else {
           const savedUserName = localStorage.getItem("userName");
-          setUserName(savedUserName || "Lorem"); // Token geçerli ise kullanıcı adını yükle
+          setUserName(savedUserName || t("defaultUserName")); // Better fallback
         }
       } catch (error) {
-        console.error("Token decode hatası:", error);
-        localStorage.removeItem("authToken");
-        navigate("/login");
+        console.error("Token decode error:", error);
+        Swal.fire({
+          icon: "error",
+          title: t("error"),
+          text: t("sessionError"),
+          confirmButtonText: t("ok"),
+        }).then(() => {
+          localStorage.removeItem("authToken");
+          navigate("/login");
+        });
       }
     } else {
-      navigate("/login"); // Token yoksa login sayfasına yönlendir
+      navigate("/login"); 
     }
   }, [navigate, t]);
 
@@ -44,8 +51,8 @@ const HeaderProfileCard = () => {
     localStorage.removeItem("authToken");
     localStorage.removeItem("userName");
     setUserName(null);
-    navigate("/login");
   };
+  
 
   return (
     <div className={style.HeaderProfileCard}>

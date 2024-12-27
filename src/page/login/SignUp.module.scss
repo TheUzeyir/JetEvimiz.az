@@ -11,7 +11,17 @@
 	justify-content: center;
 	text-align: center;
 }
-  
+
+.navigateText{
+	position: absolute;
+	z-index: 5;
+	top: 0%;
+	left: 1%;
+	color: white;
+	cursor: pointer;
+	font-size: 40px;
+}
+
   .container {
 	display: flex;
 	justify-content: center;

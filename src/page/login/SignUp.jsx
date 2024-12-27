@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import backImg from "../../img/loginImg.png";
 import { useTranslation } from "react-i18next";
+import { MdKeyboardArrowLeft } from "react-icons/md";
 import phoneImg from "../../img/phone.png";
 
 const SignUp = () => {
@@ -144,6 +145,7 @@ const SignUp = () => {
 
   return (
     <div className={styles.container}>
+      <p className={styles.navigateText} onClick={()=>{navigate('/')}}><MdKeyboardArrowLeft/></p>
       <div className={styles.formContainer}>
         <form
           className={styles.formLogin}
