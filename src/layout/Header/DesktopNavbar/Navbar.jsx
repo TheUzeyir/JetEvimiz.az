@@ -11,9 +11,7 @@ import CategoryModal from "../Category-Modal/CategoryModal";
 const Navbar = () => {
   const [selectedCity, setSelectedCity] = useState("");
   const [input, setInput] = useState("");
-  const [filterData, setFilterData] = useState([]);
   const [user, setUser] = useState(null);
-  const [isFilterCardOpen, setFilterCardOpen] = useState(false);
   const [isModalOpen, setModalOpen] = useState(false);
   const [error, setError] = useState("");
   const { t } = useTranslation();
@@ -45,6 +43,18 @@ const Navbar = () => {
     onError: () => setError("Şəhərləri alarkən xəta baş verdi."),
   });
 
+  const groupedCities = cities.reduce(
+    (acc, city) => {
+      if (city.orderWeight === 0) {
+        acc.azerbaijan.push(city);
+      } else if (city.orderWeight === 1) {
+        acc.turkey.push(city);
+      }
+      return acc;
+    },
+    { azerbaijan: [], turkey: [] }
+  );
+
   const {
     data: searchData = [],
     isFetching,
@@ -69,36 +79,31 @@ const Navbar = () => {
         item.productTitle?.toLowerCase().includes(input.toLowerCase())
       );
 
-      const filteredCategories = categories.filter((category) => {
+      const filteredCategories = categories.flatMap((category) => {
         const categoryMatch = category.categoryTitle?.toLowerCase().includes(input.toLowerCase());
-
-        const childCategoryMatch = category.childCategories?.some((child) =>
+        const childMatches = category.childCategories?.filter((child) =>
           child.categoryTitle?.toLowerCase().includes(input.toLowerCase())
         );
 
-        return categoryMatch || childCategoryMatch;
+        const matchedItems = categoryMatch
+          ? [{ ...category, type: "category", hasChildren: !!childMatches?.length }]
+          : [];
+
+        const matchedChildren = childMatches?.map((child) => ({
+          ...child,
+          type: "category",
+          parentCategory: category.categoryTitle,
+        })) || [];
+
+        return [...matchedItems, ...matchedChildren];
       });
 
       return [
         ...filteredProducts.map((product) => ({ ...product, type: "product" })),
-        ...filteredCategories.flatMap((category) => {
-          const matchedItems = [
-            { ...category, type: "category", hasChildren: category.childCategories.length > 0 }
-          ];
-
-          const matchedChildren = category.childCategories
-            .filter((child) => child.categoryTitle.toLowerCase().includes(input.toLowerCase()))
-            .map((child) => ({
-              ...child,
-              type: "category",
-              parentCategory: category.categoryTitle
-            }));
-
-          return [...matchedItems, ...matchedChildren];
-        }),
+        ...filteredCategories,
       ];
     },
-    enabled: !!input.trim(), 
+    enabled: !!input.trim(),
     onError: () => setError("Veriler alınırken bir hata oluştu."),
   });
 
@@ -106,22 +111,17 @@ const Navbar = () => {
     const categoryId = item.categoryId || item.parentCategoryId;
 
     if (!categoryId) {
-      console.error("CategoryId bulunamadı.");
       setError("Kategori ID bulunamadı.");
       return;
     }
-
-    console.log("Selected Category ID:", categoryId);
 
     axios
       .get(
         `https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}`
       )
       .then((response) => {
-        if (response.data && response.data.data && response.data.data.items) {
+        if (response.data?.data?.items) {
           const products = response.data.data.items;
-          console.log("Fetched Products:", products);
-
           navigate("/searchresult-category", {
             state: {
               category: item,
@@ -129,12 +129,10 @@ const Navbar = () => {
             },
           }); 
         } else {
-          console.error("Beklenmeyen API yanıtı:", response);
           setError("API'den beklenmeyen bir yanıt alındı.");
         }
       })
       .catch((error) => {
-        console.error("Error fetching products:", error.message);
         if (error.response) {
           setError(
             `Sunucu hatası: ${error.response.status} - ${error.response.statusText}`
@@ -171,11 +169,20 @@ const Navbar = () => {
                 className={style.navBar_selectBox}
               >
                 <option value="">--{t("chooseCity")}--</option>
-                {cities.map((city) => (
-                  <option key={city.cityId} value={city.title}>
-                    {city.title}
-                  </option>
-                ))}
+                <optgroup label="Azərbaycan">
+                  {groupedCities.azerbaijan.map((city) => (
+                    <option key={city.cityId} value={city.title}>
+                      {city.title}
+                    </option>
+                  ))}
+                </optgroup>
+                <optgroup label="Türkiyə">
+                  {groupedCities.turkey.map((city) => (
+                    <option key={city.cityId} value={city.title}>
+                      {city.title}
+                    </option>
+                  ))}
+                </optgroup>
               </select>
               <input
                 placeholder={t("searchInput")}
@@ -189,7 +196,7 @@ const Navbar = () => {
               className={style.advertsBox_btn_new}
               onClick={handleNewProductPageClick}
             >
-              <IoAddSharp />{" "}
+              <IoAddSharp />
               <span className={style.advertsBox_btn_new_text}>
                 {t("newAnnouncement")}
               </span>
@@ -209,34 +216,25 @@ const Navbar = () => {
         </div>
       </nav>
       {isModalOpen && <CategoryModal closeModal={closeModal} />}
-      <div className={`container ${isFilterCardOpen ? "blur-background" : ""}`}>
+      <div className={`container ${isFetching ? "blur-background" : ""}`}>
         {error && <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>}
         {searchData.length > 0 ? (
           <div className={style.nawBarSearchResultCategory}>
             {searchData.map((item, index) => (
               <div key={index}>
                 {item.type === "category" ? (
-                  <div>
-                    {item.parentCategory ? (
-                      <p
-                        onClick={() => handleItemClick(item)}
-                        className={style.nawBarSearchResultText_category}
-                      >
-                        {item.parentCategory} - {item.categoryTitle}
-                      </p>
-                    ) : (
-                      <p
-                        onClick={() => handleItemClick(item)}
-                        className={style.nawBarSearchResultText_category}
-                      >
-                        {item.categoryTitle}
-                      </p>
-                    )}
-                  </div>
+                  <p
+                    onClick={() => handleItemClick(item)}
+                    className={style.nawBarSearchResultText_category}
+                  >
+                    {item.parentCategory
+                      ? `${item.parentCategory} - ${item.categoryTitle}`
+                      : item.categoryTitle}
+                  </p>
                 ) : (
                   <p
-                    className={style.nawBarSearchResultText}
                     onClick={() => handleItemClick(item)}
+                    className={style.nawBarSearchResultText}
                   >
                     {item.productTitle}
                   </p>
@@ -245,7 +243,7 @@ const Navbar = () => {
             ))}
           </div>
         ) : (
-          <p>{t("")}</p>
+          <p>{t("noResults")}</p>
         )}
       </div>
     </>
