@@ -242,9 +242,7 @@ const Navbar = () => {
               </div>
             ))}
           </div>
-        ) : (
-          <p>{t("noResults")}</p>
-        )}
+        ) : null}
       </div>
     </>
   );
