@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
-  
+
 const pageSize = 15;
 
 const fetchProducts = async ({ languageCode, page }) => {
@@ -20,6 +20,14 @@ const fetchProducts = async ({ languageCode, page }) => {
     throw new Error("Ürünlər alınarkən xəta baş verdi.");
   }
   return response.json();
+};
+
+const calculateDays = (createDate) => {
+  const createdDate = new Date(createDate);
+  const currentDate = new Date();
+  const timeDifference = currentDate - createdDate;
+  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+  return daysDifference;
 };
 
 const ProductCard = () => {
@@ -51,7 +59,7 @@ const ProductCard = () => {
         languageCode: getLanguageCode(),
         page: pageIndex,
       }),
-    keepPreviousData: true, 
+    keepPreviousData: true,
   });
 
   const toggleLiked = (productItem) => {
@@ -121,7 +129,7 @@ const ProductCard = () => {
                     {item.price} AZN
                   </span>
                   <div className={style.productCard_title_dayBox}>
-                    <IoCalendarNumber /> 1 Gün
+                    <IoCalendarNumber /> {calculateDays(item.createDate)} Gün
                   </div>
                 </div>
                 <p className={style.productCard_subTitle}>{item.productTitle}</p>

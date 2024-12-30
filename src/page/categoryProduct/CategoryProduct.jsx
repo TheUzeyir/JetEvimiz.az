@@ -25,7 +25,7 @@ const CategoryProduct = () => {
   const [error, setError] = useState(null);
   const [filterParams, setFilterParams] = useState({});
   const [pageIndex, setPageIndex] = useState(0);
-  const pageSize = 8; // Number of items per page
+  const pageSize = 8; 
 
   const { products = { items: [] }, category } = location.state || {};
   const items = products.items;
