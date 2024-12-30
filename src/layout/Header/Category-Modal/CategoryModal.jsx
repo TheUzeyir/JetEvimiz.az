@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import style from './categoryModal.module.css';
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward } from 'react-icons/io';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from "react-i18next";
+import { useTranslation } from 'react-i18next';
 import { useQuery } from '@tanstack/react-query';
 
 const CategoryModal = ({ closeModal }) => {
@@ -10,6 +10,7 @@ const CategoryModal = ({ closeModal }) => {
   const navigate = useNavigate();
   const { t, i18n } = useTranslation();
 
+  // Dil kodunu müəyyən etmək üçün funksiya
   const getLanguageCode = () => {
     const language = i18n.language;
     if (language === 'az') return 'az';
@@ -19,6 +20,7 @@ const CategoryModal = ({ closeModal }) => {
     return 'az';
   };
 
+  // Kategoriyaların çəkilməsi
   const { data: categories = [], isLoading: categoriesLoading } = useQuery({
     queryKey: ['categories', i18n.language],
     queryFn: async () => {
@@ -27,12 +29,13 @@ const CategoryModal = ({ closeModal }) => {
       );
       const result = await response.json();
       if (!result.isSuccessful) throw new Error(result.message || 'Kategoriler yüklenemedi.');
-      return result.data.filter((category) => category.parentId === null);
+      return result.data.filter((category) => category.parentId === null); // Yalnız üst kateqoriyaları alırıq
     },
     staleTime: 60000,
-    cacheTime: 300000, 
+    cacheTime: 300000,
   });
 
+  // Seçilen kategoriya bağlı məhsulları çəkmək
   const fetchProducts = async (categoryId) => {
     const response = await fetch(
       `https://restartbaku-001-site3.htempurl.com/api/Product/search?CategoryId=${categoryId}&LanguageCode=${getLanguageCode()}`
@@ -53,6 +56,7 @@ const CategoryModal = ({ closeModal }) => {
 
       setSelectedCategory({ parentCategory: category, selectedSubCategory });
 
+      // Seçilmiş məhsul və kategoriya ilə yönləndirmə
       navigate('/CategoryProduct', {
         state: {
           products,
@@ -76,12 +80,12 @@ const CategoryModal = ({ closeModal }) => {
             {categories.map((category) => (
               <div
                 key={category.categoryId}
-                onMouseEnter={() => setSelectedCategory(category)}
-                onClick={() => handleCategoryClick(category.categoryId)}
+                onMouseEnter={() => setSelectedCategory(category)} // Mouse hover ilə seçimi göstəririk
+                onClick={() => handleCategoryClick(category.categoryId)} // Kateqoriya kliklənəndə məhsulları çəkirik
                 className={style.categoryItem}
               >
                 <span className={style.categoryIcon}></span>
-                <img className={style.caticon} src={category.categoryImage} alt="" />
+                <img className={style.caticon} src={category.categoryImage} alt={category.categoryTitle} />
                 {category.categoryTitle}
               </div>
             ))}
@@ -94,17 +98,17 @@ const CategoryModal = ({ closeModal }) => {
                     <li
                       className={style.products_li}
                       key={child.categoryId}
-                      onClick={() => handleCategoryClick(child.categoryId)}
+                      onClick={() => handleCategoryClick(child.categoryId)} 
                     >
                       {child.categoryTitle} <IoIosArrowForward />
                     </li>
                   ))
                 ) : (
-                  <p>{t('modalResult')}</p>
+                  <p>{t('modalResult')}</p> 
                 )}
               </ul>
             ) : (
-              <p>{t('modalText')}</p>
+              <p>{t('modalText')}</p> 
             )}
           </div>
         </div>

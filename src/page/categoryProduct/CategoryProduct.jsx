@@ -8,13 +8,13 @@ import { useDispatch } from "react-redux";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
-import { useTranslation } from "react-i18next"; // i18n-in import edilməsi
+import { useTranslation } from "react-i18next";
 
 const CategoryProduct = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { t, i18n } = useTranslation(); // i18n-dən istifadə edirik
+  const { t, i18n } = useTranslation();
 
   const [likedProducts, setLikedProducts] = useState([]);
   const [minPrice, setMinPrice] = useState("");
@@ -25,18 +25,19 @@ const CategoryProduct = () => {
   const [error, setError] = useState(null);
   const [filterParams, setFilterParams] = useState({});
   const [pageIndex, setPageIndex] = useState(0);
-  const pageSize = 8; 
+  const [showPriceInputs, setShowPriceInputs] = useState(false); // State to control price input visibility
+  const pageSize = 8;
 
   const { products = { items: [] }, category } = location.state || {};
   const items = products.items;
 
   const getLanguageCode = () => {
-    const language = i18n.language; // Aktiv dili əldə edirik
-    if (language === "az") return "az"; // Azərbaycan dili
-    if (language === "ru") return "ru"; // Rus dili
-    if (language === "en") return "en"; // İngilis dili
-    if (language === "tr") return "tr"; // Türk dili
-    return "az"; // Varsayılan olaraq Azərbaycan dili
+    const language = i18n.language;
+    if (language === "az") return "az";
+    if (language === "ru") return "ru";
+    if (language === "en") return "en";
+    if (language === "tr") return "tr";
+    return "az";
   };
 
   useEffect(() => {
@@ -51,13 +52,15 @@ const CategoryProduct = () => {
       const fetchParameters = async () => {
         setLoading(true);
         try {
-          const languageCode = getLanguageCode(); // Dil kodunu alırıq
+          const languageCode = getLanguageCode();
 
           const response = await fetch(
             `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=${languageCode}&CategoryId=${category.categoryId}&RequestFrontType=add`
           );
           if (!response.ok) throw new Error("Failed to fetch parameters");
           const data = await response.json();
+          console.log(data.data);
+
           setParameters(data.data);
         } catch (err) {
           setError(err.message);
@@ -117,34 +120,52 @@ const CategoryProduct = () => {
   };
 
   const renderCategoryFilters = () => {
-    if (loading) return <p>{t("loadingFilters")}</p>; // i18n istifadə edərək dilə uyğun məlumat
+    if (loading) return <p>{t("loadingFilters")}</p>;
     if (error) return <p>{t("error")}: {error}</p>;
 
     return parameters.map((param, index) => (
       <div key={index} className={style.categoryBoxFilterCard}>
         <label htmlFor={`param-${index}`} style={{ fontWeight: "bold" }}>
-          {param.name}:
+          {param.parameterTitle}:
         </label>
-        {param.parametrTypeId === 3 ? (
+        {param.parameterTypeId === 3 ? (
           <select
             id={`param-${index}`}
             onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
           >
             <option value="">{t("select")}</option>
-            {param.options?.map((option, i) => (
-              <option key={i} value={option.value}>
-                {option.label}
+            {param.parameterMasks?.map((mask, i) => (
+              <option key={i} value={mask.parameterMaskData}>
+                {mask.parameterMaskData}
               </option>
             ))}
           </select>
-        ) : param.parametrTypeId === 2 ? (
-          <input
-            id={`param-${index}`}
-            type="number"
-            placeholder={`${t("enter")} ${param.parameterTitle}`}
-            onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
-            className={style.categoryPageInput}
-          />
+        ) : param.parameterTypeId === 2 ? (
+          <>
+            <button
+              onClick={() => setShowPriceInputs((prev) => !prev)} // Toggle price inputs
+            >
+              {t("filterPrice")}
+            </button>
+            {showPriceInputs && (
+              <>
+                <label>{t("minPrice")}</label>
+                <input
+                  type="number"
+                  min={0}
+                  placeholder={t("minPrice")}
+                  onChange={(e) => setMinPrice(e.target.value)}
+                />
+                <label>{t("maxPrice")}</label>
+                <input
+                  type="number"
+                  min={0}
+                  placeholder={t("maxPrice")}
+                  onChange={(e) => setMaxPrice(e.target.value)}
+                />
+              </>
+            )}
+          </>
         ) : (
           <label className={style.categoryPageLabel}>
             <p>{t("title")}</p>
