@@ -1,44 +1,28 @@
 import React, { useState, useEffect } from "react";
 import style from "./categoryProduct.module.scss";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { BsFillHeartFill } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa6";
-import { addLikedProduct } from "../../redux/likedSlice";
-import { useDispatch } from "react-redux";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import { useTranslation } from "react-i18next";
+import FilterBox from "../../components/filterBox/FilterBox";
 
 const CategoryProduct = () => {
   const location = useLocation();
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { t, i18n } = useTranslation();
 
   const [likedProducts, setLikedProducts] = useState([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [filterTitle, setFilterTitle] = useState("");
-  const [parameters, setParameters] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [filterParams, setFilterParams] = useState({});
   const [pageIndex, setPageIndex] = useState(0);
-  const [showPriceInputs, setShowPriceInputs] = useState(false); // State to control price input visibility
   const pageSize = 8;
 
   const { products = { items: [] }, category } = location.state || {};
   const items = products.items;
-
-  const getLanguageCode = () => {
-    const language = i18n.language;
-    if (language === "az") return "az";
-    if (language === "ru") return "ru";
-    if (language === "en") return "en";
-    if (language === "tr") return "tr";
-    return "az";
-  };
 
   useEffect(() => {
     const likedProductsFromStorage = localStorage.getItem("likedProducts");
@@ -47,39 +31,7 @@ const CategoryProduct = () => {
     }
   }, []);
 
-  useEffect(() => {
-    if (category?.categoryId) {
-      const fetchParameters = async () => {
-        setLoading(true);
-        try {
-          const languageCode = getLanguageCode();
-
-          const response = await fetch(
-            `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=${languageCode}&CategoryId=${category.categoryId}&RequestFrontType=add`
-          );
-          if (!response.ok) throw new Error("Failed to fetch parameters");
-          const data = await response.json();
-          console.log(data.data);
-
-          setParameters(data.data);
-        } catch (err) {
-          setError(err.message);
-        } finally {
-          setLoading(false);
-        }
-      };
-
-      fetchParameters();
-    }
-  }, [category]);
-
   const toggleLiked = (productItem) => {
-    const savedUserName = localStorage.getItem("userName");
-    if (!savedUserName) {
-      navigate("/login");
-      return;
-    }
-
     const isLiked = likedProducts.some(
       (likedProduct) => likedProduct.productId === productItem.productId
     );
@@ -92,11 +44,7 @@ const CategoryProduct = () => {
 
     setLikedProducts(updatedLikedProducts);
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
-    dispatch(addLikedProduct(productItem));
   };
-
-  const handleFilterChange = (paramName, value) =>
-    setFilterParams((prevParams) => ({ ...prevParams, [paramName]: value }));
 
   const filterProducts = () => {
     let filteredItems = items;
@@ -119,69 +67,6 @@ const CategoryProduct = () => {
     return filteredItems;
   };
 
-  const renderCategoryFilters = () => {
-    if (loading) return <p>{t("loadingFilters")}</p>;
-    if (error) return <p>{t("error")}: {error}</p>;
-
-    return parameters.map((param, index) => (
-      <div key={index} className={style.categoryBoxFilterCard}>
-        <label htmlFor={`param-${index}`} style={{ fontWeight: "bold" }}>
-          {param.parameterTitle}:
-        </label>
-        {param.parameterTypeId === 3 ? (
-          <select
-            id={`param-${index}`}
-            onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
-          >
-            <option value="">{t("select")}</option>
-            {param.parameterMasks?.map((mask, i) => (
-              <option key={i} value={mask.parameterMaskData}>
-                {mask.parameterMaskData}
-              </option>
-            ))}
-          </select>
-        ) : param.parameterTypeId === 2 ? (
-          <>
-            <button
-              onClick={() => setShowPriceInputs((prev) => !prev)} // Toggle price inputs
-            >
-              {t("filterPrice")}
-            </button>
-            {showPriceInputs && (
-              <>
-                <label>{t("minPrice")}</label>
-                <input
-                  type="number"
-                  min={0}
-                  placeholder={t("minPrice")}
-                  onChange={(e) => setMinPrice(e.target.value)}
-                />
-                <label>{t("maxPrice")}</label>
-                <input
-                  type="number"
-                  min={0}
-                  placeholder={t("maxPrice")}
-                  onChange={(e) => setMaxPrice(e.target.value)}
-                />
-              </>
-            )}
-          </>
-        ) : (
-          <label className={style.categoryPageLabel}>
-            <p>{t("title")}</p>
-            <input
-              id={`param-${index}`}
-              type="text"
-              placeholder={`${t("enter")} ${param.parameterTitle}`}
-              onChange={(e) => handleFilterChange(param.parameterTitle, e.target.value)}
-              className={style.categoryPageInput}
-            />
-          </label>
-        )}
-      </div>
-    ));
-  };
-
   const filteredItems = filterProducts();
 
   const paginatedItems = filteredItems.slice(
@@ -195,27 +80,9 @@ const CategoryProduct = () => {
     <div className={style.CategoryProduct_container}>
       <Navbar />
       <div className="container">
+        <FilterBox categoryId={category?.categoryId} />
         <div className={style.CategoryProductPage}>
-          <div className={style.CategoryProduct_header}>
-            <p>{t("ads")} ({filteredItems.length})</p>
-            <div className={style.CategoryProduct_filterBox}>
-              {renderCategoryFilters()}
-              <label htmlFor="titleFilter" className={style.categoryPageLabel}>
-                <p>{t("title")}</p>
-                <input
-                  id="titleFilter"
-                  type="text"
-                  placeholder={t("filterProductTitle")}
-                  value={filterTitle}
-                  onChange={(e) => setFilterTitle(e.target.value)}
-                  className={style.categoryPageInput}
-                />
-              </label>
-            </div>
-          </div>
-
           <div className={style.CategoryProduct_simple}>
-            <h2>{t("ads")}</h2>
             {paginatedItems.length > 0 ? (
               <div className={style.productsGrid}>
                 {paginatedItems.map((item) => (
@@ -250,12 +117,8 @@ const CategoryProduct = () => {
                     </Link>
                     <div className={style.productCard_info}>
                       <h3>{item.productTitle}</h3>
-                      <p className={style.productCard_info_price}>
-                        {item.price} AZN
-                      </p>
-                      <p className={style.productCard_info_category}>
-                        {item.categoryName}
-                      </p>
+                      <p className={style.productCard_info_price}>{item.price} AZN</p>
+                      <p className={style.productCard_info_category}>{item.categoryName}</p>
                     </div>
                   </div>
                 ))}
@@ -266,8 +129,7 @@ const CategoryProduct = () => {
             <div className={style.paginationContainer}>
               <button
                 disabled={pageIndex === 0}
-                onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))}
-              >
+                onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))}>
                 {t("prev")}
               </button>
               <span>
@@ -275,8 +137,7 @@ const CategoryProduct = () => {
               </span>
               <button
                 disabled={pageIndex === totalPages - 1}
-                onClick={() => setPageIndex((prev) => Math.min(prev + 1, totalPages - 1))}
-              >
+                onClick={() => setPageIndex((prev) => Math.min(prev + 1, totalPages - 1))}>
                 {t("next")}
               </button>
             </div>

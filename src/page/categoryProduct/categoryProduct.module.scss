@@ -1,7 +1,7 @@
 .CategoryProductPage{
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: start;
      color: black;
 }
 
@@ -237,6 +237,13 @@ cursor: pointer;
         font-size: 14px;
     }
 }
+
+@media screen and (max-width:768px) {
+    .CategoryProduct_container{
+        margin-top: 150px;
+    }
+}
+
 @media screen and (max-width:596px) {
     .productsGrid{
         grid-template-columns: repeat(2,1fr);
