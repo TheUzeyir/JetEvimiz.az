@@ -36,7 +36,8 @@ const FilterBox = ({  isVisible, setIsVisible,categoryId }) => {
   
 
   const handleFilter = () => {
-    navigate("/filterBoxRes", { state: { formData, categoryId } });
+    console.log("hello");
+    
   };
   
   return (

@@ -153,7 +153,6 @@ const CategoryProduct = () => {
                   alt="No Products Found"
                   className={style.notFoundImg}
                 />
-                <p>{t('common.noProductsFound')}</p>
               </div>
             )}
             <div className={style.paginationContainer}>
@@ -164,7 +163,7 @@ const CategoryProduct = () => {
                 onChange={(page) => setCurrentPage(page)}
                 className={style.pagination}
               />
-              <p>{t('common.page')} {currentPage} / {totalPages}</p>
+              <p>Page {currentPage} / {totalPages}</p>
             </div>
           </div>
         </div>

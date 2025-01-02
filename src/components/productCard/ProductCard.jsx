@@ -8,10 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
+import { Pagination } from "antd";
 
-const pageSize = 15;
-
-const fetchProducts = async ({ languageCode, page }) => {
+const fetchProducts = async ({ languageCode, page, pageSize }) => {
   const response = await fetch(
     `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=${languageCode}&pageIndex=${page}&pageSize=${pageSize}`
   );
@@ -25,9 +24,7 @@ const fetchProducts = async ({ languageCode, page }) => {
 const calculateDays = (createDate) => {
   const createdDate = new Date(createDate);
   const currentDate = new Date();
-  const timeDifference = currentDate - createdDate;
-  const daysDifference = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
-  return daysDifference;
+  return Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24));
 };
 
 const ProductCard = () => {
@@ -36,28 +33,27 @@ const ProductCard = () => {
   const likedProducts = useSelector((state) => state.likedProducts.items);
   const { i18n } = useTranslation();
 
-  const [pageIndex, setPageIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const pageSize = 8;
 
   const getLanguageCode = () => {
-    const language = i18n.language;
-    if (language === "az") return "az";
-    if (language === "ru") return "ru";
-    if (language === "en") return "en";
-    if (language === "tr") return "tr";
-    return "az";
+    switch (i18n.language) {
+      case "ru":
+      case "en":
+      case "tr":
+        return i18n.language;
+      default:
+        return "az";
+    }
   };
 
-  const {
-    data,
-    isLoading,
-    isError,
-    error,
-  } = useQuery({
-    queryKey: ["products", getLanguageCode(), pageIndex],
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["products", getLanguageCode(), currentPage],
     queryFn: () =>
       fetchProducts({
         languageCode: getLanguageCode(),
-        page: pageIndex,
+        page: currentPage - 1, // Backend is zero-based
+        pageSize,
       }),
     keepPreviousData: true,
   });
@@ -87,6 +83,11 @@ const ProductCard = () => {
   if (isError) return <p>Xəta: {error.message}</p>;
 
   const products = data?.data?.items || [];
+  const totalItems = data?.data?.totalCount || 0;
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  console.log("products", products);
+  
 
   return (
     <div className="container">
@@ -138,21 +139,17 @@ const ProductCard = () => {
             </div>
           ))}
         </div>
-        <div className={style.pagination}>
-          <button
-            onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))}
-            disabled={pageIndex === 0}
-            className={style.paginationBtn}
-          >
-            Əvvəlki
-          </button>
-          <span>Səhifə {pageIndex + 1}</span>
-          <button
-            onClick={() => setPageIndex((prev) => prev + 1)}
-            className={style.paginationBtn}
-          >
-            Növbəti
-          </button>
+        <div className={style.paginationContainer}>
+          <Pagination
+            current={currentPage}
+            total={totalItems}
+            pageSize={pageSize}
+            onChange={(page) => setCurrentPage(page)}
+            className={style.pagination}
+          />
+          <p>
+            Səhifə {currentPage} / {totalPages}
+          </p>
         </div>
       </div>
     </div>

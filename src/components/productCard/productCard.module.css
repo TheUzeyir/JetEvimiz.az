@@ -103,6 +103,10 @@
   border-radius: 4px;
 }
 
+.paginationContainer {
+  margin-top: 40px;
+}
+
 @media screen and (max-width: 1080px) {
   .productCard_imgBox_title {
     font-size: 10px;
