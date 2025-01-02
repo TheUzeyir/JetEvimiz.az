@@ -23,7 +23,6 @@
   import SearchResult from './components/SearchResult/SearchResult'
   import SearchResultCategory from './components/SearchResult/SearchResultCategory'
   import DetailPageProfile from './page/detailPage/DetailPageProfile'
-  import FilterBoxRes from './components/filterBox/FilterBoxRes'
   import {
     QueryClient,
     QueryClientProvider,
@@ -37,7 +36,6 @@
         <Router>
           <Routes>
             <Route path='/' element={<Main />} />
-            <Route path='/filterBox' element={<FilterBoxRes />} />
             <Route path='/detailPageProfile' element={<DetailPageProfile />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/info' element={<Info />} />

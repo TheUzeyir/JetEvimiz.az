@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import style from "./categoryProduct.module.scss";
 import { useLocation, Link } from "react-router-dom";
 import { BsFillHeartFill } from "react-icons/bs";
@@ -8,17 +8,20 @@ import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import { useTranslation } from "react-i18next";
 import FilterBox from "../../components/filterBox/FilterBox";
+import { Pagination } from 'antd';
+import { AiFillFilter } from "react-icons/ai";
+import { IoChevronBackOutline } from "react-icons/io5";
 
 const CategoryProduct = () => {
   const location = useLocation();
   const { t, i18n } = useTranslation();
-
+  const [isFilterVisible, setIsFilterVisible] = useState(window.innerWidth >= 768)
   const [likedProducts, setLikedProducts] = useState([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [filterTitle, setFilterTitle] = useState("");
   const [filterParams, setFilterParams] = useState({});
-  const [pageIndex, setPageIndex] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
 
   const { products = { items: [] }, category } = location.state || {};
@@ -46,7 +49,7 @@ const CategoryProduct = () => {
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
 
-  const filterProducts = () => {
+  const filterProducts = useMemo(() => {
     let filteredItems = items;
 
     if (minPrice) filteredItems = filteredItems.filter((item) => item.price >= minPrice);
@@ -65,22 +68,42 @@ const CategoryProduct = () => {
     });
 
     return filteredItems;
-  };
+  }, [items, minPrice, maxPrice, filterTitle, filterParams]);
 
-  const filteredItems = filterProducts();
+  const paginatedItems = useMemo(() => {
+    return filterProducts.slice(
+      (currentPage - 1) * pageSize,
+      currentPage * pageSize
+    );
+  }, [filterProducts, currentPage, pageSize]);
 
-  const paginatedItems = filteredItems.slice(
-    pageIndex * pageSize,
-    (pageIndex + 1) * pageSize
-  );
+  const totalPages = Math.ceil(filterProducts.length / pageSize);
+  const selectedCategoryId = category?.categoryId;
 
-  const totalPages = Math.ceil(filteredItems.length / pageSize);
+  const toggleFilterBox = () => {
+    setIsFilterVisible(!isFilterVisible);
+  };  
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsFilterVisible(window.innerWidth >= 768);
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   return (
     <div className={style.CategoryProduct_container}>
       <Navbar />
       <div className="container">
-        <FilterBox categoryId={category?.categoryId} />
+        <p className={style.CategoryProduct_goBack}><IoChevronBackOutline/>Go Back</p>
+        <button className={style.CategoryProduct_filterBox} onClick={toggleFilterBox}>
+          Filter et<AiFillFilter />
+        </button>
+        {isFilterVisible && <FilterBox isVisible={isFilterVisible} setIsVisible={setIsFilterVisible} categoryId={category?.categoryId} />}
         <div className={style.CategoryProductPage}>
           <div className={style.CategoryProduct_simple}>
             {paginatedItems.length > 0 ? (
@@ -124,22 +147,24 @@ const CategoryProduct = () => {
                 ))}
               </div>
             ) : (
-              <p>{t("noProductsFound")}</p>
+              <div className={style.noProductsFound}>
+                <img
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSRytQKjMsJgiYkh_8k8aXHSzggS5tlVoN9A&s"
+                  alt="No Products Found"
+                  className={style.notFoundImg}
+                />
+                <p>{t('common.noProductsFound')}</p>
+              </div>
             )}
             <div className={style.paginationContainer}>
-              <button
-                disabled={pageIndex === 0}
-                onClick={() => setPageIndex((prev) => Math.max(prev - 1, 0))}>
-                {t("prev")}
-              </button>
-              <span>
-                {t("page")} {pageIndex + 1} {t("of")} {totalPages}
-              </span>
-              <button
-                disabled={pageIndex === totalPages - 1}
-                onClick={() => setPageIndex((prev) => Math.min(prev + 1, totalPages - 1))}>
-                {t("next")}
-              </button>
+              <Pagination
+                current={currentPage}
+                total={filterProducts.length}
+                pageSize={pageSize}
+                onChange={(page) => setCurrentPage(page)}
+                className={style.pagination}
+              />
+              <p>{t('common.page')} {currentPage} / {totalPages}</p>
             </div>
           </div>
         </div>

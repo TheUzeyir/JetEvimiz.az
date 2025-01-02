@@ -1,129 +1,139 @@
 .filterBox {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    width: 100%;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
-    font-size: 15px;
+  right: 0; 
+  top: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  width: 100%;
+  height: 340px;
+  overflow-y: scroll;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  font-size: 15px;
+  margin-top: 0;
+  z-index: 10; 
+  transition: right 1s ease-in-out; 
+  display: block;
 }
 
-.filterBox_container{
-      display: grid;
-      grid-template-columns: repeat(4,1fr);
-      gap: 30px;
+.filterBoxDisplayNone {
+  display: none;
+}
+
+
+.filterBox_container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 30px;
+}
+
+.filterTitle {
+  color: #333;
+  text-align: center;
+  font-weight: bold;
+}
+
+.filterLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 15px 0;
+}
+
+.filterInput, .filterSelect {
+  width: 100%;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.priceRange {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filterButton {
+  width: 20%;
+  padding: 12px;
+  margin-top: 20px;
+  font-size: 1rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.filterButton:hover {
+  background-color: #0056b3;
+}
+
+.filterRes_btn {
+  display: none !important;
+  border: none;
+  padding: 15px 25px;
+  border-radius: 4px;
+  background: white;
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.filterBox_responsive {
+  padding: 10px;
+}
+
+.filterBox_responsive_header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filterBox_responsive_header_icon {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.filterBoxRes_displayBlock {
+  display: block;
+}
+
+.filterBoxIcon {
+  display: none;
+  font-size: 25px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .filterBox {
+    position: absolute; /* Position özellikleri 768px altına taşındı */
+    right: 0;
+    top: 0;
+    height: 100vh;
+    z-index: 5;
+    margin-top: 0;
   }
-  
-  .filterTitle {
-    color: #333;
-    text-align: center;
-    font-weight: bold;
+
+  .filterBoxIcon {
+    display: block;
   }
-  
-  .filterLabel {
+
+  .filterRes_btn {
+    display: block !important;
+  }
+
+  .filterButton {
+    width: 100%;
+  }
+
+  .filterBox_container {
     display: flex;
     flex-direction: column;
-    gap: 10px;
-    margin: 15px 0;
+    gap: 30px;
   }
-  
-  .filterSelect,
-  .filterInput {
-    width: 100%;
-    padding: 10px;
-    font-size: 1rem;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-
-  .priceRange {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .priceInputs {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  
-  .priceDivider {
-    margin: 0 8px;
-    color: #666;
-  }
-  
-  .filterButton {
-    width: 20%;
-    padding: 12px;
-    font-size: 1rem;
-    margin-top: 20px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
-  }
-  
-  .filterButton:hover {
-    background-color: #0056b3;
-  }
-  
-  .filterRes_btn{
-    display: none !important;
-    border: none;
-    padding: 15px 25px;
-    border-radius: 4px;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 10px;
-    background: white;
-    cursor: pointer;
-  }
-
-  .filterBox_responsive{
-    padding: 10px;
-  }
-
-  .filterBox_responsive_header{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .filterBox_responsive_header_icon{
-    font-size: 25px;
-    cursor: pointer;
-  }
-
-  @media (max-width: 968px) {
-    .filterBox{
-        margin-top: 100px;
-    }
-  }
-  @media (max-width: 768px) {
-    .filterBox{
-        display: none;
-    }
-
-    .filterRes_btn{
-        display: block !important;
-    }
-
-    .filterButton{
-        width: 100%;
-    }
-
-    .filterBoxRes_container{
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-    }
-
-    .filterBox{
-      margin-top: 0;
-  }
-  }
+}

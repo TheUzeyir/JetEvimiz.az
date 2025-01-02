@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import style from "./filterBox.module.css";
-import { AiFillFilter } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
+import { IoCloseCircleSharp } from "react-icons/io5";
 
-const FilterBox = ({ categoryId }) => {
+const FilterBox = ({  isVisible, setIsVisible,categoryId }) => {
   const [parameters, setParameters] = useState([]);
   const [formData, setFormData] = useState({});
   const navigate = useNavigate();
@@ -30,9 +30,19 @@ const FilterBox = ({ categoryId }) => {
     }));
   };
 
+  const handleClickCloseBtn = () => {
+    setIsVisible(false);
+  };
+  
+
+  const handleFilter = () => {
+    navigate("/filterBoxRes", { state: { formData, categoryId } });
+  };
+  
   return (
     <div className={style.filterBox_containers}>
-      <div className={style.filterBox}>
+      <div className={`${style.filterBox} ${!isVisible ? style.filterBoxDisplayNone : ""}`}>
+        <IoCloseCircleSharp className={style.filterBoxIcon} onClick={handleClickCloseBtn}/>
         {parameters.length > 0 ? (
           parameters.map((param) => (
             <div key={param.parameterId} className={style.filterBox_content}>
@@ -108,16 +118,11 @@ const FilterBox = ({ categoryId }) => {
           <p>Parametrlər mövcud deyil</p>
         )}
         <div className={style.filterGroup}>
-          <button className={style.filterButton}>Axtar</button>
+          <button className={style.filterButton} onClick={handleFilter}>
+            Axtar
+          </button>
         </div>
       </div>
-      <button
-        className={style.filterRes_btn}
-        onClick={() => navigate("/filterBox")}
-      >
-        <AiFillFilter />
-        Filterler
-      </button>
     </div>
   );
 };
