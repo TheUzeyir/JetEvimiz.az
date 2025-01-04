@@ -334,6 +334,10 @@
     .addBox_right{
         margin-bottom: 80px;
     }
+
+    .addBox_content{
+      flex-direction: column;
+    }
     
 }
 
@@ -352,9 +356,7 @@
   .addBox_left_box_top_card{
     flex-direction: column;
   }
-  .addBox_content{
-    flex-direction: column;
-  }
+
   .imagePreviews {
     grid-template-columns: repeat(3,1fr);
     width: 90%;
@@ -374,6 +376,11 @@
     top: -70px;
     left: 40%;
   }
+
+  .imagePreviews_addBox{
+    height: 100px;
+  }
+
   .addBox{
     margin-top: 50px;
     gap: 0px;

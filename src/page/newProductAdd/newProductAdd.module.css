@@ -336,6 +336,9 @@
   .addBox_right {
     margin-bottom: 80px;
   }
+  .addBox_content {
+    flex-direction: column;
+  }
 }
 @media screen and (min-width: 768px) {
   .bar_icon {
@@ -348,9 +351,6 @@
 }
 @media screen and (max-width: 768px) {
   .addBox_left_box_top_card {
-    flex-direction: column;
-  }
-  .addBox_content {
     flex-direction: column;
   }
   .imagePreviews {
@@ -368,6 +368,9 @@
     position: absolute;
     top: -70px;
     left: 40%;
+  }
+  .imagePreviews_addBox {
+    height: 100px;
   }
   .addBox {
     margin-top: 50px;
