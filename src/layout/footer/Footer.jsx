@@ -39,7 +39,7 @@ const Footer = () => {
             <p className={style.footerMain_title}>{t('footerproductInfoText')}</p>
             <ul className={style.footerMain_Link_ul}>
                 <a href="" className={style.footerMain_Link_ul_links}>{t('footerSearchText')}</a>
-                <a href="" className={style.footerMain_Link_ul_links}>{t('footerContackText')}</a>
+                <a href="/about" className={style.footerMain_Link_ul_links}>{t('footerContackText')}</a>
                 <a href="" className={style.footerMain_Link_ul_links} onClick={()=>navigate('/about')}>{t('footerAboutNav')}</a>
             </ul>
         </div>

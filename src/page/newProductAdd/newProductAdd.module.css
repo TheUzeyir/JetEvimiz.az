@@ -353,6 +353,14 @@
   .addBox_left_box_top_card {
     flex-direction: column;
   }
+  .addBox_left_box_top_card_item,
+  .addBox_left_box_top_card_textArea,
+  .imagePreviews {
+    width: 100%;
+  }
+  .addBox_left_box_top_card .categoryDropdown {
+    width: 100%;
+  }
   .imagePreviews {
     grid-template-columns: repeat(3, 1fr);
     width: 90%;

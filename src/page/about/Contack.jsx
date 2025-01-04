@@ -1,9 +1,6 @@
 import React from 'react'
-import { FaPhoneAlt } from "react-icons/fa";
 import style from "./aboutPage.module.css"
-import { IoMail } from "react-icons/io5";
 import { useNavigate } from 'react-router-dom';
-import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { useTranslation } from "react-i18next"
 
 
@@ -14,13 +11,20 @@ const Contack = () => {
   return (
     <div className={style.contack_container}>
       <div className='container'>
-        <h3 className={style.contack_title}>{t('aboutContackText')}</h3>
-             <p className={style.contack_text}>{t('rulePageRuleText11')}</p>
-          <h3>{t('rulePageRuleText102')}</h3>
-          <p>{t('rulePageRuleText103')}</p>
+
+          <div className={style.contack_card}>
+            <h3>{t('aboutContackText')}</h3>
+            <p>{t('rulePageRuleText11')} </p>
+          </div>
+          <h3>{t('rulePageRuleText106')}</h3>
+          <h3>{t('rulePageRuleText107')}</h3>
+          <div className={style.contack_card}>
+            <h3>{t('rulePageRuleText102')}</h3>
+            <p>{t('rulePageRuleText105')}</p>
+            <p>{t('rulePageRuleText103')}</p>
+          </div>
+          <a href="JetEvimiza.az">JetEvimiz.az</a>
           <p>{t('rulePageRuleText104')}</p>
-          <h3>{t('rulePageRuleText105')}</h3>
-          <p>{t('rulePageRuleText106')}</p>
       </div>
     </div>
   )
