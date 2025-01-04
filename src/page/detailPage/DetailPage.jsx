@@ -113,52 +113,29 @@ const DetailPage = () => {
               )}
             </div>
             <div className={style.detailPage_main_head_right}>
+            {product.parameters &&
+                product.parameters.map((param, index) => (
+                  <div
+                    key={index}
+                    className={style.detailPage_main_bottom_left_procebox}
+                  >
+                    <span className={style.detailPage_main_bottom_left_price}>{param.parameterValue} - AZN</span>
+                  </div>
+                ))}
             {product.user && (
                 <div className={style.detailPage_main_bottom_left_box}>
-                  <p>Sahibin Adi-{product.user.userFirstName}</p>
-                  <p>Sahibin Telefonu-{product.user.userPhone}</p>
-                  <p>Sahibin Emaili-{product.user.userAddress || "Qeyd Olunmayib"}</p>
+                  <p className={style.detailPage_main_bottom_left_box_title}>Sahibin Adi-{product.user.userFirstName}</p>
+                  <p className={style.detailPage_main_bottom_left_box_title}>Sahibin Telefonu-{product.user.userPhone}</p>
+                  <p className={style.detailPage_main_bottom_left_box_title}>Sahibin Emaili-{product.user.userAddress || "Qeyd Olunmayib"}</p>
                 </div>
               )}
+              <p>Elanın nömrəsi: {product.productId || "2221"}</p>
               <button className={style.detailPage_main_head_right_btn}>
                 <MdDiamond /> Elanı VIP et
               </button>
               <p className={style.detailPage_main_head_right_otherSale}>
                 Satıcının bütün elanlarını gör
               </p>
-            </div>
-          </div>
-          <div className={style.detailPage_main_bottom}>
-            <div className={style.detailPage_main_bottom_left}>
-              <h4>Ətraflı məlumat</h4>
-                <p>Mehsul Adi-{product.productTitle}</p>
-                <p>Mehsul Aciqlamasi-{product.productDescription}</p>
-                <p>Mehsul Kateqoriyasi-{product.categoryTitle}</p>
-                <p>Mehsul Qiymet-{product.price}</p>
-                <p>Mehsul Hecmi-{product.productWeight}</p>
-                <p>Mehsul Baxis sayisi-{product.viewCount}</p>
-                <p>Elan Tarixi-{product.createDate}</p>
-                {product.parameters &&
-                product.parameters.map((param, index) => (
-                  <div
-                    key={index}
-                    className={style.detailPage_main_bottom_left_procebox}
-                  >
-                    <span>{param.parameterTitle}:</span>{" "}
-                    <span>{param.parameterValue}</span>
-                  </div>
-                ))}
-            </div>
-            <div className={style.detailPage_main_bottom_right}>
-              <h5>User Information</h5>
-              {product.user && (
-                <div className={style.detailPage_main_bottom_left_box}>
-                  <p>Sahibi-{product.user.userFirstName}</p>
-                  <p>Sahibin Telefonu-{product.user.userPhone}</p>
-                  <p>Sahibin Emaili-{product.user.userAddress || "N.A"}</p>
-                </div>
-              )}
-              <p>Elanın nömrəsi: {product.productId || "2221"}</p>
               <p>Günlük icarəyə verilir.</p>
               <div className={style.detailPage_main_bottom_right_card}>
                 {likedProducts.some(
@@ -211,9 +188,22 @@ const DetailPage = () => {
                         Göndər
                       </button>
                     </div>
-                  </div>
+                  </div> 
                 )}
               </div>
+            </div>
+          </div>
+          <div className={style.detailPage_main_bottom}>
+            <div className={style.detailPage_main_bottom_left}>
+                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Adi</p>{product.productTitle}</p>
+                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Kateqoriyasi</p>{product.categoryTitle}</p>
+                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Qiymet</p>{product.price}</p>
+                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Hecmi</p>{product.productWeight}</p>
+                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Baxis sayisi</p>{product.viewCount}</p>
+                <p><p className={style.detailPage_main_bottom_left_tite}>Elan Tarixi</p>{product.createDate}</p>
+            </div>
+            <div className={style.detailPage_main_bottom_right}>
+            <p>{product.productDescription}</p>
             </div>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useMemo } from "react";
 import style from "./categoryProduct.module.scss";
-import { useLocation, Link } from "react-router-dom";
+import { useLocation, Link, useNavigate } from "react-router-dom";
 import { BsFillHeartFill } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa6";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
@@ -14,6 +14,7 @@ import { IoChevronBackOutline } from "react-icons/io5";
 
 const CategoryProduct = () => {
   const location = useLocation();
+  const navigate=useNavigate()
   const { t, i18n } = useTranslation();
   const [isFilterVisible, setIsFilterVisible] = useState(window.innerWidth >= 768)
   const [likedProducts, setLikedProducts] = useState([]);
@@ -99,10 +100,12 @@ const CategoryProduct = () => {
     <div className={style.CategoryProduct_container}>
       <Navbar />
       <div className="container">
-        <p className={style.CategoryProduct_goBack}><IoChevronBackOutline/>Go Back</p>
-        <button className={style.CategoryProduct_filterBox} onClick={toggleFilterBox}>
-          Filter et<AiFillFilter />
-        </button>
+        <p className={style.CategoryProduct_goBack} onClick={()=>navigate(-1)}><IoChevronBackOutline/>Go Back</p>
+        <div className={style.CategoryProduct_filterBox} onClick={toggleFilterBox}>
+          <button className={style.CategoryProduct_filterBox_btn} >
+            Filter et<AiFillFilter />
+          </button>
+        </div>
         {isFilterVisible && <FilterBox isVisible={isFilterVisible} setIsVisible={setIsFilterVisible} categoryId={category?.categoryId} />}
         <div className={style.CategoryProductPage}>
           <div className={style.CategoryProduct_simple}>

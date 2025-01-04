@@ -127,7 +127,7 @@
 @media screen and (max-width: 768px) {
   .productCard_container {
     grid-template-columns: repeat(2, 1fr);
-    margin-top: -60px;
+    margin-top: -90px;
   }
 }
 @media screen and (max-width: 596px) {

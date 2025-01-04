@@ -13,7 +13,7 @@ function AutoPlayMethods() {
 
 
   const settings = {
-    dots: true,
+    dots: false,
     infinite: true,
     slidesToShow: 5,
     slidesToScroll: 1,

@@ -257,185 +257,193 @@ const NewProductAdd = () => {
             onClick={() => navigate("/headerBox")}
           />
           <p className={style.addBox_title}>{t('addProductPageNewAcc')}</p>
-          <div className={style.addBox}>
-              <div className={style.addBox_left_box_top_card}>
-                <label>{t('addProductPageProductName')}</label>
-                <input
-                  type="text"
-                  value={productTitle}
-                  onChange={(e) => setProductTitle(e.target.value)}
-                  placeholder="Məhsulun adını daxil edin"
-                  className={style.addBox_left_box_top_card_item}
-                />
-              </div>
-              <div className={style.addBox_left_box_top_card}>
-                <label>{t("addProductPageCategeryText")}</label>
-                <div className={style.categoryDropdown}>
-                {loadingCategories ? (
-                  <p>{t("addProductPageLoading")}</p>
-                ) : (
-                  <div className={style.selectBox}>
-                    <div
-                      className={style.selectedCategory}
-                      onClick={() => setDropdownOpen(!dropdownOpen)}
-                    >
-                      {selectedCategory
-                        ? categories
-                            .flatMap((cat) => cat.childCategories || [])
-                            .find((child) => child.categoryId === selectedCategory)
-                            ?.categoryTitle || t("addProductPageCategeryText")
-                        : t("addProductPageCategeryText")}
-                    </div>
-                    {dropdownOpen && (
-                      <div className={style.dropdownMenu}>
-                        {categories.map((category) => (
-                          <div key={category.categoryId} className={style.parentCategory}>
-                            <div className={style.parentCategoryHeader}>
-                              <span>{category.categoryTitle}</span>
-                              {category.childCategories?.length > 0 && (
-                                <FaPlus
-                                  className={style.expandIcon}
-                                  onClick={() => toggleCategoryExpansion(category.categoryId)}
-                                />
+          <div className={style.addBox_content}>
+            <div className={style.addBox}>
+                <div className={style.addBox_left_box_top_card}>
+                  <label>{t('addProductPageProductName')}</label>
+                  <input
+                    type="text"
+                    value={productTitle}
+                    onChange={(e) => setProductTitle(e.target.value)}
+                    placeholder="Məhsulun adını daxil edin"
+                    className={style.addBox_left_box_top_card_item}
+                  />
+                </div>
+                <div className={style.addBox_left_box_top_card}>
+                  <label>{t("addProductPageCategeryText")}</label>
+                  <div className={style.categoryDropdown}>
+                  {loadingCategories ? (
+                    <p>{t("addProductPageLoading")}</p>
+                  ) : (
+                    <div className={style.selectBox}>
+                      <div
+                        className={style.selectedCategory}
+                        onClick={() => setDropdownOpen(!dropdownOpen)}
+                      >
+                        {selectedCategory
+                          ? categories
+                              .flatMap((cat) => cat.childCategories || [])
+                              .find((child) => child.categoryId === selectedCategory)
+                              ?.categoryTitle || t("addProductPageCategeryText")
+                          : t("addProductPageCategeryText")}
+                      </div>
+                      {dropdownOpen && (
+                        <div className={style.dropdownMenu}>
+                          {categories.map((category) => (
+                            <div key={category.categoryId} className={style.parentCategory}>
+                              <div className={style.parentCategoryHeader} onClick={() => toggleCategoryExpansion(category.categoryId)}>
+                                <span>{category.categoryTitle}</span>
+                                {category.childCategories?.length > 0 && (
+                                  <FaPlus className={style.expandIcon}/>
+                                )}
+                              </div>
+                              {expandedCategories[category.categoryId] && (
+                                <ul className={style.childCategoryList}>
+                                  {category.childCategories.map((child) => (
+                                    <li
+                                      key={child.categoryId}
+                                      className={style.childCategory}
+                                      onClick={() => {
+                                        handleCategoryChange(child.categoryId);
+                                        setDropdownOpen(false);
+                                      }}
+                                    >
+                                      {child.categoryTitle}
+                                    </li>
+                                  ))}
+                                </ul>
                               )}
                             </div>
-                            {expandedCategories[category.categoryId] && (
-                              <ul className={style.childCategoryList}>
-                                {category.childCategories.map((child) => (
-                                  <li
-                                    key={child.categoryId}
-                                    className={style.childCategory}
-                                    onClick={() => {
-                                      handleCategoryChange(child.categoryId);
-                                      setDropdownOpen(false); // Dropdown bağlanacaq
-                                    }}
-                                  >
-                                    {child.categoryTitle}
-                                  </li>
-                                ))}
-                              </ul>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                )}
-              </div>
-              </div>
-              <div className={style.addBox_left_box_top_card}>
-                <label>{t('addProductPageCityText')}</label>
-                <select
-                  value={selectedCity}
-                  onChange={(e) => setSelectedCity(e.target.value)}
-                  className={style.addBox_left_box_top_card_item}
-                  disabled={citiesLoading}
-                >
-                  <option value="">--{t('addProductPageCityText')}--</option>
-                  {citiesLoading ? (
-                    <option disabled>{t('addProductPageLoading')}</option>
-                  ) : cities.length > 0 ? (
-                    cities.map((city) => (
-                      <option key={city.cityId} value={city.cityId}>
-                        {city.title}
-                      </option>
-                    ))
-                  ) : (
-                    <option disabled>{t('addProductPageCityNotFound')}</option>
-                  )}
-                </select>
-              </div>
-              {loadingParameters ? (
-                <p>{t('addProductPageOptionLoading')}</p>
-              ) : parameters.length === 0 ? (
-                <p className={style.errorText}>{t('addProductPageOptionLoadingNotFoud')}</p>
-              ) : (
-                parameters.map((parameter) => (
-                  <div
-                    key={parameter.parameterKey}
-                    className={style.addBox_left_box_top_card}
-                  >
-                    <label>{parameter.parameterTitle}</label>
-                    {parameter.parameterTypeId === 3 ? (
-                      <select
-                        value={formData[parameter.parameterKey] || ""}
-                        onChange={(e) =>
-                          handleInputChange(e, parameter.parameterKey)
-                        }
-                        className={style.addBox_left_box_top_card_item}
-                      >
-                        <option value="">--{t('addProductPageChooseText')}--</option>
-                        {parameter.parameterMasks?.map((mask) => (
-                          <option
-                            key={mask.parameterMaskId}
-                            value={mask.parameterMaskData}
-                          >
-                            {mask.parameterMaskData}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <input
-                        type="text"
-                        value={formData[parameter.parameterKey] || ""}
-                        onChange={(e) =>
-                          handleInputChange(e, parameter.parameterKey)
-                        }
-                        className={style.addBox_left_box_top_card_item}
-                        placeholder={parameter.parameterTitle}
-                      />
-                    )}
-                  </div>
-                ))
-              )}
-              <div className={style.addBox_left_box_top_card}>
-                <p className={style.addBox_left_box_top_card_title}>{t('addProductPageAddImgText')}</p>
-                <div className={style.imagePreviews}>
-                  <label>
-                    +
-                    <input
-                      type="file"
-                      multiple
-                      accept="image/*"
-                      onChange={handleFileChange}
-                      style={{ display: "none" }}
-                    />
-                  </label>
-                  {images.map((image, index) => (
-                    <div key={index} className={style.imagePreview}>
-                      <img
-                        src={image}
-                        alt={`Uploaded preview ${index}`}
-                        className={style.imagePreviewImg}
-                      />
-                      <button
-                        type="button"
-                        className={style.removeImageButton}
-                        onClick={() => handleRemoveImage(image)} // Properly pass the image to the function
-                      >
-                        X
-                      </button>
+                          ))}
+                        </div>
+                      )}
                     </div>
-                  ))}
+                  )}
                 </div>
+                </div>
+                <div className={style.addBox_left_box_top_card}>
+                  <label>{t('addProductPageCityText')}</label>
+                  <select
+                    value={selectedCity}
+                    onChange={(e) => setSelectedCity(e.target.value)}
+                    className={style.addBox_left_box_top_card_item}
+                    disabled={citiesLoading}
+                  >
+                    <option value="">--{t('addProductPageCityText')}--</option>
+                    {citiesLoading ? (
+                      <option disabled>{t('addProductPageLoading')}</option>
+                    ) : cities.length > 0 ? (
+                      cities.map((city) => (
+                        <option key={city.cityId} value={city.cityId}>
+                          {city.title}
+                        </option>
+                      ))
+                    ) : (
+                      <option disabled>{t('addProductPageCityNotFound')}</option>
+                    )}
+                  </select>
+                </div>
+                {loadingParameters ? (
+                  <p>{t('addProductPageOptionLoading')}</p>
+                ) : parameters.length === 0 ? (
+                  <p className={style.errorText}>{t('addProductPageOptionLoadingNotFoud')}</p>
+                ) : (
+                  parameters.map((parameter) => (
+                    <div
+                      key={parameter.parameterKey}
+                      className={style.addBox_left_box_top_card}
+                    >
+                      <label>{parameter.parameterTitle}</label>
+                      {parameter.parameterTypeId === 3 ? (
+                        <select
+                          value={formData[parameter.parameterKey] || ""}
+                          onChange={(e) =>
+                            handleInputChange(e, parameter.parameterKey)
+                          }
+                          className={style.addBox_left_box_top_card_item}
+                        >
+                          <option value="">--{t('addProductPageChooseText')}--</option>
+                          {parameter.parameterMasks?.map((mask) => (
+                            <option
+                              key={mask.parameterMaskId}
+                              value={mask.parameterMaskData}
+                            >
+                              {mask.parameterMaskData}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <input
+                          type="text"
+                          value={formData[parameter.parameterKey] || ""}
+                          onChange={(e) =>
+                            handleInputChange(e, parameter.parameterKey)
+                          }
+                          className={style.addBox_left_box_top_card_item}
+                          placeholder={parameter.parameterTitle}
+                        />
+                      )}
+                    </div>
+                  ))
+                )}
+                <div className={style.addBox_left_box_top_card}>
+                  <p className={style.addBox_left_box_top_card_title}>{t('addProductPageAddImgText')}</p>
+                  <div className={style.imagePreviews}>
+                    <label>
+                      +
+                      <input
+                        type="file"
+                        multiple
+                        accept="image/*"
+                        onChange={handleFileChange}
+                        style={{ display: "none" }}
+                      />
+                    </label>
+                    {images.map((image, index) => (
+                      <div key={index} className={style.imagePreview}>
+                        <img
+                          src={image}
+                          alt={`Uploaded preview ${index}`}
+                          className={style.imagePreviewImg}
+                        />
+                        <button
+                          type="button"
+                          className={style.removeImageButton}
+                          onClick={() => handleRemoveImage(image)} 
+                        >
+                          X
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className={style.addBox_left_box_top_card}>
+                  <span  className={style.addBox_left_box_top_card_title}>{t('addProductPageProductDescribe')}</span>
+                  <textarea
+                    placeholder="Məhsulun təsviri"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    className={style.addBox_left_box_top_card_textArea}
+                  />
               </div>
-              <div className={style.addBox_left_box_top_card}>
-                <span  className={style.addBox_left_box_top_card_title}>{t('addProductPageProductDescribe')}</span>
-                <textarea
-                  placeholder="Məhsulun təsviri"
-                  value={description}
-                  onChange={(e) => setDescription(e.target.value)}
-                  className={style.addBox_left_box_top_card_textArea}
-                />
+                  <button
+                    type="button"
+                    className={style.addBox_button}
+                    onClick={handleSubmit}
+                    disabled={uploading}
+                  >
+                    {t('addProductPageProductAddText')}
+                  </button>
+                  <p>Elan yerləşdirərək, siz JetEvimiz-in <a href="/termcondition" className={style.addBox_navigateTermText}>İstifadəçi razılaşması</a> ilə razı olduğunuzu təsdiq edirsiniz.</p>
             </div>
-                <button
-                  type="button"
-                  className={style.addBox_button}
-                  onClick={handleSubmit}
-                  disabled={uploading}
-                >
-                   {t('addProductPageProductAddText')}
-                </button>
+            <div className={style.addBox_ruleCard}>
+              <h2 className={style.addBox_ruleCard_title}>JetEvimiz.az-ın sadə qaydaları</h2>
+              <p className={style.addBox_ruleCard_text}><span className={style.addBox_ruleCard_text_icon}>*</span>Eyni elanı bir neçə dəfə təqdim etməyin.</p>
+              <p className={style.addBox_ruleCard_text}><span className={style.addBox_ruleCard_text_icon}>*</span>Təsvir və ya şəkillərdə telefon, email və ya sayt ünvanı göstərməyin.</p>
+              <p className={style.addBox_ruleCard_text}><span className={style.addBox_ruleCard_text_icon}>*</span>Ad yerində qiymət yazmayın - bunun üçün ayrıca yer var.</p>
+              <p className={style.addBox_ruleCard_text}><span className={style.addBox_ruleCard_text_icon}>*</span>Qadağan olunmuş məhsulları satmayın.</p>
+              <p className={style.addBox_ruleCard_btnText} onClick={()=>navigate('/termcondition')}>Saytın tam qaydaları</p>
+            </div>
           </div>
         </div>
       </div>

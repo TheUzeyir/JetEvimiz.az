@@ -13,7 +13,7 @@ i18n
         translation: {
             //header start
           category: "Kategoriya",
-          favorite: "Sevimliler",
+          favorite: "Sevimlilər",
           support: "Dəstək",
           login: "Daxil ol",
           chooseCity: "Şəhər seçin",
@@ -32,7 +32,7 @@ i18n
           //header Finish
 
           //footerRes start
-          footerResNavMain:"Ana Sehife",
+          footerResNavMain:"Ana Səhifə",
           footerResNavCategory:"Kateqoriyalar",
           footerResNavLiked:"Bəyəndiklərim",
           footerResNavLogin:"Giriş",
@@ -183,12 +183,12 @@ i18n
 
             //login and signIn start
             loginPageLoginText:"Daxil ol",
-            loginPageEmainInput:"Istifadəci Email",
+            loginPageEmainInput:"İstifadəçinin Email-i",
             loginPagePassInput:"Şifrə",
             loginPageNotAccText:"Hesabınız yoxdur?",
             loginPageCteateAccText:"Hesab yaradın",
             signInRegstrationText:"Qeydiyyatdan keçin",
-            signInNameInput:"İstifadəçi adı ve soyadı",
+            signInNameInput:"İstifadəçi adı və soyadı",
             signInFirstNameInput:"Ad",
             signInLastNameInput:"Soy Ad",
             signInPhoneInput:"Telefon",
@@ -199,12 +199,12 @@ i18n
             signInCreateAcc:"Hesab yaradın",
             signInHaveAcc:"Artıq hesabınız var?",
             signInLoginText:"Daxil ol",
-            signInFinishRegstration:"Qeydiyyati Tamamlayin",
+            signInFinishRegstration:"Qeydiyyatı Tamamlayın",
             //login and signIn finish
 
             //newProdutAddPage
             addProductPageNewAcc:"Yeni elan",
-            addProductPageProductName:"Məhsul adı",
+            addProductPageProductName:"Məhsulun adı",
             addProductPageCategeryText:"Kateqoriya",
             addProductPageCityText:"Şəhər",
             addProductPageChooseCategery:"Kateqoriya seçin",
@@ -218,8 +218,8 @@ i18n
             //newProductAddFinish
 
             //likedPageStart
-            likedPageStoreText:"Magaza",
-            likedPageNotProduct:"Beyenilmis mehsul yoxdur",
+            likedPageStoreText:"Mağaza",
+            likedPageNotProduct:"Bəyənilmiş məhsul yoxdur",
             //likedPageFinish
 
             //categoryBox start
@@ -227,13 +227,13 @@ i18n
             //categoryBox finish
 
             //NawBarResponsive start
-            NawBarResponsiveLiked:"Beyendiklerim",
-            NawBarResponsivePacked:"Paketler",
+            NawBarResponsiveLiked:"Bəyəndiklərim",
+            NawBarResponsivePacked:"Paketlər",
             NawBarResponsiveLang:"Dil",
-            NawBarResponsiveInfo:"Hakkimizda",
-            NawBarResponsiveContack:"Bizimle Elaqe",
+            NawBarResponsiveInfo:"Haqqımızda",
+            NawBarResponsiveContack:"Bizimlə Əlaqə",
             NawBarResponsiveRules:"Qaydalar",
-            NawBarResponsiveTermCond:"Istifadeki Razilasmasi",
+            NawBarResponsiveTermCond:"İstifadəki Razilaşması",
             NawBarResponsiveFaq:"Faq",
             //NawBarResponsive finish
 

@@ -63,7 +63,6 @@
 .detailPage_main_head_right{
     width: 38%;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    height: 400px;
     padding: 20px;
     border-radius: 4px;
 }
@@ -98,6 +97,7 @@
     border-radius: 4px;
     margin: 20px 0;
     border: none;
+    border: 2px solid  blue;
 }
 .detailPage_main_head_right_btn:hover{
     border: 2px solid  blue;
@@ -120,7 +120,28 @@
 }
 
 .detailPage_main_bottom{
+    display: flex;
+    flex-direction: column;
     margin-top: 180px;
+}
+
+.detailPage_main_bottom_left_price{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.detailPage_main_bottom_left_tite{
+    width:30%;  
+    color: gray;
+    margin-top: -40px;
+    margin-bottom: -40px;
+    display: inline-block;
+}
+
+.detailPage_main_bottom_right{
+    width: 60%;
+    margin-top: -40px;
+    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
 .detailPage_main_bottom_top_price{
@@ -148,6 +169,7 @@ font-size: 25px;
 .detailPage_main_bottom{
     display: flex;
     gap: 50px;
+    margin-top: 90px;
 }
 
 .detailPage_main_bottom_left{
@@ -157,10 +179,15 @@ font-size: 25px;
     width:60%;
 }
 
+.detailPage_main_bottom_left_box_title{
+    margin-bottom: 0px;
+}
+
 .detailPage_main_bottom_left_box{
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    margin-top: 20px;
 }
 
 .detailPage_main_bottom_right{
@@ -236,8 +263,7 @@ font-size: 25px;
     }
 
     .detailPage_main_bottom{
-        margin-top: 200px;
-        margin-bottom: 40px;
+        margin-bottom: 80px;
     }
 
     .detailPage_main_head_left_slideImgBox{
@@ -246,7 +272,7 @@ font-size: 25px;
     }
 }
 @media screen and (max-width:768px) { 
-
+ 
 .detailPage_goBack{
     margin-top: -80px;
 }
@@ -279,11 +305,8 @@ font-size: 25px;
     .detailPage_main_head_right{
         width: 100%;
         display: flex;
-        flex-wrap: wrap;
-        gap: 20px;
-        align-items: center;
-        height: max-content;
-        margin-top: 190px;
+        flex-direction: column;
+        margin-top:-50px;
     }
 
     .detailPage_main_head_right_emptyBox{

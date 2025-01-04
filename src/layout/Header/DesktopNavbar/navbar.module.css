@@ -371,4 +371,10 @@
     position: absolute;
     left: 45%;
   }
+  .navbar_container {
+    width: 100%;
+    display: flex;
+    align-items: center !important;
+    justify-content: space-between !important;
+  }
 }/*# sourceMappingURL=navbar.module.css.map */

@@ -172,4 +172,8 @@ li{
       width: 98%; 
     }
 
+    .image-gallery-content.image-gallery-thumbnails-bottom .image-gallery-slide .image-gallery-image {
+      height: 250px;
+    }
+
   } 

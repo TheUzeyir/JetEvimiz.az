@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    background: white;
 }
 
 .addBox{
@@ -10,16 +11,48 @@
   gap: 40px;
   width: 100%;
   background: #F3F3F3;
-padding: 20px;
-align-items: center;
-text-align: start;
+  border-radius: 6px;
+  padding: 20px;
+  align-items: center;
+  text-align: start;
+}
+
+.addBox_navigateTermText{
+  color: red;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.addBox_content{
+  display: flex;
+  gap: 30px;
+}
+
+.addBox_ruleCard{
+  color: #2A2036;
+  background: #F3F3F3;
+  height: max-content;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.addBox_ruleCard_text_icon{
+  color: red;
+  margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+.addBox_ruleCard_btnText{
+  text-decoration: underline;
+  color: red;
+  cursor: pointer;
 }
 
 .addBox_left_box_top,
 .addBox_left_box_main{
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 20px;  
 }
 
 .addBox_left_box_top_card {
@@ -309,6 +342,12 @@ text-align: start;
 }
 
 @media screen and (max-width:768px) {
+  .addBox_left_box_top_card{
+    flex-direction: column;
+  }
+  .addBox_content{
+    flex-direction: column;
+  }
   .imagePreviews {
     grid-template-columns: repeat(3,1fr);
     width: 90%;
@@ -330,6 +369,16 @@ text-align: start;
   }
   .addBox{
     margin-top: 50px;
+    gap: 0px;
+  }
+
+  .addBox_left_box_top_card_title{
+    width: 100%;
+  }
+
+  .addBox_button{
+    margin-top: 40px;
+    width: 100%;
   }
 
   .bar_icon{
