@@ -353,7 +353,7 @@ const NewProductAdd = () => {
                       key={parameter.parameterKey}
                       className={style.addBox_left_box_top_card}
                     >
-                      <label>{parameter.parameterTitle}</label>
+                      <label>{parameter.parameterTitle}-(AZN)₼</label>
                       {parameter.parameterTypeId === 3 ? (
                         <select
                           value={formData[parameter.parameterKey] || ""}
@@ -389,7 +389,7 @@ const NewProductAdd = () => {
                 <div className={style.addBox_left_box_top_card}>
                   <p className={style.addBox_left_box_top_card_title}>{t('addProductPageAddImgText')}</p>
                   <div className={style.imagePreviews}>
-                    <label>
+                    <label className={style.imagePreviews_addBox}>
                       +
                       <input
                         type="file"

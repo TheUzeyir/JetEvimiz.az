@@ -2,11 +2,13 @@ import React, { useState } from 'react'
 import style from "./footer.module.css"
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from "react-i18next"
+import { FaFacebook, FaPinterest } from "react-icons/fa";
+import { FaXTwitter, FaInstagram } from "react-icons/fa6";
 
 const Footer = () => {
   const navigate=useNavigate()
   const {t}= useTranslation() 
- 
+  
     const[email,setEmail]=useState('')
     const handleClickEmail=(e)=>{ 
       setEmail(e.target.value)
@@ -54,6 +56,12 @@ const Footer = () => {
                 placeholder='Enter your e-mail'
               />
             </form>
+              <div className={style.footerMain_login_contackLogo}>
+                <FaFacebook className={style.footerMain_login_contackLogo_icon} href='https://www.facebook.com/shopify'/>
+                <FaXTwitter className={style.footerMain_login_contackLogo_icon} href='https://www.twitter.com/shopify/'/>
+                <FaPinterest className={style.footerMain_login_contackLogo_icon} href='https://www.pinterest.com/shopify/'/>
+                <FaInstagram className={style.footerMain_login_contackLogo_icon} href='https://www.instagram.com/shopify/'/>
+              </div>
             </div>
             <p className={style.footerMain_login_text}>{t('footerJoinText')}</p>
         </div>

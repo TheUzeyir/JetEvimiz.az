@@ -126,7 +126,6 @@ const DetailPage = () => {
                 <div className={style.detailPage_main_bottom_left_box}>
                   <p className={style.detailPage_main_bottom_left_box_title}>Sahibin Adi-{product.user.userFirstName}</p>
                   <p className={style.detailPage_main_bottom_left_box_title}>Sahibin Telefonu-{product.user.userPhone}</p>
-                  <p className={style.detailPage_main_bottom_left_box_title}>Sahibin Emaili-{product.user.userAddress || "Qeyd Olunmayib"}</p>
                 </div>
               )}
               <p>Elanın nömrəsi: {product.productId || "2221"}</p>

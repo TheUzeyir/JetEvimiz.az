@@ -7,7 +7,7 @@ import { useTranslation } from "react-i18next";
 import { useQuery, useMutation } from "@tanstack/react-query";
 
 const CategoryBox = () => {
-  const [activeCategory, setActiveCategory] = useState(null);
+  const [activeCategory, setActiveCategory] = useState(null); 
   const navigate = useNavigate();
   const { t } = useTranslation();
 

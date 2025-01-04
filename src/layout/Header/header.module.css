@@ -1,7 +1,7 @@
 .headerTop {
   background: #2A2036;
   width: 100%;
-  padding-bottom: 14px;
+  padding: 14px;
   border-bottom: 1px solid gray;
   display: flex;
   align-items: center;
@@ -64,20 +64,6 @@
 }
 
 .headerTop_container_right {
-  color: white;
-}
-
-.footerMain_login_contackLogo {
-  display: flex;
-  gap: 1rem;
-  font-size: 1.5rem;
-}
-
-.footerMain_login_contackLogo_icon {
-  cursor: pointer;
-}
-
-.footerMain_login_contackLogo_icon:hover {
   color: white;
 }
 
