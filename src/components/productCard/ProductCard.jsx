@@ -10,9 +10,9 @@ import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { Pagination } from "antd";
 
-const fetchProducts = async ({ languageCode, page, pageSize }) => {
+const fetchProducts = async ({  page, pageSize }) => {
   const response = await fetch(
-    `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=${languageCode}&pageIndex=${page}&pageSize=${pageSize}`
+    `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=&pageIndex=${page}&pageSize=${pageSize}`
   );
 
   if (!response.ok) {
@@ -35,7 +35,6 @@ const ProductCard = () => {
 
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
-
   const getLanguageCode = () => {
     switch (i18n.language) {
       case "ru":
@@ -46,6 +45,7 @@ const ProductCard = () => {
         return "az";
     }
   };
+  
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["products", getLanguageCode(), currentPage],

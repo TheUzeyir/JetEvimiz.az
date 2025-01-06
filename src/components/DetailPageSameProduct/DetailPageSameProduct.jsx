@@ -20,27 +20,31 @@ const DetailPageSameProduct = ({ sameProduct }) => {
   if (!sameProduct || sameProduct.length === 0) {
     return <p>No matching products found.</p>;
   }
-
-    const toggleLiked = (productItem) => {
-      const savedUserName = localStorage.getItem("userName");
-      if (!savedUserName) {
-        navigate("/login");
-        return;
-      }
   
-      const isLiked = likedProducts.some(
-        (likedProduct) => likedProduct.productId === productItem.productId
+  const toggleLiked = (productItem) => {
+    const savedUserName = localStorage.getItem("userName");
+    if (!savedUserName) {
+      navigate("/login");
+      return;
+    }
+  
+    const isLiked = likedProducts.some(
+      (likedProduct) => likedProduct.productId === productItem.productId
+    );
+  
+    if (isLiked) {
+      const updatedLikedProducts = likedProducts.filter(
+        (likedProduct) => likedProduct.productId !== productItem.productId
       );
+      dispatch(addLikedProduct(updatedLikedProducts));
+    } else {
+      const updatedLikedProducts = [...likedProducts, productItem];
+      dispatch(addLikedProduct(updatedLikedProducts));
+    }
   
-      const updatedLikedProducts = isLiked
-        ? likedProducts.filter(
-            (likedProduct) => likedProduct.productId !== productItem.productId
-          )
-        : [...likedProducts, productItem];
+    localStorage.setItem("likedProducts", JSON.stringify(likedProducts));
+  };
   
-      dispatch(addLikedProduct(productItem));
-      localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
-    };
 
   return (
       <div className="container">

@@ -122,10 +122,7 @@ const DetailPage = () => {
       if (slug) {
         getMatchingProducts();
       }
-    }, [slug]);   
-
-    
-    
+    }, [slug]);    
     
   return (
     <div className={style.detailPage}>
