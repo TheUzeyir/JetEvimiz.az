@@ -78,12 +78,10 @@ const DetailPage = () => {
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
 
-  // Şikayet kutusunu açma/kapama
   const toggleComplaintBox = () => {
     setOpenComplaintBox((prev) => !prev);
   };
 
-  // Galeri verisi hazırlama
   const galleryItems =
     product.productGalleries?.map((gallery) => ({
       original: gallery.productGalleryFile,
@@ -123,6 +121,7 @@ const DetailPage = () => {
         getMatchingProducts();
       }
     }, [slug]);    
+
     
   return (
     <div className={style.detailPage}>
