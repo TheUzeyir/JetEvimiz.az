@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { FaHeart } from "react-icons/fa";
 import { BsFillHeartFill, BsShop } from "react-icons/bs";
 import { IoCalendarNumber } from "react-icons/io5";
+import { addLikedProduct } from "../../redux/likedSlice";
 
 const DetailPageSameProduct = ({ sameProduct }) => {
   const calculateDays = (createDate) => {
@@ -16,39 +17,34 @@ const DetailPageSameProduct = ({ sameProduct }) => {
   const likedProducts = useSelector((state) => state.likedProducts.items);
   const navigate = useNavigate();
 
-
   if (!sameProduct || sameProduct.length === 0) {
     return <p>No matching products found.</p>;
   }
-  
-  const toggleLiked = (productItem) => {
+
+  const toggleLiked = (product) => {
     const savedUserName = localStorage.getItem("userName");
     if (!savedUserName) {
       navigate("/login");
       return;
     }
-  
+
     const isLiked = likedProducts.some(
-      (likedProduct) => likedProduct.productId === productItem.productId
+      (likedProduct) => likedProduct.productId === product.productId
     );
-  
-    if (isLiked) {
-      const updatedLikedProducts = likedProducts.filter(
-        (likedProduct) => likedProduct.productId !== productItem.productId
-      );
-      dispatch(addLikedProduct(updatedLikedProducts));
-    } else {
-      const updatedLikedProducts = [...likedProducts, productItem];
-      dispatch(addLikedProduct(updatedLikedProducts));
-    }
-  
-    localStorage.setItem("likedProducts", JSON.stringify(likedProducts));
+
+    const updatedLikedProducts = isLiked
+      ? likedProducts.filter(
+          (likedProduct) => likedProduct.productId !== product.productId
+        )
+      : [...likedProducts, product];
+
+    dispatch(addLikedProduct(product));
+    localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
-  
 
   return (
-      <div className="container">
-        <div className={style.productCard_sameProduct_container}>
+    <div className="container">
+      <div className={style.productCard_sameProduct_container}>
         <h2>Benzer Mehsullar</h2>
         <div className={style.productCard_sameProduct}>
           {sameProduct.map((product) => (
@@ -61,13 +57,13 @@ const DetailPageSameProduct = ({ sameProduct }) => {
                     className={style.productCard_imgBox_img}
                   />
                   {likedProducts.some(
-                    (likedProduct) => likedProduct.productId === item.productId
+                    (likedProduct) => likedProduct.productId === product.productId
                   ) ? (
                     <BsFillHeartFill
                       className={style.productCard_imgBox_heartIcon_check}
                       onClick={(e) => {
                         e.preventDefault();
-                        toggleLiked(item);
+                        toggleLiked(product);
                       }}
                     />
                   ) : (
@@ -75,7 +71,7 @@ const DetailPageSameProduct = ({ sameProduct }) => {
                       className={style.productCard_imgBox_heartIcon}
                       onClick={(e) => {
                         e.preventDefault();
-                        toggleLiked(item);
+                        toggleLiked(product);
                       }}
                     />
                   )}
