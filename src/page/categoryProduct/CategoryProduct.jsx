@@ -106,7 +106,7 @@ const CategoryProduct = () => {
             Filter et<AiFillFilter />
           </button>
         </div>
-        {isFilterVisible && <FilterBox isVisible={isFilterVisible} setIsVisible={setIsFilterVisible} categoryId={category?.categoryId} />}
+        {isFilterVisible && <FilterBox isVisible={isFilterVisible} setIsVisible={setIsFilterVisible} categoryId={category?.categoryId} setFilterParams={setFilterParams} />}
         <div className={style.CategoryProductPage}>
           <div className={style.CategoryProduct_simple}>
             {paginatedItems.length > 0 ? (

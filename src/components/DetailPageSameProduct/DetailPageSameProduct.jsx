@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import style from "./detailPageSameProduct.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { FaHeart } from "react-icons/fa";
@@ -42,54 +42,60 @@ const DetailPageSameProduct = ({ sameProduct }) => {
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
 
+  const handleProductClick = (product) => {
+    navigate(`/same-product-details`, { state: product }); 
+  };  
+
   return (
     <div className="container">
       <div className={style.productCard_sameProduct_container}>
         <h2>Benzer Mehsullar</h2>
         <div className={style.productCard_sameProduct}>
           {sameProduct.map((product) => (
-            <div className={style.productCard} key={product.productId}>
-              <Link to={`/product-details/${product.slug}`}>
-                <div className={style.productCard_imgBox}>
-                  <img
-                    src={product.coverImage}
-                    alt={product.productTitle}
-                    className={style.productCard_imgBox_img}
+            <div
+              className={style.productCard}
+              key={product.productId}
+              onClick={() => handleProductClick(product)} 
+            >
+              <div className={style.productCard_imgBox}>
+                <img
+                  src={product.coverImage}
+                  alt={product.productTitle}
+                  className={style.productCard_imgBox_img}
+                />
+                {likedProducts.some(
+                  (likedProduct) => likedProduct.productId === product.productId
+                ) ? (
+                  <BsFillHeartFill
+                    className={style.productCard_imgBox_heartIcon_check}
+                    onClick={(e) => {
+                      e.stopPropagation(); 
+                      toggleLiked(product);
+                    }}
                   />
-                  {likedProducts.some(
-                    (likedProduct) => likedProduct.productId === product.productId
-                  ) ? (
-                    <BsFillHeartFill
-                      className={style.productCard_imgBox_heartIcon_check}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleLiked(product);
-                      }}
-                    />
-                  ) : (
-                    <FaHeart
-                      className={style.productCard_imgBox_heartIcon}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        toggleLiked(product);
-                      }}
-                    />
-                  )}
-                  <div className={style.productCard_imgBox_title}>
-                    <BsShop /> Mağaza
-                  </div>
+                ) : (
+                  <FaHeart
+                    className={style.productCard_imgBox_heartIcon}
+                    onClick={(e) => {
+                      e.stopPropagation(); 
+                      toggleLiked(product);
+                    }}
+                  />
+                )}
+                <div className={style.productCard_imgBox_title}>
+                  <BsShop /> Mağaza
                 </div>
-                <div className={style.productCard_title}>
-                  <span className={style.productCard_title_price}>
-                    {product.price} AZN
-                  </span>
-                  <div className={style.productCard_title_dayBox}>
-                    <IoCalendarNumber /> {calculateDays(product.createDate)} Gün
-                  </div>
+              </div>
+              <div className={style.productCard_title}>
+                <span className={style.productCard_title_price}>
+                  {product.price} AZN
+                </span>
+                <div className={style.productCard_title_dayBox}>
+                  <IoCalendarNumber /> {calculateDays(product.createDate)} Gün
                 </div>
-                <p className={style.productCard_subTitle}>{product.productTitle}</p>
-                <p className={style.productCard_text}>Şəhər: {product.city}</p>
-              </Link>
+              </div>
+              <p className={style.productCard_subTitle}>{product.productTitle}</p>
+              <p className={style.productCard_text}>Şəhər: {product.city}</p>
             </div>
           ))}
         </div>
