@@ -48,8 +48,8 @@
 
 .productCard_imgBox_title {
   position: absolute;
-  top: 65%;
-  left: 5%;
+  bottom: 6%;
+  left: 2%;
   color: white;
   font-weight: bold;
   display: flex;
