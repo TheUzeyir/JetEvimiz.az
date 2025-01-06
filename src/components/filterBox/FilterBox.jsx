@@ -39,21 +39,31 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId }) => {
       return;
     }
 
-    const baseUrl = "https://restartbaku-001-site4.htempurl.com/api/Product/search";
+    const baseUrl = "https://restartbaku-001-site3.htempurl.com/api/Product/search";
     const queryParams = new URLSearchParams({
       LanguageCode: "az",
       CategoryId: categoryId,
     });
 
-    Object.entries(formData).forEach(([key, value]) => {
+    // Parametrlərin düzgün şəkildə əlavə edilməsi
+    parameters.forEach((param) => {
+      const parameterId = param.parameterId;
+      const parameterKey = param.parameterKey;
+      const value = formData[parameterId];
+
       if (value) {
-        queryParams.append(key, value);
+        // min və max parametrləri üçün ayrıca yoxlama
+        if (parameterKey.includes("min") || parameterKey.includes("max")) {
+          queryParams.append(parameterKey, value);
+        } else {
+          queryParams.append(parameterKey, value);
+        }
       }
     });
 
     const fullUrl = `${baseUrl}?${queryParams.toString()}`;
 
-    console.log("API sorgu URL:", fullUrl); // Form data və query ilə yaradılmış tam URL-i konsola yaz
+    console.log("API sorgu URL:", fullUrl); // Tam URL-i konsola yaz
 
     fetch(fullUrl)
       .then((response) => response.json())
@@ -77,6 +87,38 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId }) => {
         {parameters.length > 0 ? (
           parameters.map((param) => (
             <div key={param.parameterId} className={style.filterBox_content}>
+              {param.parameterTypeId === 2 && param.parameterKey.includes("min") && (
+                <div className={style.filterLabel}>
+                  <label htmlFor={`param-${param.parameterId}`}>
+                    {param.parameterTitle}
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Dəyər daxil edin"
+                    className={style.filterInput}
+                    value={formData[param.parameterId] || ""}
+                    onChange={(e) =>
+                      handleInputChange(param.parameterId, e.target.value)
+                    }
+                  />
+                </div>
+              )}
+              {param.parameterTypeId === 2 && param.parameterKey.includes("max") && (
+                <div className={style.filterLabel}>
+                  <label htmlFor={`param-${param.parameterId}`}>
+                    {param.parameterTitle}
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="Dəyər daxil edin"
+                    className={style.filterInput}
+                    value={formData[param.parameterId] || ""}
+                    onChange={(e) =>
+                      handleInputChange(param.parameterId, e.target.value)
+                    }
+                  />
+                </div>
+              )}
               {param.parameterTypeId === 1 && (
                 <div className={style.filterLabel}>
                   <label htmlFor={`param-${param.parameterId}`}>
@@ -94,40 +136,6 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId }) => {
                   />
                 </div>
               )}
-              {param.parameterTypeId === 2 && param.parameterKey.includes('min') && (
-                <div className={style.filterLabel}>
-                  <label htmlFor={`param-${param.parameterId}`}>
-                    {param.parameterTitle}
-                  </label>
-                  <input
-                    type="number"
-                    placeholder="Dəyər daxil edin"
-                    className={style.filterInput}
-                    value={formData[param.parameterId] || ""}
-                    onChange={(e) =>
-                      handleInputChange(param.parameterId, e.target.value)
-                    }
-                  />
-                </div>
-              )}
-                    
-              {
-              param.parameterTypeId === 2 && param.parameterKey.includes('max') && (
-                <div className={style.filterLabel}>
-                  <label htmlFor={`param-${param.parameterId}`}>{param.parameterKey.split('-')[1] || param.parameterKey}
-                  </label>
-                  <input
-                    type="number"
-                    placeholder="Dəyər daxil edin"
-                    className={style.filterInput}
-                    value={formData[param.parameterId] || ""}
-                    onChange={(e) =>
-                      handleInputChange(param.parameterId, e.target.value)
-                    }
-                  />
-                </div>
-              )}
-
               {param.parameterTypeId === 3 && (
                 <div className={style.filterLabel}>
                   <label htmlFor={`param-${param.parameterId}`}>
@@ -145,7 +153,7 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId }) => {
                     {param.parameterMasks?.map((mask) => (
                       <option
                         key={mask.parameterMaskId}
-                        value={mask.parameterMaskId}
+                        value={mask.parameterMaskData}
                       >
                         {mask.parameterMaskData}
                       </option>
