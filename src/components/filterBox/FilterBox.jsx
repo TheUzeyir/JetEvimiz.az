@@ -3,9 +3,10 @@ import style from "./filterBox.module.css";
 import { useNavigate } from "react-router-dom";
 import { IoCloseCircleSharp } from "react-icons/io5";
 
-const FilterBox = ({  isVisible, setIsVisible,categoryId }) => {
+const FilterBox = ({ isVisible, setIsVisible, categoryId }) => {
   const [parameters, setParameters] = useState([]);
   const [formData, setFormData] = useState({});
+  const [filterResults, setFilterResults] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -33,17 +34,40 @@ const FilterBox = ({  isVisible, setIsVisible,categoryId }) => {
   const handleClickCloseBtn = () => {
     setIsVisible(false);
   };
-  
+
+  const applyFilters = async () => {
+    let query = `https://restartbaku-001-site4.htempurl.com/api/Product/search?LanguageCode=az&CategoryId=${categoryId}`;
+
+    for (const key in formData) {
+      if (formData[key]) {
+        query += `&${key}=${formData[key]}`;
+      }
+    }
+
+    try {
+      const response = await fetch(query);
+      const data = await response.json();
+      setFilterResults(data.data || []); // Filtrlənmiş nəticələri set edin
+    } catch (error) {
+      console.error("Filter error:", error);
+    }
+  };
 
   const handleFilter = () => {
-    console.log("hello");
-    
+    applyFilters();
   };
-  
+
   return (
     <div className={style.filterBox_containers}>
-      <div className={`${style.filterBox} ${!isVisible ? style.filterBoxDisplayNone : ""}`}>
-        <IoCloseCircleSharp className={style.filterBoxIcon} onClick={handleClickCloseBtn}/>
+      <div
+        className={`${style.filterBox} ${
+          !isVisible ? style.filterBoxDisplayNone : ""
+        }`}
+      >
+        <IoCloseCircleSharp
+          className={style.filterBoxIcon}
+          onClick={handleClickCloseBtn}
+        />
         {parameters.length > 0 ? (
           parameters.map((param) => (
             <div key={param.parameterId} className={style.filterBox_content}>
@@ -78,7 +102,8 @@ const FilterBox = ({  isVisible, setIsVisible,categoryId }) => {
                       onChange={(e) =>
                         handleInputChange(`${param.parameterId}_min`, e.target.value)
                       }
-                    />-
+                    />
+                    -
                     <input
                       type="number"
                       placeholder="Max"
@@ -106,7 +131,10 @@ const FilterBox = ({  isVisible, setIsVisible,categoryId }) => {
                   >
                     <option value="">Seçim edin</option>
                     {param.parameterMasks?.map((mask) => (
-                      <option key={mask.parameterMaskId} value={mask.parameterMaskId}>
+                      <option
+                        key={mask.parameterMaskId}
+                        value={mask.parameterMaskId}
+                      >
                         {mask.parameterMaskData}
                       </option>
                     ))}
@@ -123,6 +151,18 @@ const FilterBox = ({  isVisible, setIsVisible,categoryId }) => {
             Axtar
           </button>
         </div>
+        {filterResults.length > 0 && (
+          <div>
+            <h3>Filtr Nəticələri:</h3>
+            {/* Nəticələri göstərin */}
+            {filterResults.map((result) => (
+              <div key={result.productId}>
+                <p>{result.productName}</p>
+                <p>{result.productPrice}</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
