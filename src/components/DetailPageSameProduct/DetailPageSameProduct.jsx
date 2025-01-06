@@ -13,7 +13,7 @@ const DetailPageSameProduct = ({ sameProduct }) => {
     const currentDate = new Date();
     return Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24));
   };
-  
+
   const likedProducts = useSelector((state) => state.likedProducts.items);
   const navigate = useNavigate();
 

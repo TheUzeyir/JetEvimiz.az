@@ -143,15 +143,18 @@
 .detailPage_main_bottom_left_tite{
     width:30%;  
     color: gray;
-    margin-top: -40px;
-    margin-bottom: -40px;
+    margin-top: 10px;
+    margin-bottom: 0px;
     display: inline-block;
 }
 
 .detailPage_main_bottom_right{
     width: 60%;
+    min-height: 200px;
     margin-top: -40px;
+    padding: 10px 15px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+    border-radius: 4px;
 }
 
 .detailPage_main_bottom_top_price{
@@ -201,11 +204,6 @@ font-size: 25px;
     margin-top: 20px;
 }
 
-.detailPage_main_bottom_right{
-    box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
-    padding: 20px 40px;
-    border-radius: 4px;
-}
 
 .detailPage_main_bottom_right_card_complaintBox_container{
     display: none;
