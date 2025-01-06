@@ -321,28 +321,6 @@ const NewProductAdd = () => {
                   )}
                 </div>
                 </div>
-                <div className={style.addBox_left_box_top_card}>
-                  <label>{t('addProductPageCityText')}</label>
-                  <select
-                    value={selectedCity}
-                    onChange={(e) => setSelectedCity(e.target.value)}
-                    className={style.addBox_left_box_top_card_item}
-                    disabled={citiesLoading}
-                  >
-                    <option value="">--{t('addProductPageCityText')}--</option>
-                    {citiesLoading ? (
-                      <option disabled>{t('addProductPageLoading')}</option>
-                    ) : cities.length > 0 ? (
-                      cities.map((city) => (
-                        <option key={city.cityId} value={city.cityId}>
-                          {city.title}
-                        </option>
-                      ))
-                    ) : (
-                      <option disabled>{t('addProductPageCityNotFound')}</option>
-                    )}
-                  </select>
-                </div>
                 {loadingParameters ? (
                   <p>{t('addProductPageOptionLoading')}</p>
                 ) : parameters.length === 0 ? (

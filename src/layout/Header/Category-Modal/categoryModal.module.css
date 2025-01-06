@@ -68,15 +68,15 @@
   padding: 10px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  background: #2A3036;
+  background: #4F7942;
   border-radius: 4px;
   margin-bottom: 5px;
   width: 200px;
 }
 
 .categoryItem:hover {
-  color: #2A2036;
-  border: 1px solid #2A2036;
+  color: #4F7942;
+  border: 1px solid #4F7942;
   background: transparent;
 }
 
@@ -100,13 +100,13 @@
 .products_li {
   padding: 5px 0;
   font-size: 1.2rem;
-  border-bottom: 1px solid #2A2036;
+  border-bottom: 1px solid #4F7942;
   width: -moz-max-content;
   width: max-content;
   display: flex;
   align-items: center;
   gap: 10px;
-  color: #2A2036;
+  color: #4F7942;
 }
 
 .products_li:hover {
@@ -114,7 +114,7 @@
 }
 
 .modalContent_btn {
-  background-color: #2A2036;
+  background-color: #4F7942;
   border: none;
   color: white;
   padding: 10px 20px;
@@ -126,8 +126,8 @@
 
 .modalContent_btn:hover {
   background-color: transparent;
-  color: #2A2036;
-  border: 1px solid #2A2036;
+  color: #4F7942;
+  border: 1px solid #4F7942;
 }
 
 .categoryItem {

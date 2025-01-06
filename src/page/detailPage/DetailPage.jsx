@@ -10,8 +10,9 @@ import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import ImageGallery from "react-image-gallery";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
-import { useTranslation } from "react-i18next"; 
+import { useTranslation } from "react-i18next";
 import "react-image-gallery/styles/scss/image-gallery.scss";
+import DetailPageSameProduct from "../../components/DetailPageSameProduct/DetailPageSameProduct";
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
@@ -20,12 +21,16 @@ const DetailPage = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { i18n } = useTranslation(); 
+  const { i18n } = useTranslation();
+  const [matchingProducts, setMatchingProducts] = useState([]);
 
-  const getLanguageCode = () => {
-    const language = i18n.language;
-    return language === 'az' ? 'az' : language === 'ru' ? 'ru' : language === 'en' ? 'en' : 'tr';
+  const languageMapping = {
+    az: "az",
+    ru: "ru",
+    en: "en",
+    tr: "tr",
   };
+  const getLanguageCode = () => languageMapping[i18n.language] || "tr";
 
   useEffect(() => {
     const getProduct = async () => {
@@ -41,6 +46,7 @@ const DetailPage = () => {
         setProduct(result.data || {});
       } catch (error) {
         console.error(error.message);
+        alert("Ürün bilgisi alınırken bir hata oluştu.");
       }
     };
     getProduct();
@@ -48,7 +54,9 @@ const DetailPage = () => {
 
   const toggleLiked = (productItem) => {
     const savedUserName = localStorage.getItem("userName");
-    if (!savedUserName) {
+    const authToken = localStorage.getItem("authToken");
+
+    if (!authToken || authToken === "expired") {
       navigate("/login");
       return;
     }
@@ -70,62 +78,101 @@ const DetailPage = () => {
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
 
+  // Şikayet kutusunu açma/kapama
   const toggleComplaintBox = () => {
     setOpenComplaintBox((prev) => !prev);
   };
 
+  // Galeri verisi hazırlama
   const galleryItems =
     product.productGalleries?.map((gallery) => ({
       original: gallery.productGalleryFile,
       thumbnail: gallery.productGalleryFile,
     })) || [];
 
-  const filterProductDetails = (key, value) => {
-    const hiddenKeys = ["id", "slug", "userCode", "productId", "coverImage"];
-    return !hiddenKeys.includes(key) && value !== null;
-  };
+    useEffect(() => {
+      const getMatchingProducts = async () => {
+        try {
+          const response = await fetch(
+            "https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az"
+          );
+  
+          if (!response.ok) {
+            throw new Error("Failed to fetch products");
+          }
+  
+          const allProducts = await response.json();
+  
+          if (allProducts && allProducts.data && Array.isArray(allProducts.data.items)) {
+            const filteredProducts = allProducts.data.items.filter((remoteProduct) => {
+              const remoteSlugPrefix = remoteProduct.slug.split("-")[0];
+              return remoteSlugPrefix === slug.split("-")[0];
+            });
+  
+            console.log("Matching Products:", filteredProducts);
+            setMatchingProducts(filteredProducts); // Set the state
+          } else {
+            console.error("API response is not in the expected format.");
+          }
+        } catch (error) {
+          console.error("Error fetching products:", error);
+        }
+      };
+  
+      if (slug) {
+        getMatchingProducts();
+      }
+    }, [slug]);   
 
+    
+    
+    
   return (
     <div className={style.detailPage}>
       <Header />
       <div className="container">
         <p className={style.detailPage_goBack} onClick={() => navigate(-1)}>
-          <MdOutlineKeyboardArrowLeft /> Go Back
+          <MdOutlineKeyboardArrowLeft /> Geri Qayıt
         </p>
         <div className={style.detailPage_main}>
           <div className={style.detailPage_main_head}>
             <div className={style.detailPage_main_head_left}>
               {product.productGalleries?.length > 0 ? (
-              <ImageGallery 
-              items={galleryItems}
-              showPlayButton={false}
-              slideInterval={1000}
-              slideOnThumbnailOver={true}
-              showIndex={true}
-            />
-            
+                <ImageGallery
+                  items={galleryItems}
+                  showPlayButton={false}
+                  slideInterval={1000}
+                  slideOnThumbnailOver={true}
+                  showIndex={true}
+                />
               ) : (
                 <img
-                  src={product.coverImage}
+                  src={product.coverImage || "placeholder-image.jpg"}
                   alt="Product"
                   className={style.detailPage_main_head_left_mainImgBox_img}
                 />
               )}
             </div>
             <div className={style.detailPage_main_head_right}>
-            {product.parameters &&
+              {product.parameters &&
                 product.parameters.map((param, index) => (
                   <div
                     key={index}
                     className={style.detailPage_main_bottom_left_procebox}
                   >
-                    <span className={style.detailPage_main_bottom_left_price}>{param.parameterValue} - AZN</span>
+                    <span className={style.detailPage_main_bottom_left_price}>
+                      {param.parameterValue} - AZN(₼)
+                    </span>
                   </div>
                 ))}
-            {product.user && (
+              {product.user && (
                 <div className={style.detailPage_main_bottom_left_box}>
-                  <p className={style.detailPage_main_bottom_left_box_title}>Sahibin Adi-{product.user.userFirstName}</p>
-                  <p className={style.detailPage_main_bottom_left_box_title}>Sahibin Telefonu-{product.user.userPhone}</p>
+                  <p className={style.detailPage_main_bottom_left_box_title}>
+                    Sahibin Adı: {product.user.userFirstName}
+                  </p>
+                  <p className={style.detailPage_main_bottom_left_box_title}>
+                    Sahibin Telefonu: {product.user.userPhone}
+                  </p>
                 </div>
               )}
               <p>Elanın nömrəsi: {product.productId || "2221"}</p>
@@ -170,7 +217,9 @@ const DetailPage = () => {
                   className={style.detailPage_main_bottom_right_card_subtitle}
                   onClick={toggleComplaintBox}
                 >
-                  <FaFlag className={style.detailPage_main_bottom_right_card_subtitle_icon} />{" "}
+                  <FaFlag
+                    className={style.detailPage_main_bottom_right_card_subtitle_icon}
+                  />{" "}
                   Şikayət et
                 </p>
                 {openComplaintBox && (
@@ -187,26 +236,57 @@ const DetailPage = () => {
                         Göndər
                       </button>
                     </div>
-                  </div> 
+                  </div>
                 )}
               </div>
             </div>
           </div>
           <div className={style.detailPage_main_bottom}>
             <div className={style.detailPage_main_bottom_left}>
-                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Adi</p>{product.productTitle}</p>
-                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Kateqoriyasi</p>{product.categoryTitle}</p>
-                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Qiymet</p>{product.price}</p>
-                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Hecmi</p>{product.productWeight}</p>
-                <p><p className={style.detailPage_main_bottom_left_tite}>Mehsul Baxis sayisi</p>{product.viewCount}</p>
-                <p><p className={style.detailPage_main_bottom_left_tite}>Elan Tarixi</p>{product.createDate}</p>
+              <div>
+                <p className={style.detailPage_main_bottom_left_tite}>
+                  Məhsul Kateqoriyası
+                </p>
+                {product.categoryTitle || "Bilgi yoxdur"}
+              </div>
+              <div>
+                <p className={style.detailPage_main_bottom_left_tite}>
+                  Məhsul Adı
+                </p>
+                {product.productTitle || "Bilgi yoxdur"}
+              </div>
+              <div>
+                <p className={style.detailPage_main_bottom_left_tite}>
+                  Məhsul Qiyməti
+                </p>
+                {product.price ? `${product.price} AZN(₼)` : "Bilgi yoxdur"}
+              </div>
+              <div>
+                <p className={style.detailPage_main_bottom_left_tite}>
+                  Məhsul Həcmi
+                </p>
+                {product.productWeight || "Bilgi yoxdur"}
+              </div>
+              <div>
+                <p className={style.detailPage_main_bottom_left_tite}>
+                  Məhsul Baxış Sayısı
+                </p>
+                {product.viewCount || "Bilgi yoxdur"}
+              </div>
+              <div>
+                <p className={style.detailPage_main_bottom_left_tite}>
+                  Elan Tarixi
+                </p>
+                {product.createDate || "Bilgi yoxdur"}
+              </div>
             </div>
             <div className={style.detailPage_main_bottom_right}>
-            <p>{product.productDescription}</p>
+              <p>{product.productDescription || "Bilgi yoxdur"}</p>
             </div>
           </div>
         </div>
       </div>
+      <DetailPageSameProduct sameProduct={matchingProducts || []} />
       <Footer />
       <FooterResponsive />
     </div>

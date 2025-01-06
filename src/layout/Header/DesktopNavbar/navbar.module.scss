@@ -3,7 +3,7 @@
 }
 
 .navbar{
-    background: #2A2036;
+    background: #228B22        ;
     color: white;
     padding: 20px 0;
     width: 100%;
@@ -74,8 +74,9 @@
 }
 
 .advertsBox_btn_new{
-    background: rgb(38, 180, 38);
+    background:#20B2AA;
     color: white;
+    border: none;
     padding: 10px 15px;
     display: flex;
     align-items: center;
@@ -85,19 +86,6 @@
     font-size: 16px;
     width: 180px;
 }
-
-.advertsBox_btn_filter{
-    background: orange;
-    color: white;
-    padding: 10px 15px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    border-radius: 4px;
-    font-size: 16px;
-
-}
-
 .modalCategoryModal {
     position: fixed;
     top: 0;
@@ -126,7 +114,8 @@
 }
 
 .modalContent {
-    background-image: radial-gradient(circle, #2A2036 5%, #4dabf7 95%);
+    background-image: radial-gradient(circle, #4F7942   
+    5%, #4dabf7 95%);
     width: 60%;
     max-width: 900px;
     height: 80%;
@@ -170,7 +159,7 @@
 
 .categoryItem:hover {
     background-color: #fff;
-    color: #2A2036;
+    color: #4F7942       ;
 }
 
 .products {
@@ -200,7 +189,8 @@
 }
 
 .modalContent_btn {
-    background-color: #2A2036;
+    background-color: #4F7942   
+    ;
     border: none;
     color: white;
     padding: 10px 20px;
@@ -211,7 +201,8 @@
 
 .modalContent_btn:hover {
     background-color: white;
-    color: #2A2036;
+    color: #4F7942   
+    ;
 }
 
 .categoryItem{

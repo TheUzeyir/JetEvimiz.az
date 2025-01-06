@@ -1,7 +1,7 @@
 .footer {
-  background: #2A2036;
+  background: #228B22;
   min-height: 19rem;
-  color: rgb(215, 209, 209);
+  color: white;
   padding-bottom: 20px;
   padding-top: 20px;
   margin-top: 20px;
@@ -31,7 +31,7 @@
 }
 
 .footerMain_Link_ul_links {
-  color: rgb(175, 173, 173);
+  color: white;
 }
 
 .footerMain_Link_ul_links:hover {

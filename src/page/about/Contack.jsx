@@ -23,7 +23,7 @@ const Contack = () => {
             <p>{t('rulePageRuleText105')}</p>
             <p>{t('rulePageRuleText103')}</p>
           </div>
-          <a href="JetEvimiza.az">JetEvimiz.az</a>
+          <a href="JetEvimiz.az">JetEvimiz.az</a>
           <p>{t('rulePageRuleText104')}</p>
       </div>
     </div>

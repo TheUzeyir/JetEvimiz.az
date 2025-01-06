@@ -1,5 +1,5 @@
-.headerTop{
-    background:#2A2036;
+.headerTop {
+    background: #4F7942;
     width: 100%;
     padding: 14px;
     border-bottom: 1px solid gray;
@@ -8,75 +8,75 @@
     justify-content: center;
 }
 
-.headerTop_container_right_item{
+.headerTop_container_right_item {
     cursor: pointer;
 }
 
-.headerTop_container_right_langBox{
+.headerTop_container_right_langBox {
     padding: 5px;
     border-radius: 4px;
-    border:1px solid white;
+    border: 1px solid white;
     background: transparent;
-    background: #2A2036;
+    background: #4F7942;
     color: white;
 }
 
-.contactNum{
+.contactNum {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
 }
 
-.contactNum_box{
+.contactNum_box {
     display: flex;
     align-items: center;
     cursor: pointer;
 }
 
-.headerTop_container_right_langBox_item{
+.headerTop_container_right_langBox_item {
     color: black;
 }
 
-.headerSlider{
+.headerSlider {
     align-items: center;
 }
 
-.headerTop_container{
+.headerTop_container {
     color: white;
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 
-.headerTop_container_left{
+.headerTop_container_left {
     color: white;
 }
 
-.headerTop_container_right{
+.headerTop_container_right {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.headerTop_container_right_icon{
+.headerTop_container_right_icon {
     margin-right: 5px;
 }
 
-.headerTop_container_right{
+.headerTop_container_right {
     color: white;
 }
 
 
 
 @media screen and (max-width:968px) {
-    .headerTop{
+    .headerTop {
         display: none;
     }
 }
 
 @media screen and (max-width:768px) {
-    .headerTop_container{
+    .headerTop_container {
         font-size: 10px;
     }
 }
