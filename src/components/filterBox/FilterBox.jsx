@@ -70,7 +70,7 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId }) => {
       .then((response) => response.json())
       .then((data) => {
         console.log("Filterlənmiş məlumatlar:", data);
-        const filteredProducts = data.data?.items || []; // Set products correctly
+        const filteredProducts = data.data?.items || [];
         setProducts(filteredProducts);
 
         if (filteredProducts.length > 0) {
