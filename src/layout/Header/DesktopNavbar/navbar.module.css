@@ -35,7 +35,12 @@
 
 .inputGroup {
   display: flex;
+  align-items: center;
   width: 100%;
+}
+
+.navBar_selectBox {
+  padding: 9.5px;
 }
 
 .searchInput {
@@ -219,6 +224,11 @@
 .emptyBox {
   width: 100%;
   border: 1px solid gray;
+}
+
+.navBar_selectBox {
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
 }
 
 .nawBarSearchResultCategory {

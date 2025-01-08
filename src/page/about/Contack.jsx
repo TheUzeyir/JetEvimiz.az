@@ -17,6 +17,8 @@ const Contack = () => {
             <p>{t('rulePageRuleText11')} </p>
           </div>
           <h3>{t('rulePageRuleText106')}</h3>
+          <p> +994509914174</p>
+          <p>+994709023910</p>
           <h3>{t('rulePageRuleText107')}</h3>
           <div className={style.contack_card}>
             <h3>{t('rulePageRuleText102')}</h3>

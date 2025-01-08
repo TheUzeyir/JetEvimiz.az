@@ -3,7 +3,7 @@ import style from "./categoryProduct.module.scss";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { BsFillHeartFill } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa6";
-import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
+import Header from "../../layout/Header/Header"
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import { useTranslation } from "react-i18next";
@@ -15,7 +15,7 @@ import { IoChevronBackOutline } from "react-icons/io5";
 const CategoryProduct = () => {
   const location = useLocation();
   const navigate=useNavigate()
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const [isFilterVisible, setIsFilterVisible] = useState(window.innerWidth >= 768)
   const [likedProducts, setLikedProducts] = useState([]);
   const [minPrice, setMinPrice] = useState("");
@@ -26,7 +26,7 @@ const CategoryProduct = () => {
   const pageSize = 8;
 
   const { products = { items: [] }, category } = location.state || {};
-  const items = products.items;
+  const items = products.items || [];
 
   useEffect(() => {
     const likedProductsFromStorage = localStorage.getItem("likedProducts");
@@ -96,9 +96,12 @@ const CategoryProduct = () => {
     };
   }, []);
 
+  console.log(paginatedItems);
+  
+
   return (
     <div className={style.CategoryProduct_container}>
-      <Navbar />
+      <Header/>
       <div className="container">
         <p className={style.CategoryProduct_goBack} onClick={()=>navigate(-1)}><IoChevronBackOutline/>Go Back</p>
         <div className={style.CategoryProduct_filterBox} onClick={toggleFilterBox}>
@@ -142,9 +145,10 @@ const CategoryProduct = () => {
                       </div>
                     </Link>
                     <div className={style.productCard_info}>
-                      <h3>{item.productTitle}</h3>
-                      <p className={style.productCard_info_price}>{item.price} AZN</p>
+                      <h3>{item.price} AZN</h3>
+                      <p className={style.productCard_info_price}>{item.productTitle}</p>
                       <p className={style.productCard_info_category}>{item.categoryName}</p>
+                      <p className={style.productCard_info_city}>{t("addProductPageCityText")}:{item.city}</p>
                     </div>
                   </div>
                 ))}

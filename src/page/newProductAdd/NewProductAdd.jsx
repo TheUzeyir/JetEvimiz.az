@@ -324,14 +324,14 @@ const NewProductAdd = () => {
                 {loadingParameters ? (
                   <p>{t('addProductPageOptionLoading')}</p>
                 ) : parameters.length === 0 ? (
-                  <p className={style.errorText}>{t('addProductPageOptionLoadingNotFoud')}</p>
+                  <p className={style.errorText}></p>
                 ) : (
                   parameters.map((parameter) => (
                     <div
                       key={parameter.parameterKey}
                       className={style.addBox_left_box_top_card}
                     >
-                      <label>{parameter.parameterTitle}-(AZN)₼</label>
+                      <label>{parameter.parameterTitle}</label>
                       {parameter.parameterTypeId === 3 ? (
                         <select
                           value={formData[parameter.parameterKey] || ""}

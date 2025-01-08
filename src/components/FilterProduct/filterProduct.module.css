@@ -1,3 +1,9 @@
+.FilterProduct {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .CategoryProductPage {
   display: flex;
   flex-direction: column;
@@ -130,9 +136,12 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 40px;
-  margin-top: 20px;
+  margin-top: 40px;
   width: 100%;
   margin-bottom: 20px;
+  background: white;
+  padding: 20px;
+  border-radius: 6px;
 }
 
 .productCard {
@@ -142,6 +151,10 @@
   cursor: pointer;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+}
+
+.productCard_info {
+  padding: 4px 8px;
 }
 
 .productCard_info {
@@ -302,4 +315,4 @@
     left: 0%;
     transform: translate(0, 0);
   }
-}/*# sourceMappingURL=categoryProduct.module.css.map */
+}/*# sourceMappingURL=filterProduct.module.css.map */

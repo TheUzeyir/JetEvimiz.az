@@ -168,7 +168,7 @@ const Navbar = () => {
                 onChange={handleCityChange}
                 className={style.navBar_selectBox}
               >
-                <option value="">--{t("chooseCity")}--</option>
+                <option value="" >--{t("chooseCity")}--</option>
                 <optgroup label="Azərbaycan">
                   {groupedCities.azerbaijan.map((city) => (
                     <option key={city.cityId} value={city.title}>
@@ -182,7 +182,7 @@ const Navbar = () => {
                       {city.title}
                     </option>
                   ))}
-                </optgroup>
+                </optgroup >
               </select> 
               <input
                 placeholder={t("searchInput")}
