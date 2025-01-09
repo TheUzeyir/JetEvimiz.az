@@ -51,6 +51,7 @@
 
 .CategoryProduct_simple {
   margin-bottom: 20px;
+  background: white;
 }
 
 .categoryPageLabel {
@@ -243,6 +244,7 @@
 
 .pagination {
   font-size: 20px;
+  margin-top: 40px;
 }
 
 .paginationBtn {

@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import style from "./filterBox.module.css";
 import { IoCloseCircleSharp } from "react-icons/io5";
+import { useNavigate } from "react-router-dom";
 
 const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts }) => {
   const [parameters, setParameters] = useState([]);
   const [formData, setFormData] = useState({});
-  const [filteredResults, setFilteredResults] = useState([]); 
+  const [filteredResults, setFilteredResults] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (categoryId) {
@@ -70,6 +72,27 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
       .catch((error) => {
         console.error("API sorğusunda xəta baş verdi:", error);
       });
+  };
+
+  const handleReset = () => {
+    // Reset the formData to an empty object
+    setFormData({});
+    
+    // Fetch all products again and reset filtered results
+    if (categoryId) {
+      fetch(
+        `https://restartbaku-001-site3.htempurl.com/api/Product/get-all-products?LanguageCode=az&CategoryId=${categoryId}`
+      )
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Bütün məhsullar:", data.data?.items || []);
+          setFilteredResults(data.data?.items || []); // Set all products to filtered results
+          setFilteredProducts(data.data?.items || []); // Set all products in parent component
+        })
+        .catch((error) => {
+          console.error("Error fetching all products:", error);
+        });
+    }
   };
 
   return (
@@ -147,6 +170,9 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
         <div className={style.filterGroup}>
           <button className={style.filterButton} onClick={handleFilter}>
             Axtar
+          </button>
+          <button className={style.filterButton} onClick={handleReset}>
+            Sıfırla
           </button>
         </div>
       </div>
