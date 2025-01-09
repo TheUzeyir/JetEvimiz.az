@@ -29,7 +29,6 @@
     useQuery,
   } from '@tanstack/react-query'
 import SameProductDetails from './components/sameProductDetail/SameProductDetails'
-import FilterProduct from './components/FilterProduct/FilterProduct'
   const queryClient = new QueryClient()
 
   function App() {
@@ -39,7 +38,6 @@ import FilterProduct from './components/FilterProduct/FilterProduct'
           <Routes>
             <Route path='/' element={<Main />} />
             <Route path='/detailPageProfile' element={<DetailPageProfile />} />
-            <Route path='/filterProduct' element={<FilterProduct />} />
             <Route path='/same-product-details' element={<SameProductDetails />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/info' element={<Info />} />

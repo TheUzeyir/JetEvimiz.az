@@ -32,6 +32,22 @@
     width: 100%
 }
 
+.productsGrid_container{
+    margin:-40px -20px;
+}
+
+.productsGrid{
+    display: grid;
+    grid-template-columns: repeat(4,1fr);
+    gap: 40px;
+    margin-top: 40px;
+    width: 100%;
+    margin-bottom: 20px;
+    background: white;
+    padding: 20px;
+    border-radius: 6px;
+}
+
 .CategoryProduct_simple{
     margin-bottom: 20px;
 }

@@ -3,7 +3,7 @@ import style from "./categoryProduct.module.scss";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { BsFillHeartFill } from "react-icons/bs";
 import { FaHeart } from "react-icons/fa6";
-import Header from "../../layout/Header/Header"
+import Header from "../../layout/Header/Header";
 import Footer from "../../layout/footer/Footer";
 import FooterResponsive from "../../layout/footer_responsive/FooterResponsive";
 import { useTranslation } from "react-i18next";
@@ -14,9 +14,9 @@ import { IoChevronBackOutline } from "react-icons/io5";
 
 const CategoryProduct = () => {
   const location = useLocation();
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const { t } = useTranslation();
-  const [isFilterVisible, setIsFilterVisible] = useState(window.innerWidth >= 768)
+  const [isFilterVisible, setIsFilterVisible] = useState(window.innerWidth >= 768);
   const [likedProducts, setLikedProducts] = useState([]);
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
@@ -24,6 +24,7 @@ const CategoryProduct = () => {
   const [filterParams, setFilterParams] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
+  const [showFilteredResults, setShowFilteredResults] = useState(false); 
 
   const { products = { items: [] }, category } = location.state || {};
   const items = products.items || [];
@@ -83,7 +84,7 @@ const CategoryProduct = () => {
 
   const toggleFilterBox = () => {
     setIsFilterVisible(!isFilterVisible);
-  };  
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -96,23 +97,38 @@ const CategoryProduct = () => {
     };
   }, []);
 
-  console.log(paginatedItems);
-  
+  const setFilteredProducts = (filteredItems) => {
+    setFilterParams(filteredItems);
+    setShowFilteredResults(true); 
+  };
+
+  const handleFilterButtonClick = () => {
+    setShowFilteredResults(true); 
+  };
 
   return (
     <div className={style.CategoryProduct_container}>
-      <Header/>
+      <Header />
       <div className="container">
-        <p className={style.CategoryProduct_goBack} onClick={()=>navigate(-1)}><IoChevronBackOutline/>Go Back</p>
+        <p className={style.CategoryProduct_goBack} onClick={() => navigate(-1)}>
+          <IoChevronBackOutline /> Go Back
+        </p>
         <div className={style.CategoryProduct_filterBox} onClick={toggleFilterBox}>
-          <button className={style.CategoryProduct_filterBox_btn} >
+          <button className={style.CategoryProduct_filterBox_btn} onClick={handleFilterButtonClick}>
             Filter et<AiFillFilter />
           </button>
         </div>
-        {isFilterVisible && <FilterBox isVisible={isFilterVisible} setIsVisible={setIsFilterVisible} categoryId={category?.categoryId} setFilterParams={setFilterParams} />}
+        {isFilterVisible && (
+          <FilterBox
+            isVisible={isFilterVisible}
+            setIsVisible={setIsFilterVisible}
+            categoryId={category?.categoryId}
+            setFilteredProducts={setFilteredProducts} // Pass the function here
+          />
+        )}
         <div className={style.CategoryProductPage}>
           <div className={style.CategoryProduct_simple}>
-            {paginatedItems.length > 0 ? (
+            {!showFilteredResults && paginatedItems.length > 0 ? (
               <div className={style.productsGrid}>
                 {paginatedItems.map((item) => (
                   <div className={style.productCard} key={item.productId}>
@@ -154,13 +170,56 @@ const CategoryProduct = () => {
                 ))}
               </div>
             ) : (
-              <div className={style.noProductsFound}>
-                <img
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSRytQKjMsJgiYkh_8k8aXHSzggS5tlVoN9A&s"
-                  alt="No Products Found"
-                  className={style.notFoundImg}
-                />
-              </div>
+            <div className={style.productsGrid_container}>
+              {showFilteredResults && (
+                <div className={style.productsGrid}>
+                  {filterParams.length > 0 ? (
+                    filterParams.map((product) => (
+                       <div className={style.productCard} key={product.productId}>
+                        <Link to={`/product-details/${product.slug}`}>
+                          <div className={style.productCard_imgBox}>
+                            <img
+                              src={product.coverImage}
+                              alt={product.productTitle}
+                              className={style.productCard_imgBox_img}
+                            />
+                            {likedProducts.some(
+                              (likedProduct) => likedProduct.productId === product.productId
+                            ) ? (
+                              <BsFillHeartFill
+                                className={style.productCard_imgBox_heartIcon_check}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  toggleLiked(product);
+                                }}
+                              />
+                            ) : (
+                              <FaHeart
+                                className={style.productCard_imgBox_heartIcon}
+                                onClick={(e) => {
+                                  e.preventDefault();
+                                  toggleLiked(product);
+                                }}
+                              />
+                            )}
+                          </div>
+                        </Link>
+                        <div className={style.productCard_info}>
+                          <h3>{product.price} AZN</h3>
+                          <p className={style.productCard_info_price}>{product.productTitle}</p>
+                          <p className={style.productCard_info_category}>{product.categoryName}</p>
+                          <p className={style.productCard_info_city}>
+                            {t("addProductPageCityText")}:{product.city}
+                          </p>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <p>Heç bir məhsul tapılmadı</p>
+                  )}
+                </div>
+              )}
+            </div>
             )}
             <div className={style.paginationContainer}>
               <Pagination
