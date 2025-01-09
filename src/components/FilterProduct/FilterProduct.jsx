@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useMemo } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation,useParams } from "react-router-dom";
 import Header from "../../layout/Header/Header";
 import FilterBox from "../filterBox/FilterBox";
 import Footer from "../../layout/footer/Footer";
@@ -14,12 +14,14 @@ import { useTranslation } from "react-i18next";
 
 const FilterProduct = () => {
   const location = useLocation();
+  const { slug } = useParams(); 
   const products = location.state?.products || [];
   const [likedProducts, setLikedProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterBoxVisible, setIsFilterBoxVisible] = useState(true);
   const [categories, setCategories] = useState([]);
     const { t } = useTranslation();
+    const currentUrl = window.location.pathname;
   const pageSize = 8;
 
   useEffect(() => {
@@ -83,7 +85,13 @@ const FilterProduct = () => {
       />
       <div className="container">
         {products.length === 0 ? (
-          <p>No products found.</p>
+          <div className={style.noProductsFound}>
+            <img
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSRytQKjMsJgiYkh_8k8aXHSzggS5tlVoN9A&s"
+              alt="No Products Found"
+              className={style.notFoundImg}
+            />
+          </div>
         ) : (
           <>
             <div className={style.productsGrid}>

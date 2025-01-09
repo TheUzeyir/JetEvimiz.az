@@ -17,8 +17,8 @@ const Login = () => {
     Swal.fire({
       icon: "error",
       title: "Oops...",
-      text: message || "Istifadeci Tapilmaidi, Xahis olunur daxil olun.",
-      footer: '<a href="/signup">Daxil olmagcun buraya tiklayin!</a>',
+      text: message || "İstifadəçi tapılmadı, Xahiş olunur daxil olun.",
+      footer: '<a href="/signup">Daxil olmaq üçün buraya click edin!!</a>',
     });
   };
 

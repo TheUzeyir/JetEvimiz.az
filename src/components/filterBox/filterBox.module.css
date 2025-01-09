@@ -1,6 +1,5 @@
 .filterBox {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
   gap: 15px;
   background-color: #fff;
   border-radius: 8px;
@@ -11,7 +10,39 @@
 }
 
 .filterBox_content {
-  margin: -10px 0;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+}
+
+.filterBox_content label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+div:not(:has(select)) .l {
+  margin-bottom: -12px;
+}
+
+.priceLabel {
+  font-weight: bold;
+}
+
+.filterInput {
+  padding: 8px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-bottom: -40px;
+}
+
+.minMaxContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.filterGroup {
+  margin-top: 1rem;
 }
 
 .filterBoxs {
@@ -22,8 +53,8 @@
   border-radius: 8px;
   padding: 20px;
   width: 100%;
-  height: -moz-max-content;
-  height: max-content;
+  height: 400px;
+  overflow-y: scroll;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 15px;
   margin-top: 0;
@@ -66,7 +97,7 @@
 
 .filterInput, .filterSelect {
   width: 100%;
-  padding: 10px;
+  padding: 6px;
   font-size: 1rem;
   border: 1px solid #ccc;
   border-radius: 4px;
