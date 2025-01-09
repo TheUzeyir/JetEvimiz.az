@@ -281,6 +281,16 @@
   color: blue;
 }
 
+.notFoundImg {
+  height: 300px;
+  margin-top: 40px;
+  position: relative;
+  transform: translate(-50%, 0%);
+  left: 50%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
 @media screen and (max-width: 1080px) {
   .productCard_imgBox_title {
     font-size: 10px;
@@ -301,6 +311,11 @@
   }
   .CategoryProduct_filterBox {
     display: block;
+  }
+  .notFoundImg {
+    width: 100%;
+    left: 0%;
+    transform: translate(0, 0);
   }
 }
 @media screen and (max-width: 596px) {

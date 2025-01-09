@@ -6,7 +6,7 @@ import { validate } from "./validate";
 import styles from "./SignUp.module.css";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import backImg from "../../img/loginImg.png";
 import { useTranslation } from "react-i18next";
@@ -15,6 +15,7 @@ import phoneImg from "../../img/phone.png";
 
 const SignUp = () => {
   const { t } = useTranslation();
+  const navigate = useNavigate(); // for navigation
   const [data, setData] = useState({
     name: "",
     phone: "",
@@ -26,18 +27,18 @@ const SignUp = () => {
 
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
+  const [isTermsAccepted, setIsTermsAccepted] = useState(false); // Track checkbox state
 
   useEffect(() => {
     setErrors(validate(data, "signUp"));
-  }, [data, touched]);
+  }, [data]);
 
   const changeHandler = (event) => {
-    const { name, value } = event.target;
+    const { name, value, checked } = event.target;
 
     if (name === "IsAccepted") {
-      setData({ ...data, [name]: event.target.checked });
+      setData({ ...data, [name]: checked });
     } else if (name === "phone") {
-      // Telefon girişini yalnızca sayılarla sınırlandır
       const formattedValue = value.replace(/\D/g, "");
       setData({ ...data, [name]: formattedValue });
     } else {
@@ -52,7 +53,7 @@ const SignUp = () => {
   const submitHandler = async (event) => {
     event.preventDefault();
 
-    if (!Object.keys(errors).length) {
+    if (!Object.keys(errors).length && data.IsAccepted) {
       const apiUrl =
         "https://restartbaku-001-site3.htempurl.com/api/auth/user-register";
       const payload = {
@@ -64,26 +65,35 @@ const SignUp = () => {
       };
 
       try {
-        const response = await toast.promise(axios.post(apiUrl, payload), {
-          pending: "Submitting your data...",
-          success: "Registration successful!",
-          error: "Registration failed!",
+        const response = await fetch(apiUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         });
 
-        if (response.status === 200 || response.status === 201) {
-          toast.success("You signed up successfully");
-        } else {
-          toast.warning("Unexpected error occurred");
-        }
-      } catch (error) {
-        if (error.response && error.response.status === 409) {
+        if (response.ok) {
+          toast.success("Uğurla qeydiyyat olundunuz!");
+          setData({
+            name: "",
+            phone: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            IsAccepted: false,
+          });
+          setTouched({});
+        } else if (response.status === 409) {
           toast.error(
-            "Username or email already exists. Please choose a different one."
+            "Bu email artiq mövcuddur və yaxud butun melumatlari daxil edin"
           );
         } else {
-          toast.error("Registration failed. Please try again later.");
+          toast.warning("Yenidən cəhd edin");
         }
-        console.error("Error:", error);
+      } catch (error) {
+        toast.error("Uğursuz əməliyyat.");
+        console.error("API Error:", error);
       }
     } else {
       toast.error("Please check the fields again");
@@ -93,59 +103,22 @@ const SignUp = () => {
         email: true,
         password: true,
         confirmPassword: true,
-        IsAccepted: false,
+        IsAccepted: true,
       });
-    }
-  };
-
-  const sendDataToAPI = async () => {
-    const apiUrl =
-      "https://restartbaku-001-site3.htempurl.com/api/auth/user-register";
-    const payload = {
-      userName: data.name,
-      userPhone: data.phone,
-      userEmail: data.email,
-      userPassword: data.password,
-      confirmPassword: data.confirmPassword,
-    };
-
-    try {
-      const response = await fetch(apiUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (response.ok) {
-        const responseData = await response.json();
-        toast.success("Uğurla qeydiyyat olundunuz!");
-        setData({
-          name: "",
-          phone: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          IsAccepted: false,
-        });
-        setTouched({});
-      } else if (response.status === 409) {
-        toast.error(
-          "Bu email artiq mövcuddur ve yaxud butun melumatlari daxil edin"
-        );
-      } else {
-        toast.warning("Yenidən cəhd edin");
-      }
-    } catch (error) {
-      toast.error("Uğursuz əməliyyat.");
-      console.error("API Error:", error);
+      setIsTermsAccepted(data.IsAccepted); // Update checkbox state
     }
   };
 
   return (
     <div className={styles.container}>
-      <p className={styles.navigateText} onClick={()=>{navigate('/')}}><MdKeyboardArrowLeft/></p>
+      <p
+        className={styles.navigateText}
+        onClick={() => {
+          navigate("/");
+        }}
+      >
+        <MdKeyboardArrowLeft />
+      </p>
       <div className={styles.formContainer}>
         <form
           className={styles.formLogin}
@@ -205,38 +178,42 @@ const SignUp = () => {
               )}
             </div>
           ))}
-          <div>
             <div className={styles.terms}>
+              <label htmlFor="IsAccepted">
+                {t('signInRulesText')}
+              </label>
               <input
                 type="checkbox"
                 name="IsAccepted"
                 checked={data.IsAccepted}
                 onChange={changeHandler}
                 onFocus={focusHandler}
+                className={styles.termsCheckBox}
+                required
               />
-              <label htmlFor="IsAccepted">{t("signInRulesText")}</label>
             </div>
-            {errors.IsAccepted && touched.IsAccepted && (
-              <span className={styles.error}>{errors.IsAccepted}</span>
-            )}
-          </div>
+          {(!data.IsAccepted && Object.keys(errors).length > 0) && (
+            <p className={styles.termsError}>
+              {t('signInRulesRequiredText')}
+            </p>
+          )}
           <div>
             <span>
               {t("signInHaveAcc")}
               <Link to="/login">{t("signInLoginText")}</Link>
             </span>
           </div>
+          <button
+            type="submit"
+            className={styles.loginBtn}
+            disabled={!data.IsAccepted || Object.keys(errors).length > 0}
+          >
+            {t("signInFinishRegstration")}
+          </button>
         </form>
-        <button className={styles.loginBtn} onClick={sendDataToAPI}>
-          {t("signInFinishRegstration")}
-        </button>
         <ToastContainer />
       </div>
-      <img
-        src={backImg}
-        alt={backImg}
-        className={styles.LoginSignUpBackImg}
-      />
+      <img src={backImg} alt="Background" className={styles.LoginSignUpBackImg} />
     </div>
   );
 };

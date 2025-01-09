@@ -41,18 +41,18 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId }) => {
       alert("Zəhmət olmasa kateqoriyanı seçin!");
       return;
     }
-
+  
     const baseUrl = "https://restartbaku-001-site3.htempurl.com/api/Product/search";
     const queryParams = new URLSearchParams({
       LanguageCode: "az",
       CategoryId: categoryId,
     });
-
+  
     parameters.forEach((param) => {
       const parameterId = param.parameterId;
       const parameterKey = param.parameterKey;
       const value = formData[parameterId];
-
+  
       if (value) {
         if (parameterKey.includes("min") || parameterKey.includes("max")) {
           queryParams.append(parameterKey, value);
@@ -61,26 +61,24 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId }) => {
         }
       }
     });
-
+  
     const fullUrl = `${baseUrl}?${queryParams.toString()}`;
-
+  
     console.log("API sorgu URL:", fullUrl);
-
+  
     fetch(fullUrl)
       .then((response) => response.json())
       .then((data) => {
         console.log("Filterlənmiş məlumatlar:", data);
         const filteredProducts = data.data?.items || [];
-        setProducts(filteredProducts);
-
-        if (filteredProducts.length > 0) {
-          navigate("/filterProduct", { state: { products: filteredProducts } });
-        }
+        navigate("/filterProduct", { state: { products: filteredProducts } });
       })
       .catch((error) => {
         console.error("API sorğusunda xəta baş verdi:", error);
+          navigate("/filterProduct", { state: { products: [] } });
       });
   };
+  
 
   return (
     <div className={style.filterBox_containers}>

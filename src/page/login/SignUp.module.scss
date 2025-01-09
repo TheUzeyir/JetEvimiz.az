@@ -12,6 +12,12 @@
 	text-align: center;
 }
 
+.termsCheckBox{
+	position: relative;
+	z-index: 100;
+	cursor: pointer;
+}
+
 .navigateText{
 	position: absolute;
 	z-index: 5;
@@ -102,7 +108,6 @@
 	width: 15px;
 	height: 15px;
 	border: 1px solid var(--main-color);
-	appearance: none;
 	border-radius: 5px;
 	transition: all 0.2s ease-in-out;
 	-webkit-transition: all 0.2s ease-in-out;
@@ -181,6 +186,11 @@
 	display: flex;
 	align-items: center;
 	justify-content: center;
+  }
+
+  .termsError{
+	color: red;
+	margin-top: -10px;
   }
 
 .Input{
