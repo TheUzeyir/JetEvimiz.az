@@ -83,7 +83,7 @@ const FilterProduct = () => {
       />
       <div className="container">
         {products.length === 0 ? (
-          <p>No products found.</p>
+          <p>Heç bir məhsul tapılmadı.</p>
         ) : (
           <>
             <div className={style.productsGrid}>
@@ -127,7 +127,7 @@ const FilterProduct = () => {
                   </div>
                 ))
               ) : (
-                <p>No products found.</p>
+                <p>Heç bir məhsul tapılmadı.</p>
               )}
             </div>
 
