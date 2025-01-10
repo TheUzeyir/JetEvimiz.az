@@ -107,7 +107,6 @@ const DetailPage = () => {
               return remoteSlugPrefix === slug.split("-")[0];
             });
   
-            console.log("Matching Products:", filteredProducts);
             setMatchingProducts(filteredProducts); // Set the state
           } else {
             console.error("API response is not in the expected format.");
@@ -120,10 +119,7 @@ const DetailPage = () => {
       if (slug) {
         getMatchingProducts();
       }
-    }, [slug]);    
-
-    console.log(product);
-    
+    }, [slug]);        
     
   return (
     <div className={style.detailPage}>

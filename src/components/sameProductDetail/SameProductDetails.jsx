@@ -17,12 +17,14 @@ import "react-image-gallery/styles/scss/image-gallery.scss";
 const SameProductDetails = () => {
     const [openComplaintBox, setOpenComplaintBox] = useState(false);
     const likedProducts = useSelector((state) => state.likedProducts.items);
+    const [galleryItems, setGalleryItems] = useState([]);
     const { slug } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const { i18n } = useTranslation();
     const location = useLocation();
     const product = location.state;
+    const [productData, setProductData] = useState(null);
 
     if (!product) {
         console.log("Ürün bilgisi eksik veya bulunamadı.");
@@ -61,14 +63,36 @@ const SameProductDetails = () => {
       setOpenComplaintBox((prev) => !prev);
     };
 
-    const galleryItems = 
-    product.productGalleries?.map((gallery) => ({
-        original: gallery.productGalleryFile,
-        thumbnail: gallery.productGalleryFile,
-    })) || [];
-
-    console.log(product);
-
+    useEffect(() => {
+      const apiUrl = `https://restartbaku-001-site3.htempurl.com/api/Product/get-product?LanguageCode=az&Slug=${product.slug}`;
+  
+      fetch(apiUrl)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("API sorğusunda xəta baş verdi!");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          console.log("APİ-dən gələn məlumat:", data);
+          setProductData(data); // Məlumatı state-ə saxlayın
+        })
+        .catch((error) => {
+          console.error("Xəta:", error);
+        });
+    }, [product.slug]);
+  
+    useEffect(() => {
+      if (productData?.data?.productGalleries) {
+        const galleryItemsMapped = productData.data.productGalleries.map((gallery) => ({
+          original: gallery.productGalleryFile,
+          thumbnail: gallery.productGalleryFile,
+        }));
+        setGalleryItems(galleryItemsMapped); // Set gallery items state
+        console.log("Gallery Items:", galleryItemsMapped);
+      }
+    }, [productData]);
+    
     return (
       <div className={style.detailPage}>
         <Header />
@@ -78,26 +102,26 @@ const SameProductDetails = () => {
           </p>
           <div className={style.detailPage_main}>
             <div className={style.detailPage_main_head}>
-              <div className={style.detailPage_main_head_left}>
-                {product.productGalleries?.length > 0 ? (
-                  <ImageGallery
-                    items={galleryItems}
-                    showPlayButton={false}
-                    slideInterval={1000}
-                    slideOnThumbnailOver={true}
-                    showIndex={true}
-                  />
-                ) : (
-                  <img
-                    src={product.coverImage || "placeholder-image.jpg"}
-                    alt="Product"
-                    className={style.detailPage_main_head_left_mainImgBox_img}
-                  />
-                )}
-              </div>
+            <div className={style.detailPage_main_head_left}>
+            {galleryItems.length > 0 ? (
+              <ImageGallery
+                items={galleryItems}
+                showPlayButton={false}
+                slideInterval={1000}
+                slideOnThumbnailOver={true}
+                showIndex={true}
+              />
+            ) : (
+              <img
+                src={productData?.data?.coverImage || "placeholder-image.jpg"}
+                alt="Product"
+                className={style.detailPage_main_head_left_mainImgBox_img}
+              />
+            )}
+          </div>
               <div className={style.detailPage_main_head_right}>
-                {product.parameters &&
-                  product.parameters.map((param, index) => (
+                {productData?.data?.parameters &&
+                  productData?.data?.parameters.map((param, index) => (
                     <div
                       key={index}
                       className={style.detailPage_main_bottom_left_procebox}
@@ -107,17 +131,17 @@ const SameProductDetails = () => {
                       </span>
                     </div>
                   ))}
-                {product.user && (
+                {productData?.data?.user && (
                   <div className={style.detailPage_main_bottom_left_box}>
                     <p className={style.detailPage_main_bottom_left_box_title}>
-                      Sahibin Adı: {product.user.userFirstName}
+                      Sahibin Adı: {productData?.data?.user.userFirstName}
                     </p>
                     <p className={style.detailPage_main_bottom_left_box_title}>
-                      Sahibin Telefonu: {product.user.userPhone}
+                      Sahibin Telefonu: {productData?.data?.user.userPhone}
                     </p>
                   </div>
                 )}
-                <p>Elanın nömrəsi: {product.productId || "2221"}</p>
+                <p>Elanın nömrəsi: {productData?.data?.productId || "2221"}</p>
                 <button className={style.detailPage_main_head_right_btn}>
                   <MdDiamond /> Elanı VIP et
                 </button>
@@ -189,44 +213,46 @@ const SameProductDetails = () => {
                   <p className={style.detailPage_main_bottom_left_tite}>
                     Məhsul Kateqoriyası
                   </p>
-                  {product.categoryTitle || "Bilgi yoxdur"}
+                  {productData?.data?.categoryTitle || "Bilgi yoxdur"}
                 </div>
                 <div>
                   <p className={style.detailPage_main_bottom_left_tite}>
                     Məhsul Adı
                   </p>
-                  {product.productTitle || "Bilgi yoxdur"}
+                  {productData?.data?.productTitle || "Bilgi yoxdur"}
                 </div>
                 <div>
                   <p className={style.detailPage_main_bottom_left_tite}>
                     Məhsul Qiyməti
                   </p>
-                  {product.price ? `${product.price} AZN(₼)` : "Bilgi yoxdur"}
+                  {productData?.data?.price ? `${product.price} AZN(₼)` : "Bilgi yoxdur"}
                 </div>
                 <div>
                   <p className={style.detailPage_main_bottom_left_tite}>
                     Məhsul Həcmi
                   </p>
-                  {product.productWeight || "Bilgi yoxdur"}
+                  {productData?.data?.productWeight || "Bilgi yoxdur"}
                 </div>
                 <div>
                   <p className={style.detailPage_main_bottom_left_tite}>
                     Məhsul Baxış Sayısı
                   </p>
-                  {product.viewCount || "Bilgi yoxdur"}
+                  {productData?.data?.viewCount || "Bilgi yoxdur"}
                 </div>
                 <div>
                   <p className={style.detailPage_main_bottom_left_tite}>
                     Elan Tarixi
                   </p>
-                  {product.createDate || "Bilgi yoxdur"}
+                  {productData?.data?.createDate || "Bilgi yoxdur"}
                 </div>
               </div>
               <div className={style.detailPage_main_bottom_right}>
-                <p>{product.productDescription || "Bilgi yoxdur"}</p>
+                <p>{productData?.data?.productDescription || "Bilgi yoxdur"}</p>
               </div>
             </div>
           </div>
+          <div>
+    </div>
         </div>
         <Footer />
         <FooterResponsive />

@@ -43,7 +43,7 @@ const DetailPageSameProduct = ({ sameProduct }) => {
   };
 
   const handleProductClick = (product) => {
-    navigate(`/same-product-details`, { state: product }); 
+    navigate(`/product/:slug`, { state: product }); 
   };  
 
   return (

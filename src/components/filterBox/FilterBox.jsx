@@ -147,19 +147,6 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
                     />
                   </div>
                 )}
-                {param.parameterTypeId === 1 && (
-                  <div className={style.filterLabel}>
-                    <span>{param.parameterTitle}</span>
-                    <input
-                      id={`param-${param.parameterId}`}
-                      type="text"
-                      placeholder="Dəyər daxil edin"
-                      className={style.filterInput}
-                      value={formData[param.parameterId] || ""}
-                      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
-                    />
-                  </div>
-                )}
                 {param.parameterTypeId === 3 && param.parameterMasks?.length > 0 && (
                   <div className={style.filterLabel}>
                     <select
@@ -175,6 +162,19 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
                         </option>
                       ))}
                     </select>
+                  </div>
+                )}
+                                {param.parameterTypeId === 1 && (
+                  <div className={style.filterLabel}>
+                    <span>{param.parameterTitle}</span>
+                    <input
+                      id={`param-${param.parameterId}`}
+                      type="text"
+                      placeholder="Dəyər daxil edin"
+                      className={style.filterInput}
+                      value={formData[param.parameterId] || ""}
+                      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
+                    />
                   </div>
                 )}
               </div>
