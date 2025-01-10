@@ -158,7 +158,7 @@ const Navbar = () => {
             <div className={style.categoryBox} onClick={openModal}>
               {t("category")}
             </div>
-            <div className={style.inputGroup}>
+            <div className={style.inputGroup}> 
               <select
                 value={selectedCity}
                 onChange={handleCityChange}
