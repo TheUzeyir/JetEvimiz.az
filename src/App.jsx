@@ -29,7 +29,6 @@
     useQuery,
   } from '@tanstack/react-query'
 import SameProductDetails from './components/sameProductDetail/SameProductDetails'
-import CallButton from './page/s'
   const queryClient = new QueryClient()
 
   function App() {
@@ -39,7 +38,6 @@ import CallButton from './page/s'
           <Routes>
             <Route path='/' element={<Main />} />
             <Route path='/detailPageProfile' element={<DetailPageProfile />} />
-            <Route path='/s' element={<CallButton />} />
             <Route path='/product/:slug' element={<SameProductDetails />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/info' element={<Info />} />
