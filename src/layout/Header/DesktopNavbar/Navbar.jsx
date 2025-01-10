@@ -7,6 +7,7 @@ import style from "./navbar.module.css";
 import { FaBars } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import CategoryModal from "../Category-Modal/CategoryModal";
+import logoIMg from "../../../img/logo.png"
 
 const Navbar = () => {
   const [selectedCity, setSelectedCity] = useState("");
@@ -153,12 +154,7 @@ const Navbar = () => {
       <nav className={style.navbar}>
         <div className="container">
           <div className={style.navbar_container}>
-            <p
-              className={style.navbarBrand}
-              onClick={() => navigate("/")}
-            >
-              JetEvimiz
-            </p>
+            <img className={style.navbarBrand} onClick={() => navigate("/")} src={logoIMg} alt="" />
             <div className={style.categoryBox} onClick={openModal}>
               {t("category")}
             </div>
