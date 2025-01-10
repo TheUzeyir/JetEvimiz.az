@@ -16,18 +16,14 @@
         )
           .then((response) => response.json())
           .then((data) => {
-            const filteredParameters = data.data.filter(
-              (param) => param.parameterId === 10077 || param.parameterId === 10080
-            );
-            console.log("Filtr edilmiş parametrlər:", filteredParameters); // Yalnız 10077 və 10080 log edilir
-            setParameters(filteredParameters);
+            console.log("API Parametrlər Məlumatları:", data);
+            setParameters(data.data || []);
           })
           .catch((error) => {
             console.error("Error fetching parameters:", error);
           });
       }
     }, [categoryId]);
-    
 
     const handleInputChange = (parameterId, value) => {
       setFormData((prev) => ({
