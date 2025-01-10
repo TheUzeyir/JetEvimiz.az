@@ -8,6 +8,7 @@ import { FaBars } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import CategoryModal from "../Category-Modal/CategoryModal";
 import logoIMg from "../../../img/logo.png"
+import { BiSolidCategory } from "react-icons/bi";
 
 const Navbar = () => {
   const [selectedCity, setSelectedCity] = useState("");
@@ -156,7 +157,7 @@ const Navbar = () => {
           <div className={style.navbar_container}>
             <img className={style.navbarBrand} onClick={() => navigate("/")} src={logoIMg} alt="" />
             <div className={style.categoryBox} onClick={openModal}>
-              {t("category")}
+              <BiSolidCategory/>
             </div>
             <div className={style.inputGroup}> 
               <select
