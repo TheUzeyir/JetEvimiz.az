@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import Footer from "../../layout/footer/Footer";
-import Header from "../../layout/Header/Header";
 import { FaPhoneAlt, FaFlag, FaHeart } from "react-icons/fa";
 import { BsFillHeartFill } from "react-icons/bs";
 import { MdDiamond, MdOutlineKeyboardArrowLeft } from "react-icons/md";
@@ -13,6 +12,7 @@ import { addLikedProduct } from "../../redux/likedSlice";
 import { useTranslation } from "react-i18next";
 import "react-image-gallery/styles/scss/image-gallery.scss";
 import DetailPageSameProduct from "../../components/DetailPageSameProduct/DetailPageSameProduct";
+import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
@@ -123,7 +123,7 @@ const DetailPage = () => {
     
   return (
     <div className={style.detailPage}>
-      <Header />
+      <Navbar/>
       <div className="container">
         <p className={style.detailPage_goBack} onClick={() => navigate(-1)}>
           <MdOutlineKeyboardArrowLeft /> Geri Qayıt
@@ -241,13 +241,13 @@ const DetailPage = () => {
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Kateqoriyası
                 </p>
-                {product.categoryTitle || "Bilgi yoxdur"}
+                <span className={style.detailPage_main_bottom_left_tite_category}>{product.categoryTitle || "Bilgi yoxdur"}</span>
               </div>
               <div>
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Adı
                 </p>
-                {product.productTitle || "Bilgi yoxdur"}
+                <span className={style.detailPage_main_bottom_left_tite_productName}>{product.productTitle || "Bilgi yoxdur"}</span>
               </div>
               <div>
                 <p className={style.detailPage_main_bottom_left_tite}>
