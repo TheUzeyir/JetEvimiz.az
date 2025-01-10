@@ -129,7 +129,7 @@ cursor: pointer;
 @media screen and (max-width:768px) {
     .productCard_container{
         grid-template-columns: repeat(2,1fr);
-        margin-top: -90px;
+        margin-top: 0px;
     }
 }
 @media screen and (max-width:596px) {

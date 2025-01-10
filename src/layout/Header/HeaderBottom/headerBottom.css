@@ -28,9 +28,3 @@
     text-decoration: underline;
     cursor: pointer;
 }
-
-@media screen and (max-width:968px) {
-    .headerBottomContainer{
-        margin-top: 60px;
-    }
-}

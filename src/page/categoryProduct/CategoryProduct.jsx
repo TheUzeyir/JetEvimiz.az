@@ -21,10 +21,10 @@ const CategoryProduct = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [filterTitle, setFilterTitle] = useState("");
-  const [filterParams, setFilterParams] = useState({});
+  const [filterParams, setFilterParams] = useState({}); // This holds the filtered products
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
-  const [showFilteredResults, setShowFilteredResults] = useState(false); 
+  const [showFilteredResults, setShowFilteredResults] = useState(false); // State to toggle filtered results visibility
 
   const { products = { items: [] }, category } = location.state || {};
   const items = products.items || [];
@@ -98,12 +98,13 @@ const CategoryProduct = () => {
   }, []);
 
   const setFilteredProducts = (filteredItems) => {
+    // Update the filterParams with the filtered results
     setFilterParams(filteredItems);
-    setShowFilteredResults(true); 
+    setShowFilteredResults(true); // Show the filtered results after setting them
   };
 
   const handleFilterButtonClick = () => {
-    setShowFilteredResults(true); 
+    setShowFilteredResults(true); // Show filtered results when the filter button is clicked
   };
 
   return (
