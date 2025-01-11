@@ -141,6 +141,8 @@ const ProductCard = () => {
               </Link>
             </div>
           ))}
+    <button onClick={handleClick}>Zəng Et</button>
+
         </div>
         <div className={style.paginationContainer}>
           <Pagination
@@ -155,8 +157,6 @@ const ProductCard = () => {
           </p>
         </div>
       </div>
-    <button onClick={handleClick}>Zəng Et</button>
-
     </div>
   );
 };
