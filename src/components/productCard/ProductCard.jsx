@@ -87,10 +87,7 @@ const ProductCard = () => {
   const totalPages = Math.ceil(totalItems / pageSize);
 
   console.log("products", products);
-
-  const handleClick = () => {
-    window.location.href = 'tel:+994708632220'; // Telefon nömrəsini buraya daxil edin
-  };
+  
 
   return (
     <div className="container">
@@ -141,8 +138,6 @@ const ProductCard = () => {
               </Link>
             </div>
           ))}
-    <button onClick={handleClick}>Zəng Et</button>
-
         </div>
         <div className={style.paginationContainer}>
           <Pagination

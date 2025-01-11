@@ -13,6 +13,8 @@ import { useTranslation } from "react-i18next";
 import "react-image-gallery/styles/scss/image-gallery.scss";
 import DetailPageSameProduct from "../../components/DetailPageSameProduct/DetailPageSameProduct";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
+import { IoIosCall } from "react-icons/io";
+
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
@@ -120,6 +122,14 @@ const DetailPage = () => {
         getMatchingProducts();
       }
     }, [slug]);        
+
+    const handleClick = () => {
+      if (product.user && product.user.userPhone) {
+        window.location.href = `tel:${product.user.userPhone}`; // Dinamik telefon nömrəsi
+      } else {
+        alert("Telefon nömrəsi mövcud deyil.");
+      }
+    };
     
   return (
     <div className={style.detailPage}>
@@ -277,6 +287,7 @@ const DetailPage = () => {
             <div className={style.detailPage_main_bottom_right}>
               <p>{product.productDescription || "Bilgi yoxdur"}</p>
             </div>
+            <button className={style.callBtn} onClick={handleClick}><IoIosCall className={style.callBtn_icon}/>Zəng Et</button>
           </div>
         </div>
       </div>

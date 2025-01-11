@@ -271,6 +271,23 @@ font-size: 25px;
     right: 10px;
   }
   
+  .callBtn{
+    display: none;
+    position: fixed;
+    bottom: 10%;
+    z-index: 555;
+    background: #228B22;
+    border-radius: 6px;
+    color: white;
+    width: 96%;
+    height: 60px;
+    border: none;
+    cursor: pointer;
+  }
+
+  .callBtn_icon{
+    margin-right: 20px;
+  }
 
 @media screen and (max-width:968px) {
     .detailPage_main_head_left{
@@ -287,6 +304,10 @@ font-size: 25px;
     }
 }
 @media screen and (max-width:768px) { 
+
+    .callBtn{
+        display: block;
+    }
  
     .detailPage_main{
         margin-top: 50px;
@@ -325,6 +346,7 @@ font-size: 25px;
         flex-direction: column;
         gap: 0px;
         margin-top: 0px;
+        align-items: center;
     }
 
     .detailPage_main_bottom_right{
