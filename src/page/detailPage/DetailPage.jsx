@@ -247,41 +247,42 @@ const DetailPage = () => {
           </div>
           <div className={style.detailPage_main_bottom}>
             <div className={style.detailPage_main_bottom_left}>
-              <div>
+              <div className={style.detailPage_main_bottom_left_tite_box}>
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Kateqoriyası
                 </p>
                 <span className={style.detailPage_main_bottom_left_tite_category}>{product.categoryTitle || "Bilgi yoxdur"}</span>
               </div>
-              <div>
+              <div className={style.detailPage_main_bottom_left_tite_box}>
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Adı
                 </p>
                 <span className={style.detailPage_main_bottom_left_tite_productName}>{product.productTitle || "Bilgi yoxdur"}</span>
               </div>
-              <div>
+              <div className={style.detailPage_main_bottom_left_tite_box}>
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Qiyməti
                 </p>
                 {product.price ? `${product.price} AZN(₼)` : "Bilgi yoxdur"}
               </div>
-              <div>
+              <div className={style.detailPage_main_bottom_left_tite_box}>
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Həcmi
                 </p>
                 {product.productWeight || "Bilgi yoxdur"}
               </div>
-              <div>
+              <div className={style.detailPage_main_bottom_left_tite_box}>
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Baxış Sayısı
                 </p>
                 {product.viewCount || "Bilgi yoxdur"}
               </div>
-              <div>
-                <p className={style.detailPage_main_bottom_left_tite}>
+              <div className={style.detailPage_main_bottom_left_tite_box}>
+                <span className={style.detailPage_main_bottom_left_tite}>
                   Elan Tarixi
-                </p>
-                {product.createDate || "Bilgi yoxdur"}
+                </span>
+                
+                <div className={style.detailPage_main_bottom_left_tite_createTime}>{product.createDate || "Bilgi yoxdur"}</div>
               </div>
             </div>
             <div className={style.detailPage_main_bottom_right}>

@@ -157,14 +157,23 @@
     font-weight: bold;
 }
 
+.detailPage_main_bottom_left_tite_box{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+}
 
 .detailPage_main_bottom_left_tite{
-    width:30%;  
+    width:50%;  
     color: gray;
     margin-top: 10px;
     margin-bottom: 10px;
     display: inline-block;
     margin-right: 20px;
+}
+.detailPage_main_bottom_left_tite_createTime{
+   margin-right: -80px;
+   width: 100px;
 }
 
 .detailPage_main_bottom_left_tite_category,
@@ -274,7 +283,7 @@ font-size: 25px;
   .callBtn{
     display: none;
     position: fixed;
-    bottom: 10%;
+    bottom: 15%;
     z-index: 555;
     background: #228B22;
     border-radius: 6px;
