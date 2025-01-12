@@ -15,6 +15,9 @@ body{
 .container{
     width: 86%;
 }
+.container_item{
+    width: 70%;
+}
 
 .main{
   display: flex;
@@ -129,8 +132,13 @@ li{
 
   @media screen and (max-width:968px) {
     .container{
-      width: 100%;
+      width: 96%;
   }
+
+  .container_item{
+    width: 90%;
+}
+
 
   .image-gallery-image{
     height: 500px;
@@ -173,7 +181,6 @@ li{
     .slider-container{
       display: block;
       height: 130px;
-      /* margin-top: 100px; */
     }
 
     .slider-container {

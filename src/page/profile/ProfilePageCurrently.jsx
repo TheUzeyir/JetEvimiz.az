@@ -7,19 +7,17 @@ import { addLikedProduct } from "../../redux/likedSlice";
 import { useTranslation } from "react-i18next";
 import { FaHeart } from "react-icons/fa";
 import { BsFillHeartFill, BsShop } from "react-icons/bs";
-import { IoCalendarNumber } from "react-icons/io5";
 
 const ProfilePageCurrently = ({ onProductCountUpdate }) => {
   const navigate = useNavigate();
     const likedProducts = useSelector((state) => state.likedProducts.items);
     const dispatch = useDispatch();
   const { t } = useTranslation();
-  const [products, setProducts] = useState([]); // Initialize as an array
+  const [products, setProducts] = useState([]); 
 
-  // Function to fetch products from the API
   const fetchProducts = async (statusType) => {
     try {
-      const token = localStorage.getItem('authToken'); // Retrieve the token
+      const token = localStorage.getItem('authToken'); 
       const response = await fetch(
         `https://restartbaku-001-site3.htempurl.com/api/auth/get-user-products?LanguageCode=az&statusType=${statusType}`,
         {
@@ -75,7 +73,7 @@ const ProfilePageCurrently = ({ onProductCountUpdate }) => {
   <div className={style.productList}>
     {products.map((product) => ( 
       <div className={style.productCard} key={product.productId}> 
-        <Link to={`/product-details/${product.slug}`}>
+        <Link to={`/detailPageProfile/${product.slug}`}>
           <div className={style.productCard_imgBox}>
             <img
               src={product.coverImage}
@@ -97,7 +95,7 @@ const ProfilePageCurrently = ({ onProductCountUpdate }) => {
                 className={style.productCard_imgBox_heartIcon}
                 onClick={(e) => {
                   e.preventDefault();
-                  toggleLiked(product); // Use product instead of item
+                  toggleLiked(product); 
                 }}
               />
             )}
@@ -109,21 +107,19 @@ const ProfilePageCurrently = ({ onProductCountUpdate }) => {
             <span className={style.productCard_title_price}>
               {product.price} AZN
             </span>
-            <div className={style.productCard_title_dayBox}>
-              <IoCalendarNumber /> 1 Gün
-            </div>
           </div>
           <p className={style.productCard_subTitle}>{product.productTitle}</p>
-          <p className={style.productCard_text}>Şəhər: {product.city}</p>
+          <div className={style.productCard_bottom}>
+            <p className={style.productCard_text}>{product.city}</p>
+            <p className={style.productCard_bottom_text}>{product.createDate.split("T")[0] }</p>
+          </div>
         </Link>
       </div>
     ))}
-  </div>
-) : (
-  <p>{t('profileCardNotHaveProduct')}</p> 
-)}
-
-
+        </div>
+      ) : (
+        <p>{t('profileCardNotHaveProduct')}</p> 
+      )}
       <button className={style.profileCardBox_btn} onClick={() => navigate('/yeniElan')}>
         <CiCirclePlus />
         {t('profileCardAddNew')}

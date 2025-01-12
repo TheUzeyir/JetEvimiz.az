@@ -69,13 +69,8 @@ cursor: pointer;
 
 .productCard_title_pirce{
     font-weight: bold;
-}
+} 
 
-.productCard_title_dayBox{
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
 
 .productCard_subTitle,
 .productCard_text{ 
@@ -87,8 +82,19 @@ cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.productCard_bottom{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.productCard_bottom_text{
+    padding-right:10px;
+}
+
 .productCard_text{
-    color: #8DA1CA;
+    color: gray;
 }
 
 .pagination{

@@ -372,7 +372,7 @@
         display: none;
     }
     .advertsBox_btn_new{
-       font-size: 25px;
+       font-size: 15px;
        width: 80px;
     }
 
@@ -381,7 +381,12 @@
     }
     .searchInput_responsive{
         display: block;
+        margin-top: 30px;
     }
+    .searchInput_responsive::placeholder{
+        color: white;
+    }
+
     .bar_icon{
         position: absolute;
         left: 5%;
@@ -395,8 +400,7 @@
     .navbar_container{
         width: 100%;
         display: flex;
-        align-items: center !important;
-        justify-content: space-between !important;
+        padding:0 20px;
     }
     
 }

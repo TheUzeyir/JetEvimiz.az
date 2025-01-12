@@ -14,7 +14,7 @@ import "react-image-gallery/styles/scss/image-gallery.scss";
 import DetailPageSameProduct from "../../components/DetailPageSameProduct/DetailPageSameProduct";
 import Navbar from "../../layout/Header/DesktopNavbar/Navbar";
 import { IoIosCall } from "react-icons/io";
-
+import { IoIosPerson } from "react-icons/io";
 
 const DetailPage = () => {
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
@@ -25,6 +25,7 @@ const DetailPage = () => {
   const dispatch = useDispatch();
   const { i18n } = useTranslation();
   const [matchingProducts, setMatchingProducts] = useState([]);
+  const [isPhoneVisible, setIsPhoneVisible] = useState(false);
 
   const languageMapping = {
     az: "az",
@@ -84,6 +85,17 @@ const DetailPage = () => {
     setOpenComplaintBox((prev) => !prev);
   };
 
+  const togglePhoneVisibility = () => {
+    setIsPhoneVisible((prev) => !prev);
+  };
+
+  const formatPhoneNumber = (phone) => {
+    const phoneStr = String(phone);
+    const part1 = phoneStr.slice(0, 4); 
+    const part2 = phoneStr.slice(4, -2); 
+    const hiddenPart = "**";
+    return `${part1}${part2}-${hiddenPart}`;
+  };
   const galleryItems =
     product.productGalleries?.map((gallery) => ({
       original: gallery.productGalleryFile,
@@ -130,15 +142,23 @@ const DetailPage = () => {
         alert("Telefon nömrəsi mövcud deyil.");
       }
     };
+
+    console.log(product);
+    
     
   return (
     <div className={style.detailPage}>
       <Navbar/>
-      <div className="container">
+      <div className="container_item">
         <p className={style.detailPage_goBack} onClick={() => navigate(-1)}>
           <MdOutlineKeyboardArrowLeft /> Geri Qayıt
         </p>
         <div className={style.detailPage_main}>
+          <h2 className={style.detailPage_main_title}>
+              {product.productTitle},
+              {product.parameters && product.parameters.length > 0 && (<span className={style.detailPage_main_bottom_left_price}>{product.parameters[0].parameterValue} - AZN</span>)},
+              {product.parameters?.[1] && (<span className={style.detailPage_main_bottom_left_price}>{product.parameters[1].parameterValue}</span>)}
+            </h2>
           <div className={style.detailPage_main_head}>
             <div className={style.detailPage_main_head_left}>
               {product.productGalleries?.length > 0 ? (
@@ -158,25 +178,36 @@ const DetailPage = () => {
               )}
             </div>
             <div className={style.detailPage_main_head_right}>
-              {product.parameters &&
-                product.parameters.map((param, index) => (
-                  <div
-                    key={index}
-                    className={style.detailPage_main_bottom_left_procebox}
-                  >
-                    <span className={style.detailPage_main_bottom_left_price}>
-                      {param.parameterValue} - AZN(₼)
-                    </span>
-                  </div>
-                ))}
+                {product.parameters && product.parameters.length > 0 && (
+                  <span className={style.detailPage_main_bottom_head_title}>
+                    {product.parameters[0].parameterValue &&
+                      product.parameters[0].parameterValue
+                        .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}-AZN
+                  </span>                
+                )}
               {product.user && (
                 <div className={style.detailPage_main_bottom_left_box}>
-                  <p className={style.detailPage_main_bottom_left_box_title}>
-                    Sahibin Adı: {product.user.userFirstName}
+                  <p className={style.detailPage_main_bottom_left_box_title_humanCard}>
+                    <div className={style.detailPage_main_bottom_left_box_title_humanCard_head}>
+                      <span className={style.detailPage_main_bottom_left_box_title_humanCard_head_humanText}>{product.user.userFirstName}</span>
+                      {product.parameters[1] && (<span className={style.detailPage_main_bottom_left_box_title_humanCard_head_cityText}>{product.parameters[1].parameterValue}</span>)}
+                    </div>
+                    <IoIosPerson className={style.detailPage_main_bottom_left_box_title_humanCard_icon}/>
                   </p>
-                  <p className={style.detailPage_main_bottom_left_box_title}>
-                    Sahibin Telefonu: {product.user.userPhone}
-                  </p>
+                  <div
+                    className={style.detailPage_main_bottom_left_box_title_humanCard_nummBox}
+                    onClick={togglePhoneVisibility}
+                    style={{ cursor: "pointer" }} 
+                  >
+                    <p>Nömrəni göstər</p>
+                    <p className={style.detailPage_main_bottom_left_box_title}>
+                      <IoIosCall />
+                      {isPhoneVisible
+                        ? `${product.user.userPhone}` 
+                        : `${formatPhoneNumber(product.user.userPhone)}`} 
+                    </p>
+                  </div>
                 </div>
               )}
               <p>Elanın nömrəsi: {product.productId || "2221"}</p>
@@ -246,7 +277,22 @@ const DetailPage = () => {
             </div>
           </div>
           <div className={style.detailPage_main_bottom}>
+            <div className={style.detailPage_main_bottom_head}>
+              {product.parameters && product.parameters.length > 0 && (
+                  <div className={style.detailPage_main_bottom_headBox}>                
+                  <span className={style.detailPage_main_bottom_head_title}>{product.productTitle || "Bilgi yoxdur"}</span>,
+                  {product.parameters[0] && (<span className={style.detailPage_main_bottom_head_title}>{product.parameters[0].parameterValue}-AZN(₼)</span>)}
+                  {product.parameters[1] && (<span className={style.detailPage_main_bottom_head_title}>{product.parameters[1].parameterValue}</span>)}
+                  </div>
+                )}
+            </div>
             <div className={style.detailPage_main_bottom_left}>
+                {product.parameters && product.parameters.length > 0 && (
+                  <div className={style.detailPage_main_bottom_left_tite_box}>                
+                  <p className={style.detailPage_main_bottom_left_tite}>{product.parameters[1] && (<span className={style.detailPage_main_bottom_head_title}>{product.parameters[1].parameterTitle}</span>)}</p>
+                  {product.parameters[1] && (<span className={style.detailPage_main_bottom_head_title}>{product.parameters[1].parameterValue}</span>)}
+                  </div>
+                )}
               <div className={style.detailPage_main_bottom_left_tite_box}>
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Kateqoriyası
@@ -281,8 +327,7 @@ const DetailPage = () => {
                 <span className={style.detailPage_main_bottom_left_tite}>
                   Elan Tarixi
                 </span>
-                
-                <div className={style.detailPage_main_bottom_left_tite_createTime}>{product.createDate || "Bilgi yoxdur"}</div>
+                <div className={style.detailPage_main_bottom_left_tite_createTime}>{product.createDate ? product.createDate.split("T")[0] : "Bilgi yoxdur"}</div>
               </div>
             </div>
             <div className={style.detailPage_main_bottom_right}>
@@ -290,11 +335,99 @@ const DetailPage = () => {
             </div>
             <button className={style.callBtn} onClick={handleClick}><IoIosCall className={style.callBtn_icon}/>Zəng Et</button>
           </div>
+          <div className={style.detailPage_main_head_right_resBox}>
+              {product.user && (
+                <div className={style.detailPage_main_bottom_left_box}>
+                <p className={style.detailPage_main_bottom_left_box_title_humanCard}>
+                  <div className={style.detailPage_main_bottom_left_box_title_humanCard_head}>
+                    <span className={style.detailPage_main_bottom_left_box_title_humanCard_head_humanText}>{product.user.userFirstName}</span>
+                    {product.parameters[1] && (<span className={style.detailPage_main_bottom_left_box_title_humanCard_head_cityText}>{product.parameters[1].parameterValue}</span>)}
+                  </div>
+                  <IoIosPerson className={style.detailPage_main_bottom_left_box_title_humanCard_icon}/>
+                </p>
+                <div
+                  className={style.detailPage_main_bottom_left_box_title_humanCard_nummBox}
+                  onClick={togglePhoneVisibility}
+                  style={{ cursor: "pointer" }} 
+                >
+                  <p>Nömrəni göstər</p>
+                  <p className={style.detailPage_main_bottom_left_box_title}>
+                    <IoIosCall />
+                    {isPhoneVisible
+                      ? `+${product.user.userPhone}` 
+                      : `+${formatPhoneNumber(product.user.userPhone)}`} 
+                  </p>
+                </div>
+              </div>
+              )}
+              <p>Elanın nömrəsi: {product.productId || "2221"}</p>
+              <button className={style.detailPage_main_head_right_btn}>
+                <MdDiamond /> Elanı VIP et
+              </button>
+              <p className={style.detailPage_main_head_right_otherSale}>
+                Satıcının bütün elanlarını gör
+              </p>
+              <div className={style.detailPage_main_bottom_right_card}>
+                {likedProducts.some(
+                  (likedProduct) => likedProduct.productId === product.productId
+                ) ? (
+                  <p
+                    className={style.detailPage_main_bottom_right_card_title}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleLiked(product);
+                    }}
+                  >
+                    <BsFillHeartFill
+                      className={style.detailPage_main_bottom_right_card_title_icon}
+                    />{" "}
+                    Bəyənilənlərdən sil
+                  </p>
+                ) : (
+                  <p
+                    className={style.detailPage_main_bottom_right_card_title}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      toggleLiked(product);
+                    }}
+                  >
+                    <FaHeart
+                      className={style.detailPage_main_bottom_right_card_title_icon}
+                    />{" "}
+                    Bəyənilənlərə əlavə et
+                  </p>
+                )}
+                <p
+                  className={style.detailPage_main_bottom_right_card_subtitle}
+                  onClick={toggleComplaintBox}
+                >
+                  <FaFlag
+                    className={style.detailPage_main_bottom_right_card_subtitle_icon}
+                  />{" "}
+                  Şikayət et
+                </p>
+                {openComplaintBox && (
+                  <div
+                    className={style.detailPage_main_bottom_right_card_complaintBox_container}
+                  >
+                    <div
+                      className={style.detailPage_main_bottom_right_card_complaintBox}
+                    >
+                      <textarea placeholder="Şikayət mətni" />
+                      <button
+                        className={style.detailPage_main_bottom_right_card_complaintBox_btn}
+                      >
+                        Göndər
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
         </div>
       </div>
       <DetailPageSameProduct sameProduct={matchingProducts || []} />
       <Footer />
-      <FooterResponsive />
     </div>
   );
 };

@@ -95,7 +95,10 @@ const DetailPageSameProduct = ({ sameProduct }) => {
                 </div>
               </div>
               <p className={style.productCard_subTitle}>{product.productTitle}</p>
-              <p className={style.productCard_text}>Şəhər: {product.city}</p>
+              <div className={style.productCard_bottom}>
+                  <p className={style.productCard_text}>{product.city}</p>
+                  <p className={style.productCard_bottom_text}>{product.createDate.split("T")[0] }</p>
+                </div>
             </div>
           ))}
         </div>

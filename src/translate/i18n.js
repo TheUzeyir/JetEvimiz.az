@@ -214,7 +214,7 @@ i18n
             addProductPageOptionLoading:"Parametrlər yüklənir...",
             addProductPageChooseText:"Seçin",
             addProductPageAddImgText:"Şəkil əlavə et(sadəcə jpg formatlarında şəkil yükləyə bilərsiniz)",
-            addProductPageProductDescribe:"Məhsulun təsviri",
+            addProductPageProductDescribe:"Məzmun",
             addProductPageProductAddText:"Əlavə et",
             //newProductAddFinish
 

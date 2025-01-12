@@ -70,12 +70,6 @@
   font-weight: bold;
 }
 
-.productCard_title_dayBox {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-}
-
 .productCard_subTitle,
 .productCard_text {
   padding: 0 10px;
@@ -88,8 +82,18 @@
   text-overflow: ellipsis;
 }
 
+.productCard_bottom {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+}
+
+.productCard_bottom_text {
+  padding-right: 10px;
+}
+
 .productCard_text {
-  color: #8DA1CA;
+  color: gray;
 }
 
 .pagination {

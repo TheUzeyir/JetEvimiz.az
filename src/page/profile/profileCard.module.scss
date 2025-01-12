@@ -162,8 +162,8 @@ cursor: pointer;
 
 .productCard_imgBox_title{
     position: absolute;
-    top: 65%;
-    left: 5%;
+    bottom: 6%;
+    left: 2%;
     color: white;
     font-weight: bold;
     display: flex;
@@ -173,7 +173,6 @@ cursor: pointer;
     padding: 5px 10px;
     border-radius: 6px;
 }
-
 
 .productCard_title{
     padding: 10px;
@@ -190,7 +189,7 @@ cursor: pointer;
     align-items: center;
     gap: 5px;
 }
-
+ 
 .productCard_subTitle,
 .productCard_text{ 
     padding:0 10px ;
@@ -201,6 +200,17 @@ cursor: pointer;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+.productCard_bottom{
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.productCard_bottom_text{
+    padding-right:10px;
+}
+
 .productCard_text{
     color: #8DA1CA;
 }

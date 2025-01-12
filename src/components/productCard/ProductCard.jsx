@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import style from "./productCard.module.css";
 import { FaHeart } from "react-icons/fa";
 import { BsFillHeartFill, BsShop } from "react-icons/bs";
-import { IoCalendarNumber } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addLikedProduct } from "../../redux/likedSlice";
@@ -59,25 +58,27 @@ const ProductCard = () => {
   });
 
   const toggleLiked = (productItem) => {
-    const savedUserName = localStorage.getItem("userName");
-    if (!savedUserName) {
+    const authToken = localStorage.getItem("authToken");
+  
+    if (!authToken || isTokenExpired(authToken)) {
       navigate("/login");
       return;
     }
-
+  
     const isLiked = likedProducts.some(
       (likedProduct) => likedProduct.productId === productItem.productId
     );
-
+  
     const updatedLikedProducts = isLiked
       ? likedProducts.filter(
           (likedProduct) => likedProduct.productId !== productItem.productId
         )
       : [...likedProducts, productItem];
-
+  
     dispatch(addLikedProduct(productItem));
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
+  
 
   if (isLoading) return <p>Yüklənir...</p>;
   if (isError) return <p>Xəta: {error.message}</p>;
@@ -129,12 +130,12 @@ const ProductCard = () => {
                   <span className={style.productCard_title_price}>
                     {item.price} AZN
                   </span>
-                  <div className={style.productCard_title_dayBox}>
-                    <IoCalendarNumber /> {calculateDays(item.createDate)} Gün
-                  </div>
                 </div>
                 <p className={style.productCard_subTitle}>{item.productTitle}</p>
-                <p className={style.productCard_text}>Şəhər: {item.city}</p>
+                <div className={style.productCard_bottom}>
+                  <p className={style.productCard_text}>{item.city}</p>
+                  <p className={style.productCard_bottom_text}>{item.createDate.split("T")[0] }</p>
+                </div>
               </Link>
             </div>
           ))}

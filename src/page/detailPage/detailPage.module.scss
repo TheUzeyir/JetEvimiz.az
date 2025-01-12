@@ -1,3 +1,5 @@
+
+
 .detailPage{
     display: flex;
     flex-direction: column;
@@ -31,7 +33,6 @@
     gap: 20px;
     width: 60%;
     height: 400px;
-    margin-top: -40px;
 }
 
 
@@ -71,7 +72,32 @@
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
     padding: 20px;
     border-radius: 4px;
-    margin-top: -40px;
+}
+
+.detailPage_main_head_right_head{
+    display: flex;
+    justify-content: space-between;
+}
+
+.detailPage_main_head_right_head_btn_edit,
+.detailPage_main_head_right_head_btn_delete{
+    padding: 15px 25px;
+    border-radius: 6px;
+    background: white;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.detailPage_main_head_right_head_btn_edit{
+    border: 1px solid #228B22;
+    color: #228B22;
+}
+.detailPage_main_head_right_head_btn_delete{
+  border: 1px solid red;
+  color: red;
+}
+
+.detailPage_main_head_right_resBox{
+    display: none;
 }
 
 .detailPage_main_head_right_humanName{
@@ -124,6 +150,7 @@
     font-weight: bold;
     cursor: pointer;
     color: #228B22;
+    margin-bottom: 40px;
 }
 .detailPage_main_head_right_otherSale:hover{
     color: red;
@@ -132,13 +159,28 @@
 .detailPage_main_bottom{
     display: flex;
     flex-direction: column;
-    margin-top: 120px; 
     gap: 20px;
+}
+
+.detailPage_main_bottom_head{
+    display: none; 
+    font-weight: bold; 
+}
+
+.detailPage_main_bottom_head_title{
+    font-weight: bold;
+    font-size: 25px;
+}
+
+.detailPage_main_bottom_headBox{
+    margin-top: -70px;
+    margin-left: -100px;
 }
 
 .detailPage_main_bottom_right{
     width: 60%;
     min-height: 200px;
+    
     padding: 10px 15px;
     border-radius: 4px;
     border-top: 1px solid gray;
@@ -203,9 +245,59 @@ font-size: 25px;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
 
+.detailPage_main_bottom_left_box_title_humanCard{
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 98%;
+    background: white;
+    padding:10px 20px;
+    border-radius: 6px;
+}
+
+.detailPage_main_bottom_left_box_title_humanCard_head_humanText{
+    font-size: 18px;
+    font-weight: bold;  
+}
+
+.detailPage_main_bottom_left_box_title_humanCard_head_cityText{
+    color:  gray;
+}
+
+.detailPage_main_bottom_left_box_title_humanCard_nummBox{
+    background: #3DB460;
+    cursor: pointer;
+    color: white;
+    width: 98%;
+    border-radius: 6px;
+    text-align: center;
+    margin-top: 20px;
+    padding: 2px 0 10px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .detailPage_main_bottom_left_box_title{
     margin-bottom: 0px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 18px;
 }
+
+
+.detailPage_main_bottom_left_box_title_humanCard_icon{
+    font-size: 50px;
+}
+
+.detailPage_main_bottom_left_box_title_humanCard_head{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 
 .detailPage_main_bottom_left_box{
     display: flex;
@@ -283,7 +375,7 @@ font-size: 25px;
   .callBtn{
     display: none;
     position: fixed;
-    bottom: 15%;
+    bottom: 2%;
     z-index: 555;
     background: #228B22;
     border-radius: 6px;
@@ -313,6 +405,9 @@ font-size: 25px;
     }
 }
 @media screen and (max-width:768px) { 
+    .detailPage_main_title{
+       display: none;
+    }
 
     .callBtn{
         display: block;
@@ -322,12 +417,53 @@ font-size: 25px;
         margin-top: 50px;
     }
 
+    .detailPage_main_head_right{
+        display: none;
+    }
+
+    .detailPage_main_head_right_head{
+        margin-top: 20px;
+    }
+    
+    .detailPage_main_head_right_resBox{
+        display: block;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        box-shadow: none;
+        border-top: 1px solid gray;
+        border-bottom: 1px solid gray;
+        margin-top: -80px;
+    padding: 20px;
+
+    }
+
+    .detailPage_main_bottom_head{
+        display: block;
+    }
+
+
+.detailPage_main_bottom_left_box{
+    margin: 0px;
+}
+
 .detailPage_goBack{
     margin-top: 140px;
 }
+
+.detailPage_main_bottom_left_box_title_humanCard,
+.detailPage_main_bottom_left_box_title_humanCard_nummBox,
+.detailPage_main_head_right_resBox{
+    width: 100%;
+}
+.detailPage_main_head_right_resBox{
+    padding: 0;
+}
+
     .detailPage_main_head_left{
         flex-direction: row;
         width: 100%;
+        margin-top: -40px;
 
     }
     .detailPage_main_head_left_slideImgBox{
@@ -339,16 +475,7 @@ font-size: 25px;
     .detailPage_main_head{
         flex-direction: column;
         gap: 20px;
-    }
-    
-    .detailPage_main_head_right{
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        box-shadow: none;
-        border-top: 1px solid gray;
-        border-bottom: 1px solid gray;
-        margin-top: -80px;
+        margin-top: 50px;
     }
 
     .detailPage_main_bottom{
@@ -360,6 +487,8 @@ font-size: 25px;
 
     .detailPage_main_bottom_right{
         width: 100%;
+        height: max-content;
+        margin-bottom: 50px;
         margin-top: 0px;
         border-top: 1px solid gray;
     }
@@ -373,7 +502,7 @@ font-size: 25px;
 
     .detailPage_main_bottom_left{
         width:100%;
-        margin-top: 0;
+        margin-top: -40px;
     }
     
 }

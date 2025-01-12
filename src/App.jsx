@@ -37,7 +37,7 @@ import SameProductDetails from './components/sameProductDetail/SameProductDetail
         <Router>
           <Routes>
             <Route path='/' element={<Main />} />
-            <Route path='/detailPageProfile' element={<DetailPageProfile />} />
+            <Route path='/detailPageProfile/:slug' element={<DetailPageProfile />} />
             <Route path='/product/:slug' element={<SameProductDetails />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/info' element={<Info />} />
