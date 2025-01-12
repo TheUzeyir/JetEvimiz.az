@@ -132,9 +132,13 @@
   .productCard_container {
     grid-template-columns: repeat(2, 1fr);
   }
-}
-@media screen and (max-width: 596px) {
   .productCard_imgBox_img {
-    height: 150px;
+    height: 130px;
+  }
+  .productCard_title {
+    padding: 5px 10px 0 10px;
+  }
+  .productCard_bottom {
+    margin-top: -15px;
   }
 }/*# sourceMappingURL=productCard.module.css.map */

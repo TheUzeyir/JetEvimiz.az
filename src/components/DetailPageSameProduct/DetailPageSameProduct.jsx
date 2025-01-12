@@ -4,15 +4,9 @@ import style from "./detailPageSameProduct.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { FaHeart } from "react-icons/fa";
 import { BsFillHeartFill, BsShop } from "react-icons/bs";
-import { IoCalendarNumber } from "react-icons/io5";
 import { addLikedProduct } from "../../redux/likedSlice";
 
 const DetailPageSameProduct = ({ sameProduct }) => {
-  const calculateDays = (createDate) => {
-    const createdDate = new Date(createDate);
-    const currentDate = new Date();
-    return Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24));
-  };
 
   const likedProducts = useSelector((state) => state.likedProducts.items);
   const navigate = useNavigate();
@@ -90,9 +84,6 @@ const DetailPageSameProduct = ({ sameProduct }) => {
                 <span className={style.productCard_title_price}>
                   {product.price} AZN
                 </span>
-                <div className={style.productCard_title_dayBox}>
-                  <IoCalendarNumber /> {calculateDays(product.createDate)} Gün
-                </div>
               </div>
               <p className={style.productCard_subTitle}>{product.productTitle}</p>
               <div className={style.productCard_bottom}>

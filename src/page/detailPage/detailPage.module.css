@@ -175,8 +175,7 @@
 }
 
 .detailPage_main_bottom_headBox {
-  margin-top: -70px;
-  margin-left: -100px;
+  margin-top: -50px;
 }
 
 .detailPage_main_bottom_right {
@@ -487,6 +486,5 @@
   }
   .detailPage_main_bottom_left {
     width: 100%;
-    margin-top: -40px;
   }
 }/*# sourceMappingURL=detailPage.module.css.map */

@@ -20,12 +20,6 @@ const fetchProducts = async ({  page, pageSize }) => {
   return response.json();
 };
 
-const calculateDays = (createDate) => {
-  const createdDate = new Date(createDate);
-  const currentDate = new Date();
-  return Math.floor((currentDate - createdDate) / (1000 * 60 * 60 * 24));
-};
-
 const ProductCard = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();

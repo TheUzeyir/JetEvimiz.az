@@ -152,16 +152,14 @@
   .productCard_sameProduct {
     grid-template-columns: repeat(2, 1fr);
   }
-  .productCard_title_dayBox {
-    display: none;
-  }
   .productCard_sameProduct_container {
     margin-top: -120px;
     margin-bottom: 100px;
   }
-}
-@media screen and (max-width: 596px) {
   .productCard_imgBox_img {
-    height: 150px;
+    height: 130px;
+  }
+  .productCard_title {
+    padding: 5px 10px 0 10px;
   }
 }/*# sourceMappingURL=detailPageSameProduct.module.css.map */
