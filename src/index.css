@@ -84,7 +84,7 @@ li{
   .swiper-button-next {
     color: #2A2036;
   }
-    .swiper-button-prev {
+    .swiper-button-prev { 
     color: #2A2036;
   }
 
@@ -123,7 +123,7 @@ li{
     width: 90%; 
     margin-left:20px ;
     overflow: hidden;
-    margin-top: 20px;
+    margin-bottom: -30px;
   }
 
 .slick-slide {

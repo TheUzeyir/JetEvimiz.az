@@ -11,7 +11,7 @@ import axios from "axios";
 import CategorySection from "./CategorySection";
 import ProductSection from "./ProductSection";
 import Pagination from "./Pagination";
-
+ 
 const SearchResult = () => {
   const location = useLocation();
   const dispatch = useDispatch();

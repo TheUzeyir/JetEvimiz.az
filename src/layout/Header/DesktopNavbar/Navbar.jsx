@@ -7,7 +7,7 @@ import style from "./navbar.module.css";
 import { FaBars } from "react-icons/fa";
 import { useTranslation } from "react-i18next";
 import CategoryModal from "../Category-Modal/CategoryModal";
-import logoIMg from "../../../img/logo.png"
+import logoIMg from "../../../img/logo.png";
 import { BiSolidCategory } from "react-icons/bi";
 
 const Navbar = () => {
@@ -82,7 +82,9 @@ const Navbar = () => {
       );
 
       const filteredCategories = categories.flatMap((category) => {
-        const categoryMatch = category.categoryTitle?.toLowerCase().includes(input.toLowerCase());
+        const categoryMatch = category.categoryTitle
+          ?.toLowerCase()
+          .includes(input.toLowerCase());
         const childMatches = category.childCategories?.filter((child) =>
           child.categoryTitle?.toLowerCase().includes(input.toLowerCase())
         );
@@ -91,11 +93,12 @@ const Navbar = () => {
           ? [{ ...category, type: "category", hasChildren: !!childMatches?.length }]
           : [];
 
-        const matchedChildren = childMatches?.map((child) => ({
-          ...child,
-          type: "category",
-          parentCategory: category.categoryTitle,
-        })) || [];
+        const matchedChildren =
+          childMatches?.map((child) => ({
+            ...child,
+            type: "category",
+            parentCategory: category.categoryTitle,
+          })) || [];
 
         return [...matchedItems, ...matchedChildren];
       });
@@ -129,7 +132,7 @@ const Navbar = () => {
               category: item,
               products,
             },
-          }); 
+          });
         } else {
           setError("API'den beklenmeyen bir yanıt alındı.");
         }
@@ -155,17 +158,22 @@ const Navbar = () => {
       <nav className={style.navbar}>
         <div className="container">
           <div className={style.navbar_container}>
-            <img className={style.navbarBrand} onClick={() => navigate("/")} src={logoIMg} alt="" />
+            <img
+              className={style.navbarBrand}
+              onClick={() => navigate("/")}
+              src={logoIMg}
+              alt=""
+            />
             <div className={style.categoryBox} onClick={openModal}>
-              <BiSolidCategory/>
+              <BiSolidCategory />
             </div>
-            <div className={style.inputGroup}> 
+            <div className={style.inputGroup}>
               <select
                 value={selectedCity}
                 onChange={handleCityChange}
                 className={style.navBar_selectBox}
               >
-                <option value="" >--{t("chooseCity")}--</option>
+                <option value="">--{t("chooseCity")}--</option>
                 <optgroup label="Azərbaycan">
                   {groupedCities.azerbaijan.map((city) => (
                     <option key={city.cityId} value={city.title}>
@@ -179,8 +187,8 @@ const Navbar = () => {
                       {city.title}
                     </option>
                   ))}
-                </optgroup >
-              </select> 
+                </optgroup>
+              </select>
               <input
                 placeholder={t("searchInput")}
                 type="text"
@@ -212,35 +220,43 @@ const Navbar = () => {
           />
         </div>
       </nav>
-      {isModalOpen && <CategoryModal closeModal={closeModal} />}
-      <div className={`container ${isFetching ? "blur-background" : ""}`}>
-        {error && <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>}
-        {searchData.length > 0 ? (
-          <div className={style.nawBarSearchResultCategory}>
-            {searchData.map((item, index) => (
-              <div key={index}>
-                {item.type === "category" ? (
-                  <p
-                    onClick={() => handleItemClick(item)}
-                    className={style.nawBarSearchResultText_category}
-                  >
-                    {item.parentCategory
-                      ? `${item.parentCategory} - ${item.categoryTitle}`
-                      : item.categoryTitle}
-                  </p>
-                ) : (
-                  <p
-                    onClick={() => handleItemClick(item)}
-                    className={style.nawBarSearchResultText}
-                  >
-                    {item.productTitle}
-                  </p>
-                )}
-              </div>
-            ))}
-          </div>
-        ) : null}
+      <div
+        className={`${style.nawBarSearchResultCategory_container} ${
+          searchData.length > 0 ? style.shadowEffect : ""
+        }`}
+      >
+        <div className={`container ${isFetching ? style.backgroundshadow : ""}`}>
+          {error && <p style={{ color: "red", fontWeight: "bold" }}>{error}</p>}
+          {searchData.length > 0 ? (
+            <div className={style.nawBarSearchResultCategory}>
+              {searchData.map((item, index) => (
+                <div key={index}>
+                  {item.type === "category" ? (
+                    <p
+                      onClick={() => handleItemClick(item)}
+                      className={style.nawBarSearchResultText_category}
+                    >
+                      {item.parentCategory
+                        ? `${item.parentCategory} - ${item.categoryTitle}`
+                        : item.categoryTitle}
+                    </p>
+                  ) : (
+                    <p
+                      onClick={() => handleItemClick(item)}
+                      className={style.nawBarSearchResultText}
+                    >
+                      {item.productTitle}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            null
+          )}
+        </div>
       </div>
+      {isModalOpen && <CategoryModal closeModal={closeModal} />}
     </>
   );
 };

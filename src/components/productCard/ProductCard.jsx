@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import style from "./productCard.module.css";
 import { FaHeart } from "react-icons/fa";
 import { BsFillHeartFill, BsShop } from "react-icons/bs";
@@ -8,6 +8,7 @@ import { addLikedProduct } from "../../redux/likedSlice";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import { Pagination } from "antd";
+import { useParams } from "react-router-dom";
 
 const fetchProducts = async ({  page, pageSize }) => {
   const response = await fetch(
@@ -25,7 +26,7 @@ const ProductCard = () => {
   const navigate = useNavigate();
   const likedProducts = useSelector((state) => state.likedProducts.items);
   const { i18n } = useTranslation();
-
+  const { slug } = useParams();
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
   const getLanguageCode = () => {
@@ -39,20 +40,34 @@ const ProductCard = () => {
     }
   };
   
+  useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, []);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["products", getLanguageCode(), currentPage],
     queryFn: () =>
       fetchProducts({
         languageCode: getLanguageCode(),
-        page: currentPage - 1, // Backend is zero-based
+        page: currentPage - 1,
         pageSize,
       }),
     keepPreviousData: true,
   });
-
+  
   const toggleLiked = (productItem) => {
     const authToken = localStorage.getItem("authToken");
+  
+    const isTokenExpired = (token) => {
+      try {
+        const payload = JSON.parse(atob(token.split(".")[1])); 
+        const currentTime = Math.floor(Date.now() / 1000); 
+        return payload.exp < currentTime; 
+      } catch (error) {
+        console.error("Token parsing error:", error);
+        return true; 
+      }
+    };
   
     if (!authToken || isTokenExpired(authToken)) {
       navigate("/login");
@@ -73,7 +88,6 @@ const ProductCard = () => {
     localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
   };
   
-
   if (isLoading) return <p>Yüklənir...</p>;
   if (isError) return <p>Xəta: {error.message}</p>;
 

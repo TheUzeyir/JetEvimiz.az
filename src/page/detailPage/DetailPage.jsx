@@ -36,6 +36,10 @@ const DetailPage = () => {
   const getLanguageCode = () => languageMapping[i18n.language] || "tr";
 
   useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, []);
+
+  useEffect(() => {
     const getProduct = async () => {
       try {
         const languageCode = getLanguageCode();
@@ -121,7 +125,7 @@ const DetailPage = () => {
               return remoteSlugPrefix === slug.split("-")[0];
             });
   
-            setMatchingProducts(filteredProducts); // Set the state
+            setMatchingProducts(filteredProducts);
           } else {
             console.error("API response is not in the expected format.");
           }
@@ -137,7 +141,7 @@ const DetailPage = () => {
 
     const handleClick = () => {
       if (product.user && product.user.userPhone) {
-        window.location.href = `tel:${product.user.userPhone}`; // Dinamik telefon nömrəsi
+        window.location.href = `tel:${product.user.userPhone}`; 
       } else {
         alert("Telefon nömrəsi mövcud deyil.");
       }
@@ -183,7 +187,7 @@ const DetailPage = () => {
                     {product.parameters[0].parameterValue &&
                       product.parameters[0].parameterValue
                         .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, " ")}-AZN
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} AZN
                   </span>                
                 )}
               {product.user && (
@@ -281,7 +285,7 @@ const DetailPage = () => {
               {product.parameters && product.parameters.length > 0 && (
                   <div className={style.detailPage_main_bottom_headBox}>                
                   <span className={style.detailPage_main_bottom_head_title}>{product.productTitle || "Bilgi yoxdur"}</span>,
-                  {product.parameters[0] && (<span className={style.detailPage_main_bottom_head_title}>{product.parameters[0].parameterValue}-AZN(₼)</span>)}
+                  {product.parameters[0] && (<span className={style.detailPage_main_bottom_head_title}>{product.parameters[0].parameterValue}-AZN</span>)}
                   {product.parameters[1] && (<span className={style.detailPage_main_bottom_head_title}>{product.parameters[1].parameterValue}</span>)}
                   </div>
                 )}
@@ -309,8 +313,8 @@ const DetailPage = () => {
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Qiyməti
                 </p>
-                {product.price ? `${product.price} AZN(₼)` : "Bilgi yoxdur"}
-              </div>
+                {product.price ? `${product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} AZN` : "Fiyat mevcut değil"}
+                </div>
               <div className={style.detailPage_main_bottom_left_tite_box}>
                 <p className={style.detailPage_main_bottom_left_tite}>
                   Məhsul Həcmi

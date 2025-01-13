@@ -98,13 +98,12 @@ const CategoryProduct = () => {
   }, []);
 
   const setFilteredProducts = (filteredItems) => {
-    // Update the filterParams with the filtered results
     setFilterParams(filteredItems);
-    setShowFilteredResults(true); // Show the filtered results after setting them
+    setShowFilteredResults(true); 
   };
 
   const handleFilterButtonClick = () => {
-    setShowFilteredResults(true); // Show filtered results when the filter button is clicked
+    setShowFilteredResults(true); 
   };
 
   return (

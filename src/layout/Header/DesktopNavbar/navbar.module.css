@@ -234,16 +234,21 @@
   border-bottom-left-radius: 6px;
 }
 
+.nawBarSearchResultCategory_container {
+  position: relative;
+  width: 100%;
+}
+
 .nawBarSearchResultCategory {
   position: absolute;
-  top: 24%;
+  top: -60px;
   z-index: 5;
   background: white;
   width: 50%;
-  left: 30%;
+  left: 32%;
   padding: 10px;
   border-radius: 4px;
-  height: 400px;
+  height: 300px !important;
   overflow-y: scroll;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
@@ -290,8 +295,8 @@
   }
   .navbarBrand {
     width: 100px;
-    height: 80px;
-    margin-top: 0px;
+    height: 60px;
+    margin-top: 10px;
   }
   .categoryBox,
   .navBar_selectBox {
@@ -308,6 +313,7 @@
     height: 40px;
     width: 100%;
     background: transparent;
+    border: 1px solid white;
   }
   .searchInput::-moz-placeholder {
     color: white;
@@ -325,6 +331,7 @@
     width: 100%;
     margin-top: 20px;
     padding: 10px 20px;
+    border-radius: 8px;
   }
   .searchBtn {
     position: absolute;
@@ -346,8 +353,10 @@
     display: block;
   }
   .nawBarSearchResultCategory {
+    height: 200px !important;
     width: 90%;
-    top: 12%;
+    top: 10px;
+    z-index: 5555;
     left: 5%;
     height: 300px;
   }
@@ -356,6 +365,9 @@
   }
 }
 @media screen and (max-width: 768px) {
+  .nawBarSearchResultCategory {
+    top: 40px;
+  }
   .advertsBox_btn_new_text {
     display: none;
   }

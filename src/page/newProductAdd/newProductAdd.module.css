@@ -216,6 +216,14 @@
   align-items: center;
 }
 
+.parentCategory {
+  font-weight: bold;
+}
+
+.childCategoryList {
+  font-weight: normal;
+}
+
 .parentCategoryHeader {
   display: flex;
   justify-content: space-between;
