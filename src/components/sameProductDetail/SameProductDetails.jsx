@@ -148,7 +148,6 @@ const SameProductDetails = () => {
                 <p className={style.detailPage_main_head_right_otherSale}>
                   Satıcının bütün elanlarını gör
                 </p>
-                <p>Günlük icarəyə verilir.</p>
                 <div className={style.detailPage_main_bottom_right_card}>
                   {likedProducts.some(
                     (likedProduct) => likedProduct.productId === product.productId
