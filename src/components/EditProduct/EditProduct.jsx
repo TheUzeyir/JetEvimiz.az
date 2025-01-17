@@ -85,7 +85,7 @@ const EditProduct = () => {
       const response = await fetch(
         "https://restartbaku-001-site3.htempurl.com/api/Product/product-update",
         {
-          method: "PUT",
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -93,25 +93,22 @@ const EditProduct = () => {
           body: JSON.stringify(payload),
         }
       );
-
-      if (response.status === 401) {
-        alert("Oturumunuzun süresi doldu, lütfen tekrar giriş yapın.");
-        navigate("/login");
+      
+    
+      if (!response.ok) {
+        const errorMessage = await response.text(); // Try parsing as plain text
+        alert(`Failed to update the product: ${errorMessage}`);
         return;
       }
-
-      const result = await response.json();
-
-      if (response.ok) {
-        alert("Product updated successfully!");
-        navigate("/product-details");
-      } else {
-        alert(result.message || "Failed to update the product.");
-      }
+    
+      const result = await response.json(); // Parse as JSON if response is valid
+      alert("Product updated successfully!");
+      navigate("/product-details");
     } catch (error) {
       console.error("Error updating product:", error);
       alert("An error occurred while updating the product.");
     }
+    
   };
 
   const isFormValid =
