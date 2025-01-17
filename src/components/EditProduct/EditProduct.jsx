@@ -1,5 +1,11 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import Navbar from "../../layout/Header/DesktopNavbar/Navbar"
+import Footer from "../../layout/footer/Footer"
+import FooterResponsive from "../../layout/footer_responsive/FooterResponsive"
+import Contack from "../../page/about/Contack";
+import ProductAddRuleCard from "../../page/newProductAdd/productAdd_ruleCard/ProductAddRuleCard";
+import style from "./editProduct.module.css"
 
 const EditProduct = () => {
   const location = useLocation();
@@ -87,14 +93,12 @@ const EditProduct = () => {
         price: updatedProduct.parameters.price.toString(),
       },
     };    
-
-    console.log("Payload:", JSON.stringify(payload, null, 2));
   
     try {
       const response = await fetch(
         "https://restartbaku-001-site3.htempurl.com/api/Product/product-update",
         {
-          method: "POST", // Changed from PUT to POST
+          method: "POST", 
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -122,59 +126,82 @@ const EditProduct = () => {
     }
   };
   
-  console.log("Updated Product Title:", updatedProduct.productTitle);
-
-
   const isFormValid =
     updatedProduct.parameters.price &&
     updatedProduct.description &&
     updatedProduct.productTitle;
 
   return (
-    <div>
-      <p>
-        Başlıq:
-        <input
-          type="text"
-          name="productTitle"
-          value={updatedProduct.productTitle}
-          onChange={handleInputChange}
-          required
-        />
-      </p>
-      <p>
-        Qiymət:
-        <input
-          type="number"
-          name="price"
-          value={updatedProduct.parameters.price}
-          onChange={handleInputChange}
-          required
-        />
-      </p>
-      <p>
-        Məzmun:
-        <textarea
-          name="description"
-          value={updatedProduct.description}
-          onChange={handleInputChange}
-          required
-        />
-      </p>
-
-      <div>
-        <h3>Product Galleries</h3>
-        {updatedProduct.images.map((image, index) => (
-          <div key={index}>
-            <img src={image} alt={`Gallery Image ${index + 1}`} width="100" />
-            <button onClick={() => handleImageDelete(index)}>Delete Image</button>
-          </div>
-        ))}
-        <input type="file" onChange={handleImageAdd} />
+    <div className={style.EditProduct}>
+      <Navbar/>
+      <div className="container">
+        <div className={style.editProduct_main}>
+        <h2 className={style.editProduct_main_left_title}>{product.productTitle},
+                {product.parameters && product.parameters.length > 0 && (
+                  <span className={style.detailPage_main_bottom_head_title}>
+                    {product.parameters[0].parameterValue &&
+                      product.parameters[0].parameterValue
+                        .toString()
+                          .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} AZN
+                  </span>                
+                )},
+                {product.parameters?.[1] && (<span className={style.detailPage_main_bottom_left_price}>{product.parameters[1].parameterValue}</span>)}
+            </h2>
+            <div className={style.editProduct_main_left_container}>
+              <div className={style.editProduct_main_left}>
+                <div className={style.editProduct_main_left_item}>
+                  <span className={style.editProduct_main_left_item_title}>Məhsulun adı</span>
+                  <input
+                    type="text"
+                    name="productTitle"
+                    value={updatedProduct.productTitle}
+                    onChange={handleInputChange}
+                    required
+                    className={style.editProduct_main_left_item_input}
+                  />
+                </div>
+                <div className={style.editProduct_main_left_item}>
+                  <span className={style.editProduct_main_left_item_title}>Qiymət-AZN:</span>
+                  <input
+                    type="number"
+                    name="price"
+                    value={updatedProduct.parameters.price}
+                    onChange={handleInputChange}
+                    required
+                    className={style.editProduct_main_left_item_input}
+                  />
+                </div>
+                <div className={style.editProduct_main_left_item_chooseBox_container}>
+                  <p className={style.editProduct_main_left_item_title}>Şəkil əlavə et(sadəcə jpg formatlarında şəkil yükləyə bilərsiniz)</p>
+                  {updatedProduct.images.map((image, index) => (
+                    <div key={index} className={style.editProduct_main_left_item_chooseBox}>
+                      <img className={style.editProduct_main_left_item_chooseBox_Img} src={image} />
+                      <button className={style.editProduct_main_left_item_chooseBox_deleteIcon} onClick={() => handleImageDelete(index)}>X</button>
+                    </div>
+                  ))}
+                  <input type="file" onChange={handleImageAdd}/>
+                </div>
+                <div className={style.editProduct_main_left_item}>
+                  <span className={style.editProduct_main_left_item_title}>Məzmun:</span>
+                  <textarea
+                    name="description"
+                    value={updatedProduct.description}
+                    onChange={handleInputChange}
+                    required
+                    className={style.editProduct_main_left_item_input}
+                  />
+                </div>
+                <button onClick={handleUpdateProduct} disabled={!isFormValid} className={style.editProduct_btn}>
+                  Elanı Yenilə
+                </button>
+              </div>
+                 <ProductAddRuleCard/>
+            </div>
+        </div>
       </div>
-      <button onClick={handleUpdateProduct} disabled={!isFormValid}>
-        Elanı Yenilə
-      </button>
+      <Contack/>
+      <Footer/>
+      <FooterResponsive/>
     </div>
   );
 };

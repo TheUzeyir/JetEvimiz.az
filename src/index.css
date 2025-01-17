@@ -37,7 +37,6 @@ button{
     align-items: center;
 }
 
-/* Ana sayfa ve ekran genişliği 968px veya daha küçükse */
 body.homePageMobile header {
   margin-top: 80px;
 }
