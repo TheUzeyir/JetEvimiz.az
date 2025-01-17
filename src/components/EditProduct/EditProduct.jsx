@@ -73,14 +73,17 @@ const EditProduct = () => {
       return;
     }
 
-    const payload = {
-      productId: updatedProduct.productId,
-      productTitle: updatedProduct.productTitle,
-      description: updatedProduct.description,
-      images: updatedProduct.images,
-      parameters: updatedProduct.parameters,
-    };
-
+const payload={
+  productId: updatedProduct.productId,
+  productTitle: updatedProduct.productTitle,
+  description: updatedProduct.description,
+  images: [
+    updatedProduct.images
+  ],
+  parameters: {
+    price: 6000,
+  }
+}
     try {
       const response = await fetch(
         "https://restartbaku-001-site3.htempurl.com/api/Product/product-update",

@@ -25,7 +25,7 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
         });
 
       fetch(
-        `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${categoryId}&RequestFrontType=add`
+        `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${categoryId}&RequestFrontType=search`
       )
         .then((response) => response.json())
         .then((data) => {
