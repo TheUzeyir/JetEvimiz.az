@@ -5,7 +5,7 @@ const EditProduct = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { product } = location.state || {};
+  const { product } = location.state || {};  
 
   const initialImages =
     product.productGalleries.length > 0
@@ -32,13 +32,18 @@ const EditProduct = () => {
           price: value,
         },
       }));
+    } else if (name === "description") {
+      setUpdatedProduct((prevProduct) => ({
+        ...prevProduct,
+        description: value,
+      }));
     } else {
       setUpdatedProduct((prevProduct) => ({
         ...prevProduct,
         [name]: value,
       }));
     }
-  };
+  };  
 
   const handleImageAdd = (e) => {
     const newImage = e.target.files[0];
@@ -72,23 +77,24 @@ const EditProduct = () => {
       alert("Lütfen tüm alanları doldurun!");
       return;
     }
+  
+    const payload = {
+      productId: updatedProduct.productId,
+      productTitle: updatedProduct.productTitle,
+      description: updatedProduct.description,
+      images: updatedProduct.images,
+      parameters: {
+        price: updatedProduct.parameters.price.toString(),
+      },
+    };    
 
-const payload={
-  productId: updatedProduct.productId,
-  productTitle: updatedProduct.productTitle,
-  description: updatedProduct.description,
-  images: [
-    updatedProduct.images
-  ],
-  parameters: {
-    price: 6000,
-  }
-}
+    console.log("Payload:", JSON.stringify(payload, null, 2));
+  
     try {
       const response = await fetch(
         "https://restartbaku-001-site3.htempurl.com/api/Product/product-update",
         {
-          method: "POST",
+          method: "POST", // Changed from PUT to POST
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${localStorage.getItem("authToken")}`,
@@ -96,23 +102,28 @@ const payload={
           body: JSON.stringify(payload),
         }
       );
-      
-    
+  
+      console.log("Raw response:", response);
+  
       if (!response.ok) {
-        const errorMessage = await response.text(); // Try parsing as plain text
-        alert(`Failed to update the product: ${errorMessage}`);
+        const errorText = await response.text();
+        console.error("Error response body:", errorText);
+        alert(`Error: ${response.statusText}`);
         return;
       }
-    
-      const result = await response.json(); // Parse as JSON if response is valid
+  
+      const result = await response.json();
+      console.log("Success:", result);
       alert("Product updated successfully!");
-      navigate("/product-details");
+      navigate("/");
     } catch (error) {
       console.error("Error updating product:", error);
       alert("An error occurred while updating the product.");
     }
-    
   };
+  
+  console.log("Updated Product Title:", updatedProduct.productTitle);
+
 
   const isFormValid =
     updatedProduct.parameters.price &&
