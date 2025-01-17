@@ -12,7 +12,6 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
 
   useEffect(() => {
     if (categoryId) {
-      // Fetch parametreler için URL
       fetch(
         `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${categoryId}&RequestFrontType=search`
       )
@@ -25,7 +24,6 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
           console.error("Error fetching parameters:", error);
         });
 
-      // Fetch parameter titles for 'add' type
       fetch(
         `https://restartbaku-001-site3.htempurl.com/api/Category/get-parameters?LanguageCode=az&CategoryId=${categoryId}&RequestFrontType=add`
       )
@@ -124,29 +122,25 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
           {combinedParameters.length > 0 ? (
             combinedParameters.map((param) => (
               <div key={param.parameterId} className={style.filterBox_content}>
-                {param.parameterTypeId === 2 && param.parameterKey.includes("min") && (
-                  <div className={style.filterLabel}>
-                    <span>{param.parameterTitle}</span>
-                    <input
-                      type="number"
-                      placeholder="min"
-                      className={style.filterInput}
-                      value={formData[param.parameterId] || ""}
-                      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
-                    />
-                  </div>
-                )}
-                {param.parameterTypeId === 2 && param.parameterKey.includes("max") && (
-                  <div className={style.filterLabel}>
-                    <input
-                      type="number"
-                      placeholder="max"
-                      className={style.filterInput}
-                      value={formData[param.parameterId] || ""}
-                      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
-                    />
-                  </div>
-                )}
+{param.parameterTypeId === 2 && param.parameterKey.includes("min") && (
+  <div className={style.minMaxContainer}>
+    <input
+      type="number"
+      placeholder="min"
+      className={style.filterInput}
+      value={formData[param.parameterId] || ""}
+      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
+    />
+    <input
+      type="number"
+      placeholder="max"
+      className={style.filterInput}
+      value={formData[param.parameterId] || ""}
+      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
+    />
+  </div>
+)}
+
                 {param.parameterTypeId === 3 && param.parameterMasks?.length > 0 && (
                   <div className={style.filterLabel}>
                     <select

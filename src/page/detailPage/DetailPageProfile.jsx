@@ -146,7 +146,7 @@ const DetailPageProfile = () => {
               return remoteSlugPrefix === slug.split("-")[0];
             });
   
-            setMatchingProducts(filteredProducts); // Set the state
+            setMatchingProducts(filteredProducts); 
           } else {
             console.error("API response is not in the expected format.");
           }
@@ -167,9 +167,10 @@ const DetailPageProfile = () => {
         alert("Telefon nömrəsi mövcud deyil.");
       }
     };
-
-    console.log(product);
     
+    const handleupdate=()=>{
+      navigate("/editProduct", { state: { product } });
+    }
     
   return (
     <div className={style.detailPage}>
@@ -204,15 +205,12 @@ const DetailPageProfile = () => {
             </div>
             <div className={style.detailPage_main_head_right}>
               <div className={style.detailPage_main_head_right_head}>
-                <button className={style.detailPage_main_head_right_head_btn_edit}>Düzəliş et</button>
+                <button className={style.detailPage_main_head_right_head_btn_edit} onClick={handleupdate}>Düzəliş et</button>
                 <button className={style.detailPage_main_head_right_head_btn_delete} onClick={handleDelete}>Elanı sil</button>
               </div>
                 {product.parameters && product.parameters.length > 0 && (
                   <span className={style.detailPage_main_bottom_head_title}>
-                    {product.parameters[0].parameterValue &&
-                      product.parameters[0].parameterValue
-                        .toString()
-                          .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} AZN
+                    {product.price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ")} AZN
                   </span>                
                 )}
               {product.user && (
