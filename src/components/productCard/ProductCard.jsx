@@ -97,6 +97,18 @@ const ProductCard = () => {
 
   console.log("products", products);
   
+  function formatPrice(price) {
+    const reversed = price.toString().split('').reverse();
+      const formatted = reversed.reduce((acc, digit, index) => {
+      if (index > 0 && index % 3 === 0) {
+        acc.push(' ');
+      }
+      acc.push(digit);
+      return acc;
+    }, []).reverse().join(''); 
+  
+    return formatted;
+  }
 
   return (
     <div className="container">
@@ -135,9 +147,7 @@ const ProductCard = () => {
                   </div>
                 </div>
                 <div className={style.productCard_title}>
-                  <span className={style.productCard_title_price}>
-                    {item.price} AZN
-                  </span>
+                  <span className={style.productCard_title_price}>{formatPrice(item.price)} AZN</span>
                 </div>
                 <p className={style.productCard_subTitle}>{item.productTitle}</p>
                 <div className={style.productCard_bottom}>

@@ -171,15 +171,19 @@ const EditProduct = () => {
                     className={style.editProduct_main_left_item_input}
                   />
                 </div>
-                <div className={style.editProduct_main_left_item_chooseBox_container}>
+                <div className={style.editProduct_main_left_item_chooseBox_containers}>
                   <p className={style.editProduct_main_left_item_title}>Şəkil əlavə et(sadəcə jpg formatlarında şəkil yükləyə bilərsiniz)</p>
-                  {updatedProduct.images.map((image, index) => (
-                    <div key={index} className={style.editProduct_main_left_item_chooseBox}>
-                      <img className={style.editProduct_main_left_item_chooseBox_Img} src={image} />
-                      <button className={style.editProduct_main_left_item_chooseBox_deleteIcon} onClick={() => handleImageDelete(index)}>X</button>
+                  <div className={style.editProduct_main_left_item_chooseBox_card}>
+                    <div className={style.editProduct_main_left_item_chooseBox_container}>
+                      {updatedProduct.images.map((image, index) => (
+                        <div key={index} className={style.editProduct_main_left_item_chooseBox}>
+                            <img className={style.editProduct_main_left_item_chooseBox_Img} src={image} />
+                            <button className={style.editProduct_main_left_item_chooseBox_deleteIcon} onClick={() => handleImageDelete(index)}>X</button>
+                        </div>
+                      ))}
                     </div>
-                  ))}
-                  <input type="file" onChange={handleImageAdd}/>
+                    <input type="file" onChange={handleImageAdd} className={style.editProduct_main_left_item_chooseBox_container_addInput}/>
+                  </div>
                 </div>
                 <div className={style.editProduct_main_left_item}>
                   <span className={style.editProduct_main_left_item_title}>Məzmun:</span>

@@ -67,6 +67,19 @@ const ProfilePageCurrently = ({ onProductCountUpdate }) => {
       localStorage.setItem("likedProducts", JSON.stringify(updatedLikedProducts));
     };
 
+    function formatPrice(price) {
+      const reversed = price.toString().split('').reverse();
+        const formatted = reversed.reduce((acc, digit, index) => {
+        if (index > 0 && index % 3 === 0) {
+          acc.push(' ');
+        }
+        acc.push(digit);
+        return acc;
+      }, []).reverse().join(''); 
+    
+      return formatted;
+    }
+
   return (
     <div className={style.profileCardBox}>
       {products.length > 0 ? (
@@ -105,7 +118,7 @@ const ProfilePageCurrently = ({ onProductCountUpdate }) => {
           </div>
           <div className={style.productCard_title}>
             <span className={style.productCard_title_price}>
-              {product.price} AZN
+              {formatPrice(product.price)} AZN
             </span>
           </div>
           <p className={style.productCard_subTitle}>{product.productTitle}</p>

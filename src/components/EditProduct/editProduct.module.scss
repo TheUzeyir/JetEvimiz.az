@@ -3,6 +3,7 @@
     flex-direction: column;
     align-items: center;
     background: white;
+    margin-top: 150px;
 }
 
 .editProduct_main_left_container{
@@ -29,45 +30,78 @@
     justify-content: space-between;
     margin-bottom: 40px;
 }
-.editProduct_main_left_item_chooseBox_container{
+
+.editProduct_main_left_item_title{
+  width: 18%;
+}
+ 
+.editProduct_main_left_item_chooseBox_containers {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 40px;
+    width: 100%;
+  }
+  
+  .editProduct_main_left_item_chooseBox {
+    display: inline-block;
+    position: relative; 
 }
 
-.editProduct_main_left_item_input{
+.editProduct_main_left_item_chooseBox_card{
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+
+.editProduct_main_left_item_chooseBox_container{
+  display: grid;
+  grid-template-columns: repeat(7,1fr);
+  gap: 10px;
+  width: 100%;
+}
+  
+.editProduct_main_left_item_chooseBox_Img {
+    width: 100%;
+    height: 100px;
+    border-radius: 4px;
+    object-fit: cover; 
+    display: block; 
+  }
+  
+.editProduct_main_left_item_chooseBox_deleteIcon {
+    position: absolute;
+    top: 6%; 
+    right: 4%; 
+    background: red;
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+  
+  .editProduct_main_left_item_input {
     width: 80%;
     padding: 10px;
     border-radius: 6px;
     border: 1px solid gray;
-}
+  }
 
-.editProduct_main_left_item_chooseBox_Img{
-    width: 100px;
-    height: 100px;
-    border-radius: 4px;
-    position: relative;
-}
-.editProduct_main_left_item_chooseBox{
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(4,1fr);
-    width: 80%;
-}
+  .editProduct_main_left_item_chooseBox_container_addInput{
+    border: 1px solid black;
+    margin-top: 20px;
+    padding: 10px;
+  }
+  
 
-.editProduct_main_left_item_title{
-    width: 17%;
-}
-
-.editProduct_main_left_item_chooseBox_deleteIcon{
-    position: absolute;
-    top: 2%;
-    right: 2%;
-    background: red;
-    color: white;
-    border-radius: 50%;
-}
 
 .editProduct_btn{
     padding: 10px 15px;
@@ -75,4 +109,61 @@
     color: white;
     border-radius: 4px;
     background: #228B22;
+}
+
+@media screen and (max-width:1080px) {
+  .editProduct_main_left_item_chooseBox_container{
+    grid-template-columns: repeat(4,1fr);
+  }
+  .editProduct_main_left_item_chooseBox_card{
+    margin-left: 20px;
+  }
+}
+
+@media screen and (max-width:968px) {
+  .editProduct_main_left_container{
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width:768px) {
+  .editProduct_main_left_item{
+    flex-direction: column;
+    align-items: start;
+  }
+  .editProduct_main_left_item_chooseBox_containers{
+    flex-direction: column;
+    align-items: start;
+  }
+
+  .editProduct_main_left_item_chooseBox_card{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+  }
+
+  .editProduct_main_left_item_title{
+    width: 100%;
+  }
+
+  .editProduct_main_left_item_input{
+    width: 100%;
+    margin-top: 20px;
+  }
+
+   .editProduct_main_left_item_chooseBox_container{
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width:630px) {
+  .editProduct_main_left_item_chooseBox_container{
+    grid-template-columns: repeat(3,1fr);
+  } 
+}
+@media screen and (max-width:480px) {
+  .editProduct_main_left_item_chooseBox_container{
+    grid-template-columns: repeat(2,1fr);
+  } 
 }
