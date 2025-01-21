@@ -204,6 +204,10 @@
     font-size: 14px;
 }
 
+.detailPage_main_bottom_left_tite_box_city{
+    font-size: 16px;
+}
+
 .detailPage_main_bottom_left_tite{
     width:50%;  
     color: gray;
@@ -217,11 +221,16 @@
    width: 100px;
 }
 
-.detailPage_main_bottom_left_tite_category,
-.detailPage_main_bottom_left_tite_productName{
+.detailPage_main_bottom_left_tite_box:nth-of-type(2) 
+  .detailPage_main_bottom_left_tite_category, 
+.detailPage_main_bottom_left_tite_box:nth-of-type(3) 
+  .detailPage_main_bottom_left_tite_category {
     color: #228B22;
+    cursor: pointer;
     text-decoration: underline;
 }
+
+
 .detailPage_main_bottom_top_price{
 background: blue;
 color: white;

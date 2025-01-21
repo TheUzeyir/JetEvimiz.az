@@ -22,7 +22,7 @@
   import ProfilePage from './page/profile/ProfilePage'
   import SearchResult from './components/SearchResult/SearchResult'
   import SearchResultCategory from './components/SearchResult/SearchResultCategory'
-  import DetailPageProfile from './page/detailPage/DetailPageProfile'
+  import DetailPageProfile from './page/detailPageProfile/DetailPageProfile'
   import {
     QueryClient,
     QueryClientProvider,
