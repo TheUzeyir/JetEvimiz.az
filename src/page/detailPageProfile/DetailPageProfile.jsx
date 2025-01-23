@@ -26,40 +26,45 @@ const DetailPageProfile = () => {
   const { i18n } = useTranslation();
   const [matchingProducts, setMatchingProducts] = useState([]);
   const [isPhoneVisible, setIsPhoneVisible] = useState(false);
-
+  
   const handleDelete = async () => {
     try {
-      // Construct the API URL with the slug
-      const apiUrl = `https://restartbaku-001-site3.htempurl.com/api/Product/delete-product?Slug=${product.slug}`;
-  
-      // Get the authToken from localStorage
       const authToken = localStorage.getItem("authToken");
-  
-      // Log the full API URL and the authToken
-      console.log("API URL:", apiUrl);
-      console.log("Auth Token:", authToken);
-  
-      // Make the DELETE request with the Authorization header
-      const response = await fetch(apiUrl, {
-        method: "DELETE", 
-        headers: {
-          "Authorization": `Bearer ${authToken}`,
-          "Content-Type": "application/json",
-        },
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to delete product.");
+      console.log(authToken);
+      
+      if (!authToken || authToken === "expired") {
+        alert("You need to be logged in to delete a product.");
+        navigate("/login");
+        return;
       }
   
-      const result = await response.json();
-      console.log("Product deleted:", result);  
+      const slug = "saglamliq-ve-gozellik-1735296629-98"; // Set this dynamically
+      const response = await fetch(
+        `https://restartbaku-001-site3.htempurl.com/api/Product/delete-product?Slug=${slug}`,
+        {
+          method: "DELETE", 
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${authToken}`,
+          },
+          body: JSON.stringify({ slug }),  // If API expects body data
+        }
+      );      
+  
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Product deleted successfully:", data);
+        alert("Product deleted successfully!");
+      } else {
+        console.error("Failed to delete the product:", response.statusText);
+        alert("Failed to delete the product. Please try again.");
+      }
     } catch (error) {
       console.error("Error deleting product:", error);
       alert("An error occurred while deleting the product.");
     }
-  }  
-
+  };
+  
   const languageMapping = {
     az: "az",
     ru: "ru",

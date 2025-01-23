@@ -167,7 +167,7 @@ const NewProductAdd = () => {
   
       const data = await response.json();
       if (data.isSuccessful) {
-        alert("Elan uğurla əlavə edildi!");
+        alert("Elan yoxlanılmaya göndərildi!");
         setProductTitle("");
         setSelectedCategory("");
         setImages([]);

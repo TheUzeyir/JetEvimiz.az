@@ -6,7 +6,7 @@ import { MdDiamond } from "react-icons/md";
 import style from "../detailPage/detailPage.module.css";
 
 const ProductDetailActions = ({
-  product,
+  product, 
   likedProducts,
   toggleLiked,
   toggleComplaintBox,
