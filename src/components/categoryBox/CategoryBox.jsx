@@ -31,7 +31,7 @@ const CategoryBox = () => {
     );
     const result = await response.json();
     if (!result.isSuccessful) {
-      throw new Error(result.message || "Ürünler alınamadı.");
+      throw new Error(result.message || "Məhsullar alınamadı.");
     }
     return result.data;
   };
@@ -58,7 +58,7 @@ const CategoryBox = () => {
       });
     },
     onError: (error) => {
-      console.error("Seçilen kategoriye ait ürünler alınamadı:", error.message);
+      console.error("Seçilen kategoriye aid məhsullar alınamadı:", error.message);
     },
   });
 
