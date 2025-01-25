@@ -182,6 +182,16 @@ i18n
             termTextHead:"İSTİFADƏÇİ RAZILAŞMASI", 
             //aboutPage finish
 
+            //sweetAlert start
+            sweetAlertSure:"Əminsən?",
+            sweetAlertWarninng:"Bunu geri qaytara bilməyəcəksiniz!",
+            sweetAlertDeleteOk:"Bəli, silin!",
+            sweetAlertDeleteSucces:"Silindi!",
+            sweetAlertDeleteSuccesInfo:"Elanınız silindi!",
+            sweetAlertCancel:"Ləğv et",
+            sweetAlertCancelOK:"Ləğv edildi",
+            //sweetAlert finish
+
             //login and signIn start
             loginPageLoginText:"Daxil ol",
             loginPageEmainInput:"İstifadəçinin Email-i",
@@ -213,7 +223,7 @@ i18n
             addProductPageLoading:"Yüklənir...",
             addProductPageOptionLoading:"Parametrlər yüklənir...",
             addProductPageChooseText:"Seçin",
-            addProductPageAddImgText:"Şəkil əlavə et(sadəcə jpg formatlarında şəkil yükləyə bilərsiniz)",
+            addProductPageAddImgText:"Şəkil əlavə et(sadəcə jpg formatlarında şəkil yükləyə bilərsiniz) və Şəklin ölçüsü 1 MB-dan çox olmamalıdır.",
             addProductPageProductDescribe:"Məzmun",
             addProductPageProductAddText:"Əlavə et",
             //newProductAddFinish
@@ -427,6 +437,17 @@ i18n
             termTextHead: "TERMS OF USE",            
             //aboutPage finish
 
+            //sweetAlert start
+            sweetAlertSure: "Are you sure?",
+            sweetAlertWarninng: "You won't be able to revert this!",
+            sweetAlertDeleteOk: "Yes, delete it!",
+            sweetAlertDeleteSucces: "Deleted!",
+            sweetAlertDeleteSuccesInfo: "Your listing has been deleted.",
+            sweetAlertCancel: "Cancel",
+            sweetAlertCancelOK:"Canceled",
+            //sweetAlert finish
+
+
             //login and signIn start
             loginPageLoginText:"Log In",
             loginPageEmainInput:"Enter e-main",
@@ -457,7 +478,7 @@ i18n
             addProductPageLoading:"Loading...",
             addProductPageOptionLoading:"Loading Options...",
             addProductPageChooseText:"Choose",
-            addProductPageAddImgText:"Add image(you can only upload images in jpg format)",
+            addProductPageAddImgText:"Add image(you can only upload images in jpg format) and The image size must not exceed 1 MB.",
             addProductPageProductDescribe:"Product Description",
             addProductPageProductAddText:"Add",
             //newProductAddFinish   
@@ -671,6 +692,17 @@ i18n
             termTextHead:"KULLANIM ŞARTLARI", 
             //aboutPage finish
 
+            //sweetAlert start
+            sweetAlertSure: "Emin misiniz?",
+            sweetAlertWarninng: "Bunu geri alamayacaksınız!",
+            sweetAlertDeleteOk: "Evet, sil!",
+            sweetAlertDeleteSucces: "Silindi!",
+            sweetAlertDeleteSuccesInfo: "İlanınız silindi.",
+            sweetAlertCancel: "İptal",
+            sweetAlertCancelOk: "İptal Edildi",
+            //sweetAlert finish
+
+
             //login and signIn start
             loginPageLoginText:"Giriş",
             loginPageEmainInput:"Kullanıcı e-posta adresi",
@@ -701,7 +733,7 @@ i18n
             addProductPageLoading:"Yükleniyor...",
             addProductPageOptionLoading:"Parametreler Yükleniyor...",
             addProductPageChooseText:"Seç",
-            addProductPageAddImgText:"Resim ekleyin(sadece jpg formatlarında resim yükleyebilirsiniz)",
+            addProductPageAddImgText:"Resim ekleyin(sadece jpg formatlarında resim yükleyebilirsiniz) ve Resim boyutu 1 MB'ı geçmemelidir.",
             addProductPageProductDescribe:"Ürün Açıklaması",
             addProductPageProductAddText:"Ekle",
             //newProductAddFinish   
@@ -915,6 +947,17 @@ i18n
             termTextHead: "ПОЛОЖЕНИЕ ОБ ИСПОЛЬЗОВАНИИ",            
             //aboutPage finish
 
+            //sweetAlert start
+            sweetAlertSure: "Вы уверены?",
+            sweetAlertWarninng: "Вы не сможете это отменить!",
+            sweetAlertDeleteOk: "Да, удалить!",
+            sweetAlertDeleteSucces: "Удалено!",
+            sweetAlertDeleteSuccesInfo: "Ваше объявление было удалено.",
+            sweetAlertCancel: "Отмена",
+            sweetAlertCancelOk: "Oтменено",
+            //sweetAlert finish
+
+
             //login and signIn start
             loginPageLoginText:"Вход",
             loginPageEmainInput:"Адрес электронной почты",
@@ -945,7 +988,7 @@ i18n
             addProductPageLoading:"Загрузка...",
             addProductPageOptionLoading:"Параметры загрузки...",
             addProductPageChooseText:"Выбрать",
-            addProductPageAddImgText:"Добавить изображение(вы можете загружать изображения только в формате jpg)",
+            addProductPageAddImgText:"Добавить изображение(вы можете загружать изображения только в формате jpg) Размер изображения не должен превышать 1 МБ.",
             addProductPageProductDescribe:"Описание продукта",
             addProductPageProductAddText:"Добавить",
             //newProductAddFinish           

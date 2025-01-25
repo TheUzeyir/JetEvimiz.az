@@ -17,6 +17,7 @@ import DetailPageHeadRes from "./DetailPageHeadRes";
 import ProductDetailActions from "./ProductDetailActions ";
 
 const DetailPageProfile = () => {
+    const { t } = useTranslation();
   const [openComplaintBox, setOpenComplaintBox] = useState(false);
   const likedProducts = useSelector((state) => state.likedProducts.items);
   const [product, setProduct] = useState({});
@@ -31,37 +32,63 @@ const DetailPageProfile = () => {
     try {
       const authToken = localStorage.getItem("authToken");
       console.log(authToken);
-      
+  
       if (!authToken || authToken === "expired") {
         alert("You need to be logged in to delete a product.");
         navigate("/login");
         return;
       }
   
-      const slug = "saglamliq-ve-gozellik-1735296629-98"; // Set this dynamically
-      const response = await fetch(
-        `https://restartbaku-001-site3.htempurl.com/api/Product/delete-product?Slug=${slug}`,
-        {
-          method: "DELETE", 
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-          body: JSON.stringify({ slug }),  // If API expects body data
-        }
-      );      
+      Swal.fire({
+        title:t("sweetAlertSure"),
+        text: t("sweetAlertWarninng"),
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText:  t("sweetAlertDeleteOk"),  
+        cancelButtonText: t("sweetAlertCancel"), 
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          try {
+            const slug = product.slug;
+            const response = await fetch(
+              `https://restartbaku-001-site3.htempurl.com/api/Product/delete-product?Slug=${slug}`,
+              {
+                method: "GET", 
+                headers: {
+                  "Content-Type": "application/json",
+                  Authorization: `Bearer ${authToken}`,
+                },
+              }
+            );
   
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Product deleted successfully:", data);
-        alert("Product deleted successfully!");
-      } else {
-        console.error("Failed to delete the product:", response.statusText);
-        alert("Failed to delete the product. Please try again.");
-      }
+            if (response.ok) {
+              const data = await response.json();
+              console.log("Product deleted successfully:", data);
+              Swal.fire({
+                title: t("sweetAlertDeleteOk"),
+                text:  t("sweetAlertDeleteSuccesInfo"),
+                icon: "success",
+              });
+  
+              navigate("/"); 
+            } else {
+              alert("Failed to delete the product. Please try again.");
+            }
+          } catch (error) {
+            alert("An error occurred while deleting the product.");
+          }
+        } else {
+          Swal.fire({
+            title: t("sweetAlertCancelOK"),
+            icon: "info",
+          });
+        }
+      });
     } catch (error) {
-      console.error("Error deleting product:", error);
-      alert("An error occurred while deleting the product.");
+      console.error("Error in delete confirmation:", error);
+      alert("An error occurred while processing the request.");
     }
   };
   
@@ -91,7 +118,6 @@ const DetailPageProfile = () => {
         setProduct(result.data || {});
       } catch (error) {
         console.error(error.message);
-        alert("Ürün bilgisi alınırken bir hata oluştu.");
       }
     };
     getProduct();

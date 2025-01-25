@@ -22,8 +22,8 @@ const LikedPage = () => {
     const token = localStorage.getItem("authToken");
     if (token) {
       try {
-        const decoded = JSON.parse(atob(token.split(".")[1])); // Token'ı decode et
-        const isExpired = decoded.exp * 1000 < Date.now(); // Süresinin geçip geçmediğini kontrol et
+        const decoded = JSON.parse(atob(token.split(".")[1]));
+        const isExpired = decoded.exp * 1000 < Date.now(); 
         if (isExpired) {
           Swal.fire({
             icon: "warning",
@@ -31,8 +31,8 @@ const LikedPage = () => {
             text: "Oturumunuzun süresi dolduğu için yeniden giriş yapmanız gerekiyor.",
             confirmButtonText: "Tamam",
           }).then(() => {
-            localStorage.removeItem("authToken"); // Token'ı kaldır
-            navigate("/login"); // Giriş sayfasına yönlendir
+            localStorage.removeItem("authToken");
+            navigate("/login"); 
           });
         }
       } catch (error) {
@@ -41,7 +41,7 @@ const LikedPage = () => {
         navigate("/login");
       }
     } else {
-      navigate("/login"); // Token yoksa giriş sayfasına yönlendir
+      navigate("/login"); 
     }
   }, [navigate]);
   
