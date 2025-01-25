@@ -70,7 +70,7 @@ const EditProduct = () => {
         images: updatedImages,
       }));
     } else {
-      alert("Minimum 1 fotoğraf olmalı!");
+      alert("Minimum 1 fotoğraf daxil edilmeldir!");
     }
   };
 
@@ -80,7 +80,7 @@ const EditProduct = () => {
       !updatedProduct.description ||
       !updatedProduct.productTitle
     ) {
-      alert("Lütfen tüm alanları doldurun!");
+      alert("Butun melumatlari daxil edin!");
       return;
     }
   

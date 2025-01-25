@@ -21,10 +21,10 @@ const CategoryProduct = () => {
   const [minPrice, setMinPrice] = useState("");
   const [maxPrice, setMaxPrice] = useState("");
   const [filterTitle, setFilterTitle] = useState("");
-  const [filterParams, setFilterParams] = useState({}); // This holds the filtered products
+  const [filterParams, setFilterParams] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 8;
-  const [showFilteredResults, setShowFilteredResults] = useState(false); // State to toggle filtered results visibility
+  const [showFilteredResults, setShowFilteredResults] = useState(false);
 
   const { products = { items: [] }, category } = location.state || {};
   const items = products.items || [];
@@ -123,7 +123,7 @@ const CategoryProduct = () => {
             isVisible={isFilterVisible}
             setIsVisible={setIsFilterVisible}
             categoryId={category?.categoryId}
-            setFilteredProducts={setFilteredProducts} // Pass the function here
+            setFilteredProducts={setFilteredProducts}
           />
         )}
         <div className={style.CategoryProductPage}>
