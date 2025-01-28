@@ -119,35 +119,54 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
           onClick={handleClickCloseBtn}
         />
         <div className={style.filterBox}>
-          {combinedParameters.length > 0 ? (
-            combinedParameters.map((param) => (
+        {combinedParameters.length > 0 ? (
+          combinedParameters.map((param, index) => {
+            if (param.parameterTypeId === 2 && param.parameterKey.includes("min")) {
+              const relatedParameter = combinedParameters.find(
+                (p) => p.parameterKey === param.parameterKey.replace("min-", "")
+              );
+              const placeholderMin =
+                `${relatedParameter?.parameterTitle || "Başlıq yoxdur"} - Min`;
+            
+              const placeholderMax =
+                `${relatedParameter?.parameterTitle || "Başlıq yoxdur"} - Maks`;
+            
+              return (
+                <div key={index} className={style.filterBox_content}>
+                  <div className={style.minMaxContainer}>
+                    <input
+                      type="number"
+                      placeholder={placeholderMin}
+                      className={style.filterInput}
+                      value={formData[param.parameterId] || ""}
+                      onChange={(e) =>
+                        handleInputChange(param.parameterId, e.target.value)
+                      }
+                    />-
+                    <input
+                      type="number"
+                      placeholder={placeholderMax}
+                      className={style.filterInput}
+                      value={formData[param.parameterId] || ""}
+                      onChange={(e) =>
+                        handleInputChange(param.parameterId, e.target.value)
+                      }
+                    />
+                  </div>
+                </div>
+              );
+            }          
+            return (
               <div key={param.parameterId} className={style.filterBox_content}>
-{param.parameterTypeId === 2 && param.parameterKey.includes("min") && (
-  <div className={style.minMaxContainer}>
-    <input
-      type="number"
-      placeholder="min"
-      className={style.filterInput}
-      value={formData[param.parameterId] || ""}
-      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
-    />
-    <input
-      type="number"
-      placeholder="max"
-      className={style.filterInput}
-      value={formData[param.parameterId] || ""}
-      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
-    />
-  </div>
-)}
-
                 {param.parameterTypeId === 3 && param.parameterMasks?.length > 0 && (
                   <div className={style.filterLabel}>
                     <select
                       id={`param-${param.parameterId}`}
                       value={formData[param.parameterId] || ""}
                       className={style.filterInput}
-                      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(param.parameterId, e.target.value)
+                      }
                     >
                       <option value="">{param.parameterTitle}</option>
                       {param.parameterMasks.map((mask) => (
@@ -158,7 +177,7 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
                     </select>
                   </div>
                 )}
-                                {param.parameterTypeId === 1 && (
+                {param.parameterTypeId === 1 && (
                   <div className={style.filterLabel}>
                     <span>{param.parameterTitle}</span>
                     <input
@@ -167,21 +186,24 @@ const FilterBox = ({ isVisible, setIsVisible, categoryId, setFilteredProducts })
                       placeholder="Dəyər daxil edin"
                       className={style.filterInput}
                       value={formData[param.parameterId] || ""}
-                      onChange={(e) => handleInputChange(param.parameterId, e.target.value)}
+                      onChange={(e) =>
+                        handleInputChange(param.parameterId, e.target.value)
+                      }
                     />
                   </div>
                 )}
               </div>
-            ))
-          ) : (
-            <p>Parametrlər mövcud deyil</p>
-          )}
+            );
+          })
+        ) : (
+          <p>Parametrlər mövcud deyil</p>
+        )}
         </div>
         <div className={style.filterGroup}>
-          <button className={style.filterButton} onClick={handleFilter}>
+          <button className={style.filterButton_search} onClick={handleFilter}>
             Axtar
           </button>
-          <button className={style.filterButton} onClick={handleReset}>
+          <button className={style.filterButton_delete} onClick={handleReset}>
             Sıfırla
           </button>
         </div>

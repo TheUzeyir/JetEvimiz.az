@@ -34,7 +34,7 @@ const ProfilePageCurrently = ({ onProductCountUpdate }) => {
       }
 
       const data = await response.json();
-      console.log('Fetched Products:', data.data.items);
+      console.log('my product:', data.data.items);
       setProducts(data.data.items);
       onProductCountUpdate(data.data.items.length);
     } catch (error) {

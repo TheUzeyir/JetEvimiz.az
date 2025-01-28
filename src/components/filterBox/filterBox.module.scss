@@ -1,5 +1,6 @@
 .filterBox {
   display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 15px; 
   background-color: #fff;
   border-radius: 8px;
@@ -15,15 +16,6 @@
   margin-bottom: 1rem;
 }
 
-.filterBox_content label {
-  font-weight: bold;
-  margin-bottom: 0.5rem;
-}
-
-div:not(:has(select)) .l {
-  margin-bottom: -12px;
-}
-
 .priceLabel{
   font-weight: bold;
 }
@@ -34,18 +26,13 @@ div:not(:has(select)) .l {
   font-size: 14px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  margin-bottom: -40px;
 }
 
 .minMaxContainer {
   display: flex;
+  align-items: center;
+  gap: 5px;
   justify-content: space-between;
-}
-
-.filterGroup {
-  margin-top: 1rem;
-  display: flex;
-  gap: 20px;
 }
 
 .filterBoxs {
@@ -56,24 +43,18 @@ div:not(:has(select)) .l {
   border-radius: 8px;
   padding: 20px;
   width: 100%;
-  height: 400px;
-  overflow-y: scroll;
+  height: max-content;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   font-size: 15px;
   margin-top: 0;
   z-index: 10; 
   transition: right 1s ease-in-out; 
   display: block;
-  margin-top: 20px;
 }
 
 
 .filterBox_containers {
   position: relative;
-}
-
-.l{
-  display: flex;
 }
 
 .filterBoxDisplayNone {
@@ -97,7 +78,6 @@ div:not(:has(select)) .l {
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin: 15px 0;
 }
 
 .filterInput, .filterSelect {
@@ -114,21 +94,25 @@ div:not(:has(select)) .l {
   gap: 10px;
 }
 
-.filterButton {
+.filterButton_search,
+.filterButton_delete {
   width: 20%;
   padding: 12px;
   margin-top: 20px;
   font-size: 1rem;
   font-weight: bold;
-  color: #fff;
-  background-color: #228B22;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.filterButton:hover {
-  background-color: #0056b3;
+.filterButton_search {
+  background-color: #4CAF50;
+  color: white;
+}
+.filterButton_delete {
+  background-color: #f44336;
+  color: white;
 }
 
 .filterRes_btn {
@@ -166,6 +150,12 @@ div:not(:has(select)) .l {
 .filterBoxIcon {
   display: none;
   font-size: 25px;
+  margin-bottom: 20px;
+}
+
+.filterGroup{
+  display: flex;
+  gap: 10px;
 }
 
 @media (max-width: 768px) {
@@ -173,7 +163,6 @@ div:not(:has(select)) .l {
     position: absolute;
     right: 0;
     top: 0;
-    // height: 100vh;
     height: max-content;
     z-index: 5;
     margin-top: 0;
@@ -184,7 +173,7 @@ div:not(:has(select)) .l {
   }
 
   .filterBox {
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(1, 1fr); 
   }
 
   .filterBoxIcon {
@@ -195,7 +184,8 @@ div:not(:has(select)) .l {
     display: block !important;
   }
 
-  .filterButton {
+  .filterButton_delete,
+  .filterButton_search {
     width: 100%;
   }
 
