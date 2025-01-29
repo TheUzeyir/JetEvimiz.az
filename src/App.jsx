@@ -30,6 +30,7 @@
   } from '@tanstack/react-query'
 import SameProductDetails from './components/sameProductDetail/SameProductDetails'
 import EditProduct from './components/EditProduct/EditProduct'
+import OwnerProduct from './page/ownerProduct/OwnerProduct'
   const queryClient = new QueryClient()
 
   function App() {
@@ -40,6 +41,7 @@ import EditProduct from './components/EditProduct/EditProduct'
             <Route path='/' element={<Main />} />
             <Route path='/detailPageProfile/:slug' element={<DetailPageProfile />} />
             <Route path='/product/:slug' element={<SameProductDetails />} />
+            <Route path='/ownerAllProduct' element={<OwnerProduct />} />
             <Route path='/editProduct' element={<EditProduct />} />
             <Route path='/about' element={<AboutPage />} />
             <Route path='/info' element={<Info />} />

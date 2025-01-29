@@ -146,14 +146,20 @@
 }
 
 .detailPage_main_head_right_otherSale{
-    font-size: 20px;
+    font-size: 16px;
+    padding: 20px;
     font-weight: bold;
+    border-radius: 6px;
+    width: 100%;
+    border: 1px solid blue;
     cursor: pointer;
-    color: #228B22;
-    margin-bottom: 40px;
+    color: white;
+    background: blue;
 }
 .detailPage_main_head_right_otherSale:hover{
-    color: red;
+    color: blue;
+    background: white;
+    border: 1px solid blue;
 }
 
 .detailPage_main_bottom{
